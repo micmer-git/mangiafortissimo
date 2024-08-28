@@ -133,12 +133,15 @@
 .progress-circle {
     width: 100px;
     height: 100px;
+    border-radius: 50%;
     background: conic-gradient(
         #3498db calc(var(--progress) * 1%), 
-        #ddd calc(var(--progress) * 1%)
+        #e0e0e0 0
     );
-    border-radius: 50%;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .progress-circle::before {
@@ -146,11 +149,28 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 16px;
-    font-weight: bold;
+    transform: translate(-50%, -30%);
+    font-size: 14px;
+    color: #555;
     text-align: center;
-    width: 80%;
+}
+
+.progress-circle::after {
+    content: attr(data-value) "%";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 10%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.progress-circle {
+    border: 5px solid transparent;
+    border-radius: 50%;
+    background-clip: padding-box;
+    background-origin: border-box;
 }
     </style>
 </head>
@@ -172,18 +192,18 @@
         <div id="selectedFoods" class="selected-foods"></div>
         <div id="nutritionProgress" class="nutrition-progress">
     <div class="progress-section">
-        <div class="progress-circle" id="kcalProgress"></div>
-        <div class="progress-circle" id="macroProgress"></div>
+        <div class="progress-circle" id="kcalProgress" data-label="kcal"></div>
+        <div class="progress-circle" id="macroProgress" data-label="Macros"></div>
     </div>
     <div class="progress-section">
-        <div class="progress-circle" id="omegasProgress"></div>
-        <div class="progress-circle" id="fiberProgress"></div>
+        <div class="progress-circle" id="omegasProgress" data-label="Omegas"></div>
+        <div class="progress-circle" id="fiberProgress" data-label="Fiber"></div>
     </div>
     <div class="progress-section">
-        <div class="progress-circle" id="micronutrientsProgress"></div>
+        <div class="progress-circle" id="micronutrientsProgress" data-label="Micronutrients"></div>
     </div>
     <div class="progress-section">
-        <div class="progress-circle" id="vitaminsProgress"></div>
+        <div class="progress-circle" id="vitaminsProgress" data-label="Vitamins"></div>
     </div>
 </div>
     </div>
@@ -237,7 +257,7 @@
         "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
     };
 
-       const dailyValues = {
+        const dailyValues = {
         calories: 2000,
         totalFat: 65,
         saturatedFat: 20,
@@ -251,7 +271,6 @@
 
     const buttonContainer = document.getElementById('foodButtons');
     const selectedFoodsContainer = document.getElementById('selectedFoods');
-    const nutritionProgress = document.getElementById('nutritionProgress');
     const toggleButtons = document.querySelectorAll('.toggle-button');
 
     let selectedFoods = new Set();
@@ -370,7 +389,7 @@
             const averageProgress = count > 0 ? totalProgress / count : 0;
             const progressCircle = document.getElementById(id);
             progressCircle.style.setProperty('--progress', averageProgress);
-            progressCircle.setAttribute('data-label', `${averageProgress.toFixed(0)}%`);
+            progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
         }
     }
 
@@ -378,7 +397,7 @@
         const progressCircles = document.querySelectorAll('.progress-circle');
         progressCircles.forEach(circle => {
             circle.style.setProperty('--progress', 0);
-            circle.setAttribute('data-label', '0%');
+            circle.setAttribute('data-value', '0');
         });
     }
 </script>
