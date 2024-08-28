@@ -10,28 +10,33 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 900px; /* Increased for more space */
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f4f4;
         }
+
         .dashboard {
             background-color: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
         }
+
         h1 {
             color: #2c3e50;
             text-align: center;
             margin-bottom: 20px;
         }
+
         .food-buttons {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 20px;
+            justify-content: center; /* Center buttons */
         }
+
         .food-button {
             background-color: #f0f0f0;
             border: none;
@@ -41,38 +46,50 @@
             transition: background-color 0.3s;
             font-family: 'Inter', sans-serif;
         }
+
         .food-button.active {
             background-color: #3498db;
             color: white;
         }
+
         .selected-foods {
             margin-bottom: 20px;
         }
+
         .food-item {
             display: flex;
             align-items: center;
             margin-bottom: 10px;
         }
+
         .food-item label {
             margin-right: 10px;
-            min-width: 150px;
+            min-width: 180px; /* Increased for longer food names */
         }
+
         .food-item input {
             width: 200px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed; /* Prevent table from expanding too much */
         }
-        th, td {
+
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            word-wrap: break-word; /* Allow long text to wrap */
         }
+
         th {
             background-color: #f2f2f2;
             font-weight: 600;
         }
+
         tr:hover {
             background-color: #f5f5f5;
         }
@@ -98,119 +115,16 @@
 
     <script>
         const foodData = {
-            "Banana": { emoji: "🍌", grams: 100, calories: 89, totalFat: 0.3, carbs: 23, protein: 1.1, fiber: 2.6 },
-            "Apple": { emoji: "🍎", grams: 100, calories: 52, totalFat: 0.2, carbs: 14, protein: 0.3, fiber: 2.4 },
-            "Greek Yogurt": { emoji: "🥛", grams: 100, calories: 59, totalFat: 0.4, carbs: 3.6, protein: 10, fiber: 0 },
-            "Cappuccino": { emoji: "☕", grams: 100, calories: 74, totalFat: 4, carbs: 6, protein: 4, fiber: 0 },
-            "Egg": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, carbs: 0.6, protein: 6.3, fiber: 0 },
-            "Bread": { emoji: "🍞", grams: 100, calories: 247, totalFat: 3.5, carbs: 41, protein: 13, fiber: 6.8 },
-            "Honey": { emoji: "🍯", grams: 100, calories: 304, totalFat: 0, carbs: 82, protein: 0.3, fiber: 0.2 },
-            "Sweet Potato": { emoji: "🍠", grams: 100, calories: 90, totalFat: 0.1, carbs: 21, protein: 2, fiber: 3.3 },
-            "Olive Oil": { emoji: "🫒", grams: 100, calories: 884, totalFat: 100, carbs: 0, protein: 0, fiber: 0 },
-            "Chicken Breast": { emoji: "🍗", grams: 100, calories: 165, totalFat: 3.6, carbs: 0, protein: 31, fiber: 0 },
-            "Salmon": { emoji: "🐟", grams: 100, calories: 208, totalFat: 13, carbs: 0, protein: 22, fiber: 0 },
-            "Avocado": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, carbs: 9, protein: 2, fiber: 7 },
-            "Spinach": { emoji: "🥬", grams: 100, calories: 23, totalFat: 0.4, carbs: 3.6, protein: 2.9, fiber: 2.2 },
-            "Almonds": { emoji: "🥜", grams: 100, calories: 579, totalFat: 49.9, carbs: 21.6, protein: 21.2, fiber: 12.5 },
-            "Quinoa": { emoji: "🌾", grams: 100, calories: 120, totalFat: 1.9, carbs: 21.3, protein: 4.4, fiber: 2.8 },
-            "Broccoli": { emoji: "🥦", grams: 100, calories: 34, totalFat: 0.4, carbs: 6.6, protein: 2.8, fiber: 2.6 },
-            "Strawberries": { emoji: "🍓", grams: 100, calories: 32, totalFat: 0.3, carbs: 7.7, protein: 0.7, fiber: 2 },
-            "Oatmeal": { emoji: "🥣", grams: 100, calories: 389, totalFat: 6.9, carbs: 66.3, protein: 16.9, fiber: 10.6 },
-            "Tofu": { emoji: "🧊", grams: 100, calories: 144, totalFat: 8.7, carbs: 2.8, protein: 15.9, fiber: 2.3 }
-        };
-
-        const dailyValues = {
-            calories: 2000,
-            totalFat: 65,
-            carbs: 300,
-            protein: 50,
-            fiber: 25
-        };
-
-        const buttonContainer = document.getElementById('foodButtons');
-        const selectedFoodsContainer = document.getElementById('selectedFoods');
-        const table = document.getElementById('nutritionTable').getElementsByTagName('tbody')[0];
-
-        let selectedFoods = new Set();
-
-        // Create food buttons
-        for (let food in foodData) {
-            let button = document.createElement('button');
-            button.textContent = `${foodData[food].emoji} ${food}`;
-            button.className = 'food-button';
-            button.onclick = () => toggleFood(food, button);
-            buttonContainer.appendChild(button);
-        }
-
-        function toggleFood(food, button) {
-            if (selectedFoods.has(food)) {
-                selectedFoods.delete(food);
-                button.classList.remove('active');
-                removeSlider(food);
-            } else {
-                selectedFoods.add(food);
-                button.classList.add('active');
-                addSlider(food);
-            }
-            updateNutritionTable();
-        }
-
-        function addSlider(food) {
-            const div = document.createElement('div');
-            div.className = 'food-item';
-            div.innerHTML = `
-                <label>${foodData[food].emoji} ${food} (g):</label>
-                <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${food}-slider">
-                <span id="${food}-value">${foodData[food].grams}g</span>
-            `;
-            selectedFoodsContainer.appendChild(div);
-
-            const slider = document.getElementById(`${food}-slider`);
-            const output = document.getElementById(`${food}-value`);
-            slider.oninput = function() {
-                output.textContent = this.value + 'g';
-                updateNutritionTable();
-            }
-        }
-
-        function removeSlider(food) {
-            const slider = document.getElementById(`${food}-slider`);
-            if (slider) {
-                slider.parentElement.remove();
-            }
-        }
-
-        function updateNutritionTable() {
-            table.innerHTML = ''; // Clear existing rows
-            if (selectedFoods.size === 0) return;
-
-            let totals = { calories: 0, totalFat: 0, carbs: 0, protein: 0, fiber: 0 };
-
-            selectedFoods.forEach(food => {
-                const sliderValue = document.getElementById(`${food}-slider`).value;
-                const ratio = sliderValue / foodData[food].grams;
-                for (let nutrient in totals) {
-                    totals[nutrient] += foodData[food][nutrient] * ratio;
-                }
-            });
-
-            for (let nutrient in totals) {
-                let row = table.insertRow();
-                let cell1 = row.insertCell(0);
-                let cell2 = row.insertCell(1);
-                let cell3 = row.insertCell(2);
-
-                cell1.textContent = nutrient.charAt(0).toUpperCase() + nutrient.slice(1);
-                cell2.textContent = totals[nutrient].toFixed(1) + (nutrient === 'calories' ? ' kcal' : ' g');
-                
-                if (dailyValues[nutrient]) {
-                    const percentage = ((totals[nutrient] / dailyValues[nutrient]) * 100).toFixed(1);
-                    cell3.textContent = percentage + '%';
-                } else {
-                    cell3.textContent = 'N/A';
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+            // Existing data (with typical serving sizes)
+            "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422 },
+            "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195 },
+            "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0 },
+            "Cappuccino (1 cup)": { emoji: "☕", grams: 240, calories: 110, totalFat: 5, saturatedFat: 3, monounsaturatedFat: 1.5, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 12, protein: 8, fiber: 1, calcium: 30, potassium: 0 },
+            "Egg (1 large)": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, saturatedFat: 1.6, monounsaturatedFat: 2.0, polyunsaturatedFat: 0.7, omega3: 37, omega6: 570, carbs: 0.6, protein: 6.3, fiber: 0, vitaminD: 1, potassium: 69 },
+            "Bread (1 slice)": { emoji: "🍞", grams: 30, calories: 80, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 15, protein: 3, fiber: 1, iron: 6, potassium: 0 },
+            "Honey (1 tablespoon)": { emoji: "🍯", grams: 21, calories: 64, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 17, protein: 0.1, fiber: 0, calcium: 1, potassium: 11 },
+            "Sweet Potato (1 medium)": { emoji: "🍠", grams: 114, calories: 103, totalFat: 0.1, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 24, protein: 2, fiber: 3.8, vitaminA: 100, potassium: 542 },
+            "Olive Oil (1 tablespoon)": { emoji: "🫒", grams: 14, calories: 119, totalFat: 14, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 1.5, omega3: 0, omega6: 1000, carbs: 0, protein: 0, fiber: 0, vitaminE: 15, potassium: 0 },
+            "Chicken Breast (3 oz)": { emoji: "🍗", grams: 85, calories: 140, totalFat: 3, saturatedFat: 1, monounsaturatedFat: 1, polyunsaturatedFat: 0.5, omega3: 30, omega6: 1500, carbs: 0, protein: 26, fiber: 0, vitaminB6: 20, potassium: 220 },
+            "Salmon (3 oz)": { emoji: "🐟", grams: 85, calories: 175, totalFat: 11, saturatedFat: 2.5, monounsaturatedFat: 4, polyunsaturatedFat: 3.5, omega3: 1700, omega6: 300, carbs: 0, protein: 20, fiber: 0, vitaminB12: 80, potassium: 360 },
+            "Avocado (1/2 medium)": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, saturatedFat
