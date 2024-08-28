@@ -370,6 +370,140 @@ h2 {
             circle.setAttribute('data-value', '0');
         });
     }
+
+
+    const buttonContainer = document.getElementById('foodButtons');
+   const selectedFoodsContainer = document.getElementById('selectedFoods');
+   const toggleButtons = document.querySelectorAll('.toggle-button');
+
+   let selectedFoods = new Set();
+
+   // Create food buttons
+   for (let food in foodData) {
+       let button = document.createElement('button');
+       button.textContent = `${foodData[food].emoji} ${food}`;
+       button.className = 'food-button';
+       button.dataset.category = foodData[food].category;
+       button.onclick = () => toggleFood(food, button);
+       buttonContainer.appendChild(button);
+   }
+
+   toggleButtons.forEach(button => {
+       button.addEventListener('click', () => {
+           const category = button.dataset.category;
+           toggleButtons.forEach(btn => btn.classList.remove('active'));
+           button.classList.add('active');
+
+           const foodButtons = document.querySelectorAll('.food-button');
+           foodButtons.forEach(foodButton => {
+               const foodName = foodButton.textContent.trim();
+               if (category === 'all' || foodData[foodName].category === category) {
+                   foodButton.style.display = 'inline-block';
+               } else {
+                   foodButton.style.display = 'none';
+               }
+           });
+           updateNutritionTable(); // Update progress bars to reflect hidden foods
+       });
+   });
+
+   function toggleFood(food, button) {
+       if (selectedFoods.has(food)) {
+           selectedFoods.delete(food);
+           button.classList.remove('active');
+           removeSlider(food);
+       } else {
+           selectedFoods.add(food);
+           button.classList.add('active');
+           addSlider(food);
+       }
+       updateNutritionTable();
+   }
+
+   function addSlider(food) {
+       const div = document.createElement('div');
+       div.className = 'food-item';
+       div.innerHTML = `
+           <label>${foodData[food].emoji} ${food} (g):</label>
+           <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${food}-slider">
+           <span id="${food}-value">${foodData[food].grams}g</span>
+       `;
+       selectedFoodsContainer.appendChild(div);
+
+       const slider = document.getElementById(`${food}-slider`);
+       const output = document.getElementById(`${food}-value`);
+       slider.oninput = function () {
+           output.textContent = this.value + 'g';
+           updateNutritionTable();
+       }
+   }
+
+   function removeSlider(food) {
+       const slider = document.getElementById(`${food}-slider`);
+       if (slider) {
+           slider.parentElement.remove();
+       }
+   }
+
+   function updateNutritionTable() {
+       if (selectedFoods.size === 0) {
+           resetProgressBars();
+           return;
+       }
+
+       let totals = {
+           calories: 0, totalFat: 0, saturatedFat: 0,
+           carbs: 0, protein: 0, fiber: 0, omega3: 0, omega6: 0,
+           vitaminA: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
+           calcium: 0, magnesium: 0, potassium: 0, iron: 0, zinc: 0, selenium: 0, sodium: 0
+       };
+
+       selectedFoods.forEach(food => {
+           const sliderValue = document.getElementById(`${food}-slider`).value;
+           const ratio = sliderValue / foodData[food].grams;
+           for (let nutrient in totals) {
+               totals[nutrient] += foodData[food][nutrient] * ratio;
+           }
+       });
+
+       updateProgressBars(totals);
+   }
+
+   function updateProgressBars(totals) {
+       const progressCircleIds = {
+           kcalProgress: ['calories'],
+           macroProgress: ['totalFat', 'carbs', 'protein'],
+           omegasProgress: ['omega3', 'omega6'],
+           fiberProgress: ['fiber'],
+           micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
+           vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
+       };
+
+       for (let id in progressCircleIds) {
+           const nutrients = progressCircleIds[id];
+           let totalProgress = 0;
+           let count = 0;
+           nutrients.forEach(nutrient => {
+               if (dailyValues[nutrient] && totals[nutrient] !== undefined) {
+                   totalProgress += (totals[nutrient] / dailyValues[nutrient]) * 100;
+                   count++;
+               }
+           });
+           const averageProgress = count > 0 ? totalProgress / count : 0;
+           const progressCircle = document.getElementById(id);
+           progressCircle.style.setProperty('--progress', averageProgress);
+           progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
+       }
+   }
+
+   function resetProgressBars() {
+       const progressCircles = document.querySelectorAll('.progress-circle');
+       progressCircles.forEach(circle => {
+           circle.style.setProperty('--progress', 0);
+           circle.setAttribute('data-value', '0');
+       });
+   }
+</script>
 </script>
 
 
