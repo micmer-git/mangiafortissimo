@@ -148,208 +148,55 @@
     </div>
 
     <script>
-        const foodData = {
-            "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422 },
-            "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195 },
-            "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0 },
-            // Add more food items here...
-        };
+    const foodData = {
+        "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
+        "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
+        "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
+        "Cappuccino (1 cup)": { emoji: "☕", grams: 240, calories: 110, totalFat: 5, saturatedFat: 3, monounsaturatedFat: 1.5, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 12, protein: 8, fiber: 1, calcium: 30, potassium: 0, category: "dairy" },
+        "Egg (1 large)": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, saturatedFat: 1.6, monounsaturatedFat: 2.0, polyunsaturatedFat: 0.7, omega3: 37, omega6: 570, carbs: 0.6, protein: 6.3, fiber: 0, vitaminD: 1, potassium: 69, category: "protein" },
+        "Bread (1 slice)": { emoji: "🍞", grams: 30, calories: 80, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 15, protein: 3, fiber: 1, iron: 6, potassium: 0, category: "grains" },
+        "Honey (1 tablespoon)": { emoji: "🍯", grams: 21, calories: 64, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 17, protein: 0.1, fiber: 0, calcium: 1, potassium: 11, category: "others" },
+        "Sweet Potato (1 medium)": { emoji: "🍠", grams: 114, calories: 103, totalFat: 0.1, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 24, protein: 2, fiber: 3.8, vitaminA: 100, potassium: 542, category: "vegetables" },
+        "Olive Oil (1 tablespoon)": { emoji: "🫒", grams: 14, calories: 119, totalFat: 14, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 1.5, omega3: 0, omega6: 1000, carbs: 0, protein: 0, fiber: 0, vitaminE: 15, potassium: 0, category: "others" },
+        "Chicken Breast (3 oz)": { emoji: "🍗", grams: 85, calories: 140, totalFat: 3, saturatedFat: 1, monounsaturatedFat: 1, polyunsaturatedFat: 0.5, omega3: 30, omega6: 1500, carbs: 0, protein: 26, fiber: 0, vitaminB6: 20, potassium: 220, category: "protein" },
+        "Salmon (3 oz)": { emoji: "🐟", grams: 85, calories: 175, totalFat: 11, saturatedFat: 2.5, monounsaturatedFat: 4, polyunsaturatedFat: 3.5, omega3: 1700, omega6: 300, carbs: 0, protein: 20, fiber: 0, vitaminB12: 80, potassium: 360, category: "protein" },
+        "Avocado (1/2 medium)": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 2.5, omega3: 160, omega6: 1960, carbs: 9, protein: 2, fiber: 7, vitaminK: 26, potassium: 485, category: "fruits" },
+        "Spinach (1 cup cooked)": { emoji: "🥬", grams: 180, calories: 41, totalFat: 0.7, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.3, omega3: 370, omega6: 150, carbs: 7, protein: 5, fiber: 4, vitaminA: 200, potassium: 839, category: "vegetables" },
+        "Almonds (1 oz)": { emoji: "🥜", grams: 28, calories: 164, totalFat: 14, saturatedFat: 1, monounsaturatedFat: 9, polyunsaturatedFat: 3.5, omega3: 0, omega6: 3680, carbs: 6, protein: 6, fiber: 3.5, vitaminE: 35, magnesium: 20, category: "protein" },
+        "Quinoa (1 cup cooked)": { emoji: "🌾", grams: 185, calories: 222, totalFat: 3.5, saturatedFat: 0.4, monounsaturatedFat: 0.6, polyunsaturatedFat: 1.9, omega3: 47, omega6: 340, carbs: 39, protein: 8, fiber: 5, iron: 15, magnesium: 30, category: "grains" },
+        "Broccoli (1 cup chopped)": { emoji: "🥦", grams: 91, calories: 31, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 33, omega6: 70, carbs: 6, protein: 3, fiber: 2, vitaminC: 135, potassium: 316, category: "vegetables" },
+        "Strawberries (1 cup sliced)": { emoji: "🍓", grams: 150, calories: 46, totalFat: 0.4, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 24, omega6: 40, carbs: 11, protein: 1, fiber: 3, vitaminC: 98, potassium: 220, category: "fruits" },
+        "Oatmeal (1 cup cooked)": { emoji: "🥣", grams: 234, calories: 147, totalFat: 2.5, saturatedFat: 0.5, monounsaturatedFat: 0.7, polyunsaturatedFat: 0.7, omega3: 55, omega6: 600, carbs: 27, protein: 5, fiber: 4, iron: 10, potassium: 0, category: "grains" },
+        "Tofu (3 oz)": { emoji: "🧊", grams: 85, calories: 70, totalFat: 4, saturatedFat: 0.5, monounsaturatedFat: 1.5, polyunsaturatedFat: 1.5, omega3: 80, omega6: 450, carbs: 2, protein: 8, fiber: 1, calcium: 10, potassium: 120, category: "protein" },
+        "Whole Milk (1 cup)": { emoji: "🥛", grams: 240, calories: 149, totalFat: 8, saturatedFat: 5, monounsaturatedFat: 2, polyunsaturatedFat: 0.5, omega3: 30, omega6: 200, carbs: 12, protein: 8, fiber: 0, vitaminD: 15, calcium: 30, category: "dairy" },
+        "Brown Rice (1 cup cooked)": { emoji: "🍚", grams: 195, calories: 216, totalFat: 1.8, saturatedFat: 0.4, monounsaturatedFat: 0.5, polyunsaturatedFat: 0.7, omega3: 0, omega6: 50, carbs: 45, protein: 5, fiber: 3, magnesium: 11, potassium: 84, category: "grains" },
+        "Lentils (1 cup cooked)": { emoji: "🍲", grams: 198, calories: 230, totalFat: 0.8, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.4, omega3: 0, omega6: 80, carbs: 40, protein: 18, fiber: 16, iron: 37, potassium: 731, category: "protein" },
+        "Orange (1 medium)": { emoji: "🍊", grams: 131, calories: 62, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 20, carbs: 15, protein: 1, fiber: 3, vitaminC: 100, potassium: 237, category: "fruits" },
+        "Carrot (1 medium)": { emoji: "🥕", grams: 61, calories: 25, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 40, carbs: 6, protein: 1, fiber: 2, vitaminA: 200, potassium: 230, category: "vegetables" },
+        "Peanut Butter (2 tablespoons)": { emoji: "🥜", grams: 32, calories: 188, totalFat: 16, saturatedFat: 3, monounsaturatedFat: 8, polyunsaturatedFat: 4, omega3: 0, omega6: 3400, carbs: 7, protein: 8, fiber: 2, magnesium: 10, potassium: 210, category: "protein" },
+        "Walnuts (1 oz)": { emoji: "🌰", grams: 28, calories: 185, totalFat: 18, saturatedFat: 1.5, monounsaturatedFat: 2.5, polyunsaturatedFat: 13, omega3: 2500, omega6: 3700, carbs: 4, protein: 4, fiber: 2, magnesium: 10, potassium: 125, category: "protein" },
+        "Dark Chocolate (1 oz)": { emoji: "🍫", grams: 28, calories: 155, totalFat: 9, saturatedFat: 5, monounsaturatedFat: 3, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 13, protein: 2, fiber: 3, iron: 12, magnesium: 25, category: "others" },
+        "Kidney Beans (1 cup cooked)": { emoji: "🫘", grams: 177, calories: 215, totalFat: 0.5, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 0, omega6: 110, carbs: 39, protein: 13, fiber: 11, iron: 20, potassium: 600, category: "protein" },
+        "Tuna (3 oz canned in water)": { emoji: "🐟", grams: 85, calories: 94, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 250, omega6: 30, carbs: 0, protein: 20, fiber: 0, vitaminB12: 40, potassium: 0, category: "protein" },
+        "Chicken Thigh (3 oz)": { emoji: "🍗", grams: 85, calories: 209, totalFat: 13, saturatedFat: 4, monounsaturatedFat: 6, polyunsaturatedFat: 2, omega3: 40, omega6: 2000, carbs: 0, protein: 26, fiber: 0, iron: 5, potassium: 210, category: "protein" },
+        "Beef (Ground, 80% lean, 3 oz)": { emoji: "🥩", grams: 85, calories: 215, totalFat: 14, saturatedFat: 6, monounsaturatedFat: 6, polyunsaturatedFat: 1, omega3: 40, omega6: 300, carbs: 0, protein: 26, fiber: 0, iron: 15, zinc: 45, category: "protein" },
+        "Pork Chop (3 oz)": { emoji: "🍖", grams: 85, calories: 179, totalFat: 8, saturatedFat: 3, monounsaturatedFat: 3.5, polyunsaturatedFat: 1, omega3: 30, omega6: 1000, carbs: 0, protein: 26, fiber: 0, thiamin: 40, potassium: 370, category: "protein" },
+        "Shrimp (3 oz)": { emoji: "🦐", grams: 85, calories: 84, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.1, omega3: 100, omega6: 100, carbs: 0, protein: 20, fiber: 0, vitaminB12: 20, selenium: 40, category: "protein" },
+        "Cod (3 oz)": { emoji: "🐟", grams: 85, calories: 82, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 200, omega6: 30, carbs: 0, protein: 19, fiber: 0, vitaminB12: 15, selenium: 30, category: "protein" },
+        "Pizza (1 slice, cheese)": { emoji: "🍕", grams: 107, calories: 285, totalFat: 10, saturatedFat: 4.5, monounsaturatedFat: 3, polyunsaturatedFat: 1.5, omega3: 0, omega6: 0, carbs: 36, protein: 12, fiber: 3, calcium: 18, sodium: 640, category: "others" },
+        "Pasta (1 cup cooked)": { emoji: "🍝", grams: 140, calories: 221, totalFat: 1.3, saturatedFat: 0.3, monounsaturatedFat: 0.4, polyunsaturatedFat: 0.3, omega3: 0, omega6: 40, carbs: 43, protein: 8, fiber: 2.5, iron: 6, potassium: 0, category: "grains" },
+        "French Fries (medium)": { emoji: "🍟", grams: 117, calories: 312, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 7, polyunsaturatedFat: 4.5, omega3: 0, omega6: 0, carbs: 41, protein: 4, fiber: 4, vitaminC: 10, potassium: 480, category: "others" },
+        "Hamburger (1 patty)": { emoji: "🍔", grams: 113, calories: 303, totalFat: 17, saturatedFat: 6, monounsaturatedFat: 7, polyunsaturatedFat: 2.5, omega3: 30, omega6: 1200, carbs: 0, protein: 25, fiber: 0, iron: 20, zinc: 50, category: "protein" },
+        "Ice Cream (1/2 cup)": { emoji: "🍦", grams: 68, calories: 137, totalFat: 7, saturatedFat: 4.5, monounsaturatedFat: 2, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 16, protein: 3, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
+        "Potato Chips (1 oz)": { emoji: "🥔", grams: 28, calories: 152, totalFat: 10, saturatedFat: 1.5, monounsaturatedFat: 5, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 15, protein: 2, fiber: 1, vitaminC: 10, sodium: 170, category: "others" },
+        "Popcorn (air-popped, 3 cups)": { emoji: "🍿", grams: 24, calories: 93, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 300, carbs: 19, protein: 3, fiber: 4, iron: 6, magnesium: 10, category: "grains" },
+        "Banana Bread (1 slice)": { emoji: "🍌", grams: 70, calories: 250, totalFat: 10, saturatedFat: 3, monounsaturatedFat: 4, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 35, protein: 3, fiber: 1, calcium: 5, potassium: 150, category: "grains" },
+        "Granola Bar (1 bar)": { emoji: "🍫", grams: 35, calories: 150, totalFat: 6, saturatedFat: 1, monounsaturatedFat: 2.5, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 20, protein: 3, fiber: 2, iron: 4, potassium: 0, category: "grains" },
+        "Bagel (plain, 1)": { emoji: "🥯", grams: 94, calories: 270, totalFat: 1, saturatedFat: 0.3, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.2, omega3: 0, omega6: 0, carbs: 55, protein: 11, fiber: 3, calcium: 10, potassium: 0, category: "grains" },
+        "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
+    };
 
-        const dailyValues = {
-            calories: 2000,
-            totalFat: 65,
-            saturatedFat: 20,
-            carbs: 300,
-            protein: 50,
-            fiber: 25,
-            vitaminC: 90,
-            calcium: 1000,
-            iron: 18,
-            potassium: 4700
-        };
-
-        const buttonContainer = document.getElementById('foodButtons');
-        const selectedFoodsContainer = document.getElementById('selectedFoods');
-        const table = document.getElementById('nutritionTable').getElementsByTagName('tbody')[0];
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-
-        let selectedFoods = new Set();
-
-        // Assign categories to food items
-        for (let food in foodData) {
-            if (food.includes("Banana") || food.includes("Apple")) {
-                foodData[food].category = "fruits";
-            } else if (food.includes("Greek Yogurt")) {
-                foodData[food].category = "dairy";
-            } else {
-                foodData[food].category = "others"; // Default category
-            }
-        }
-
-        // Create food buttons
-        for (let food in foodData) {
-            let button = document.createElement('button');
-            button.textContent = `${foodData[food].emoji} ${food}`;
-            button.className = 'food-button';
-            button.dataset.category = foodData[food].category;
-            button.onclick = () => toggleFood(food, button);
-            buttonContainer.appendChild(button);
-        }
-
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const category = button.dataset.category;
-                toggleButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-
-                const foodButtons = document.querySelectorAll('.food-button');
-                foodButtons.forEach(foodButton => {
-                    const foodName = foodButton.textContent.trim();
-                    if (category === 'all' || foodData[foodName].category === category) {
-                        foodButton.style.display = 'inline-block';
-                    } else {
-                        foodButton.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        function toggleFood(food, button) {
-            if (selectedFoods.has(food)) {
-                selectedFoods.delete(food);
-                button.classList.remove('active');
-                removeSlider(food);
-            } else {
-                selectedFoods.add(food);
-                button.classList.add('active');
-                addSlider(food);
-            }
-            updateNutritionTable();
-        }
-
-        function addSlider(food) {
-            const div = document.createElement('div');
-            div.className = 'food-item';
-            div.innerHTML = `
-                <label>${foodData[food].emoji} ${food} (g):</label>
-                <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${food}-slider">
-                <span id="${food}-value">${foodData[food].grams}g</span>
-            `;
-            selectedFoodsContainer.appendChild(div);
-
-            const slider = document.getElementById(`${food}-slider`);
-            const output = document.getElementById(`${food}-value`);
-            slider.oninput = function () {
-                output.textContent = this.value + 'g';
-                updateNutritionTable();
-            }
-        }
-
-        function removeSlider(food) {
-            const slider = document.getElementById(`${food}-slider`);
-            if (slider) {
-                slider.parentElement.remove();
-            }
-        }
-
-        function updateNutritionTable() {
-            table.innerHTML = '';
-            if (selectedFoods.size === 0) return;
-
-            let totals = {
-                calories: 0, totalFat: 0, saturatedFat: 0,
-                carbs: 0, protein: 0, fiber: 0, vitaminC: 0,
-                calcium: 0, iron: 0, potassium: 0
-            };
-
-            selectedFoods.forEach(food => {
-                const sliderValue = document.getElementById(`${food}-slider`).value;
-                const ratio = sliderValue / foodData[food].grams;
-                for (let nutrient in totals) {
-                    totals[nutrient] += foodData[food][nutrient] * ratio;
-                }
-            });
-
-            for (let nutrient in totals) {
-                let row = table.insertRow();
-                let cell1 = row.insertCell(0);
-                let cell2 = row.insertCell(1);
-                let cell3 = row.insertCell(2);
-
-                cell1.textContent = nutrient.charAt(0).toUpperCase() + nutrient.slice(1);
-                if (nutrient === 'calories') {
-                    cell2.textContent = totals[nutrient].toFixed(0) + ' kcal';
-                } else if (['potassium', 'calcium', 'iron'].includes(nutrient)) {
-                    cell2.textContent = totals[nutrient].toFixed(0) + ' mg';
-                } else {
-                    cell2.textContent = totals[nutrient].toFixed(1) + ' g';
-                }
-
-                if (dailyValues[nutrient]) {
-                    const percentage = ((totals[nutrient] / dailyValues[nutrient]) * 100).toFixed(1);
-                    cell3.textContent = percentage + '%';
-                } else {
-                    cell3.textContent = 'N/A';
-                }
-            }
-        }
-    </script>
-
-
-    <script>
-        const foodData = {
-    // Existing data (with typical serving sizes & expanded nutrients, imperial units)
-    "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422 },
-    "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195 },
-    "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0 },
-    "Cappuccino (1 cup)": { emoji: "☕", grams: 240, calories: 110, totalFat: 5, saturatedFat: 3, monounsaturatedFat: 1.5, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 12, protein: 8, fiber: 1, calcium: 30, potassium: 0 },
-    "Egg (1 large)": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, saturatedFat: 1.6, monounsaturatedFat: 2.0, polyunsaturatedFat: 0.7, omega3: 37, omega6: 570, carbs: 0.6, protein: 6.3, fiber: 0, vitaminD: 1, potassium: 69 },
-    "Bread (1 slice)": { emoji: "🍞", grams: 30, calories: 80, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 15, protein: 3, fiber: 1, iron: 6, potassium: 0 },
-    "Honey (1 tablespoon)": { emoji: "🍯", grams: 21, calories: 64, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 17, protein: 0.1, fiber: 0, calcium: 1, potassium: 11 },
-    "Sweet Potato (1 medium)": { emoji: "🍠", grams: 114, calories: 103, totalFat: 0.1, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 24, protein: 2, fiber: 3.8, vitaminA: 100, potassium: 542 },
-    "Olive Oil (1 tablespoon)": { emoji: "🫒", grams: 14, calories: 119, totalFat: 14, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 1.5, omega3: 0, omega6: 1000, carbs: 0, protein: 0, fiber: 0, vitaminE: 15, potassium: 0 },
-    "Chicken Breast (3 oz)": { emoji: "🍗", grams: 85, calories: 140, totalFat: 3, saturatedFat: 1, monounsaturatedFat: 1, polyunsaturatedFat: 0.5, omega3: 30, omega6: 1500, carbs: 0, protein: 26, fiber: 0, vitaminB6: 20, potassium: 220 },
-    "Salmon (3 oz)": { emoji: "🐟", grams: 85, calories: 175, totalFat: 11, saturatedFat: 2.5, monounsaturatedFat: 4, polyunsaturatedFat: 3.5, omega3: 1700, omega6: 300, carbs: 0, protein: 20, fiber: 0, vitaminB12: 80, potassium: 360 },
-    "Avocado (1/2 medium)": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 2.5, omega3: 160, omega6: 1960, carbs: 9, protein: 2, fiber: 7, vitaminK: 26, potassium: 485 },
-    "Spinach (1 cup cooked)": { emoji: "🥬", grams: 180, calories: 41, totalFat: 0.7, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.3, omega3: 370, omega6: 150, carbs: 7, protein: 5, fiber: 4, vitaminA: 200, potassium: 839 },
-    "Almonds (1 oz)": { emoji: "🥜", grams: 28, calories: 164, totalFat: 14, saturatedFat: 1, monounsaturatedFat: 9, polyunsaturatedFat: 3.5, omega3: 0, omega6: 3680, carbs: 6, protein: 6, fiber: 3.5, vitaminE: 35, magnesium: 20 },
-    "Quinoa (1 cup cooked)": { emoji: "🌾", grams: 185, calories: 222, totalFat: 3.5, saturatedFat: 0.4, monounsaturatedFat: 0.6, polyunsaturatedFat: 1.9, omega3: 47, omega6: 340, carbs: 39, protein: 8, fiber: 5, iron: 15, magnesium: 30 },
-    "Broccoli (1 cup chopped)": { emoji: "🥦", grams: 91, calories: 31, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 33, omega6: 70, carbs: 6, protein: 3, fiber: 2, vitaminC: 135, potassium: 316 },
-    "Strawberries (1 cup sliced)": { emoji: "🍓", grams: 150, calories: 46, totalFat: 0.4, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 24, omega6: 40, carbs: 11, protein: 1, fiber: 3, vitaminC: 98, potassium: 220 },
-    "Oatmeal (1 cup cooked)": { emoji: "🥣", grams: 234, calories: 147, totalFat: 2.5, saturatedFat: 0.5, monounsaturatedFat: 0.7, polyunsaturatedFat: 0.7, omega3: 55, omega6: 600, carbs: 27, protein: 5, fiber: 4, iron: 10, potassium: 0 },
-    "Tofu (3 oz)": { emoji: "🧊", grams: 85, calories: 70, totalFat: 4, saturatedFat: 0.5, monounsaturatedFat: 1.5, polyunsaturatedFat: 1.5, omega3: 80, omega6: 450, carbs: 2, protein: 8, fiber: 1, calcium: 10, potassium: 120 },
-
-    // 20 more common aliments with typical serving sizes, imperial units:
-    "Whole Milk (1 cup)": { emoji: "🥛", grams: 240, calories: 149, totalFat: 8, saturatedFat: 5, monounsaturatedFat: 2, polyunsaturatedFat: 0.5, omega3: 30, omega6: 200, carbs: 12, protein: 8, fiber: 0, vitaminD: 15, calcium: 30 },
-    "Brown Rice (1 cup cooked)": { emoji: "🍚", grams: 195, calories: 216, totalFat: 1.8, saturatedFat: 0.4, monounsaturatedFat: 0.5, polyunsaturatedFat: 0.7, omega3: 0, omega6: 50, carbs: 45, protein: 5, fiber: 3, magnesium: 11, potassium: 84 },
-    "Lentils (1 cup cooked)": { emoji: "🍲", grams: 198, calories: 230, totalFat: 0.8, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.4, omega3: 0, omega6: 80, carbs: 40, protein: 18, fiber: 16, iron: 37, potassium: 731 },
-    "Orange (1 medium)": { emoji: "🍊", grams: 131, calories: 62, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 20, carbs: 15, protein: 1, fiber: 3, vitaminC: 100, potassium: 237 },
-    "Carrot (1 medium)": { emoji: "🥕", grams: 61, calories: 25, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 40, carbs: 6, protein: 1, fiber: 2, vitaminA: 200, potassium: 230 },
-    "Peanut Butter (2 tablespoons)": { emoji: "🥜", grams: 32, calories: 188, totalFat: 16, saturatedFat: 3, monounsaturatedFat: 8, polyunsaturatedFat: 4, omega3: 0, omega6: 3400, carbs: 7, protein: 8, fiber: 2, magnesium: 10, potassium: 210 },
-    "Walnuts (1 oz)": { emoji: "🌰", grams: 28, calories: 185, totalFat: 18, saturatedFat: 1.5, monounsaturatedFat: 2.5, polyunsaturatedFat: 13, omega3: 2500, omega6: 3700, carbs: 4, protein: 4, fiber: 2, magnesium: 10, potassium: 125 },
-    "Dark Chocolate (1 oz)": { emoji: "🍫", grams: 28, calories: 155, totalFat: 9, saturatedFat: 5, monounsaturatedFat: 3, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 13, protein: 2, fiber: 3, iron: 12, magnesium: 25 },
-    "Kidney Beans (1 cup cooked)": { emoji: "🫘", grams: 177, calories: 215, totalFat: 0.5, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 0, omega6: 110, carbs: 39, protein: 13, fiber: 11, iron: 20, potassium: 600 },
-    "Tuna (3 oz canned in water)": { emoji: "🐟", grams: 85, calories: 94, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 250, omega6: 30, carbs: 0, protein: 20, fiber: 0, vitaminB12: 40, potassium: 0 },
-
-    // Additional foods:
-    "Chicken Thigh (3 oz)": { emoji: "🍗", grams: 85, calories: 209, totalFat: 13, saturatedFat: 4, monounsaturatedFat: 6, polyunsaturatedFat: 2, omega3: 40, omega6: 2000, carbs: 0, protein: 26, fiber: 0, iron: 5, potassium: 210 },
-    "Beef (Ground, 80% lean, 3 oz)": { emoji: "🥩", grams: 85, calories: 215, totalFat: 14, saturatedFat: 6, monounsaturatedFat: 6, polyunsaturatedFat: 1, omega3: 40, omega6: 300, carbs: 0, protein: 26, fiber: 0, iron: 15, zinc: 45 },
-    "Pork Chop (3 oz)": { emoji: "🍖", grams: 85, calories: 179, totalFat: 8, saturatedFat: 3, monounsaturatedFat: 3.5, polyunsaturatedFat: 1, omega3: 30, omega6: 1000, carbs: 0, protein: 26, fiber: 0, thiamin: 40, potassium: 370 },
-    "Shrimp (3 oz)": { emoji: "🦐", grams: 85, calories: 84, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.1, omega3: 100, omega6: 100, carbs: 0, protein: 20, fiber: 0, vitaminB12: 20, selenium: 40 },
-    "Cod (3 oz)": { emoji: "🐟", grams: 85, calories: 82, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 200, omega6: 30, carbs: 0, protein: 19, fiber: 0, vitaminB12: 15, selenium: 30 },
-    "Pizza (1 slice, cheese)": { emoji: "🍕", grams: 107, calories: 285, totalFat: 10, saturatedFat: 4.5, monounsaturatedFat: 3, polyunsaturatedFat: 1.5, omega3: 0, omega6: 0, carbs: 36, protein: 12, fiber: 3, calcium: 18, sodium: 640 },
-    "Pasta (1 cup cooked)": { emoji: "🍝", grams: 140, calories: 221, totalFat: 1.3, saturatedFat: 0.3, monounsaturatedFat: 0.4, polyunsaturatedFat: 0.3, omega3: 0, omega6: 40, carbs: 43, protein: 8, fiber: 2.5, iron: 6, potassium: 0 },
-    "French Fries (medium)": { emoji: "🍟", grams: 117, calories: 312, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 7, polyunsaturatedFat: 4.5, omega3: 0, omega6: 0, carbs: 41, protein: 4, fiber: 4, vitaminC: 10, potassium: 480 },
-    "Hamburger (1 patty)": { emoji: "🍔", grams: 113, calories: 303, totalFat: 17, saturatedFat: 6, monounsaturatedFat: 7, polyunsaturatedFat: 2.5, omega3: 30, omega6: 1200, carbs: 0, protein: 25, fiber: 0, iron: 20, zinc: 50 },
-    "Ice Cream (1/2 cup)": { emoji: "🍦", grams: 68, calories: 137, totalFat: 7, saturatedFat: 4.5, monounsaturatedFat: 2, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 16, protein: 3, fiber: 0, calcium: 10, potassium: 0 },
-    "Potato Chips (1 oz)": { emoji: "🥔", grams: 28, calories: 152, totalFat: 10, saturatedFat: 1.5, monounsaturatedFat: 5, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 15, protein: 2, fiber: 1, vitaminC: 10, sodium: 170 },
-    "Popcorn (air-popped, 3 cups)": { emoji: "🍿", grams: 24, calories: 93, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 300, carbs: 19, protein: 3, fiber: 4, iron: 6, magnesium: 10 },
-    "Banana Bread (1 slice)": { emoji: "🍌", grams: 70, calories: 250, totalFat: 10, saturatedFat: 3, monounsaturatedFat: 4, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 35, protein: 3, fiber: 1, calcium: 5, potassium: 150 },
-    "Granola Bar (1 bar)": { emoji: "🍫", grams: 35, calories: 150, totalFat: 6, saturatedFat: 1, monounsaturatedFat: 2.5, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 20, protein: 3, fiber: 2, iron: 4, potassium: 0 },
-    "Bagel (plain, 1)": { emoji: "🥯", grams: 94, calories: 270, totalFat: 1, saturatedFat: 0.3, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.2, omega3: 0, omega6: 0, carbs: 55, protein: 11, fiber: 3, calcium: 10, potassium: 0 },
-    "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, protein: 5, fiber: 2, calcium: 10, potassium: 190 }
-};
-         const dailyValues = {
+    const dailyValues = {
         calories: 2000,
         totalFat: 65,
         saturatedFat: 20,
@@ -368,17 +215,6 @@
     const toggleButtons = document.querySelectorAll('.toggle-button');
 
     let selectedFoods = new Set();
-
-    // Assign categories to food items
-    for (let food in foodData) {
-        if (food.includes("Banana") || food.includes("Apple")) {
-            foodData[food].category = "fruits";
-        } else if (food.includes("Greek Yogurt")) {
-            foodData[food].category = "dairy";
-        } else {
-            foodData[food].category = "others"; // Default category
-        }
-    }
 
     // Create food buttons
     for (let food in foodData) {
@@ -488,6 +324,9 @@
         }
     }
 </script>
+
+
+    
 </body>
 
 </html>
