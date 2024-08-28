@@ -340,8 +340,8 @@
                 let cell2 = row.insertCell(1);
                 let cell3 = row.insertCell(2);
 
-                cell1.textContent   
- = nutrient.charAt(0).toUpperCase() + nutrient.slice(1);
+                cell1.textContent = nutrient.charAt(0).toUpperCase() + nutrient.slice(1);
+                }
                 // Format numbers based on nutrient type
                 if (nutrient === 'calories') {
                     cell2.textContent = totals[nutrient].toFixed(0) + ' kcal';
