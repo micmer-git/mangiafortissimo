@@ -116,6 +116,42 @@
             background-color: #3498db;
             color: white;
         }
+        .nutrition-progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.progress-section {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.progress-circle {
+    width: 100px;
+    height: 100px;
+    background: conic-gradient(
+        #3498db calc(var(--progress) * 1%), 
+        #ddd calc(var(--progress) * 1%)
+    );
+    border-radius: 50%;
+    position: relative;
+}
+
+.progress-circle::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    width: 80%;
+}
     </style>
 </head>
 <body>
@@ -134,17 +170,22 @@
 
         <div id="foodButtons" class="food-buttons"></div>
         <div id="selectedFoods" class="selected-foods"></div>
-        <table id="nutritionTable">
-            <thead>
-                <tr>
-                    <th>Nutrient</th>
-                    <th>Amount</th>
-                    <th>% Daily Value</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div id="nutritionProgress" class="nutrition-progress">
+    <div class="progress-section">
+        <div class="progress-circle" id="kcalProgress"></div>
+        <div class="progress-circle" id="macroProgress"></div>
+    </div>
+    <div class="progress-section">
+        <div class="progress-circle" id="omegasProgress"></div>
+        <div class="progress-circle" id="fiberProgress"></div>
+    </div>
+    <div class="progress-section">
+        <div class="progress-circle" id="micronutrientsProgress"></div>
+    </div>
+    <div class="progress-section">
+        <div class="progress-circle" id="vitaminsProgress"></div>
+    </div>
+</div>
     </div>
 
     <script>
@@ -196,22 +237,21 @@
         "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
     };
 
-    const dailyValues = {
+       const dailyValues = {
         calories: 2000,
         totalFat: 65,
         saturatedFat: 20,
         carbs: 300,
         protein: 50,
         fiber: 25,
-        vitaminC: 90,
-        calcium: 1000,
-        iron: 18,
-        potassium: 4700
+        omega3: null, omega6: null, 
+        vitaminA: 900, vitaminB12: 2.4, vitaminC: 90, vitaminD: 20, vitaminE: 15, vitaminK: 120,
+        calcium: 1000, magnesium: 420, potassium: 4700, iron: 18, zinc: 11, selenium: 55, sodium: 2300
     };
 
     const buttonContainer = document.getElementById('foodButtons');
     const selectedFoodsContainer = document.getElementById('selectedFoods');
-    const table = document.getElementById('nutritionTable').getElementsByTagName('tbody')[0];
+    const nutritionProgress = document.getElementById('nutritionProgress');
     const toggleButtons = document.querySelectorAll('.toggle-button');
 
     let selectedFoods = new Set();
@@ -241,6 +281,7 @@
                     foodButton.style.display = 'none';
                 }
             });
+            updateNutritionTable(); // Update progress bars to reflect hidden foods
         });
     });
 
@@ -283,13 +324,16 @@
     }
 
     function updateNutritionTable() {
-        table.innerHTML = '';
-        if (selectedFoods.size === 0) return;
+        if (selectedFoods.size === 0) {
+            resetProgressBars();
+            return;
+        }
 
         let totals = {
             calories: 0, totalFat: 0, saturatedFat: 0,
-            carbs: 0, protein: 0, fiber: 0, vitaminC: 0,
-            calcium: 0, iron: 0, potassium: 0
+            carbs: 0, protein: 0, fiber: 0, omega3: 0, omega6: 0,
+            vitaminA: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
+            calcium: 0, magnesium: 0, potassium: 0, iron: 0, zinc: 0, selenium: 0, sodium: 0
         };
 
         selectedFoods.forEach(food => {
@@ -300,28 +344,42 @@
             }
         });
 
-        for (let nutrient in totals) {
-            let row = table.insertRow();
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
+        updateProgressBars(totals);
+    }
 
-            cell1.textContent = nutrient.charAt(0).toUpperCase() + nutrient.slice(1);
-            if (nutrient === 'calories') {
-                cell2.textContent = totals[nutrient].toFixed(0) + ' kcal';
-            } else if (['potassium', 'calcium', 'iron'].includes(nutrient)) {
-                cell2.textContent = totals[nutrient].toFixed(0) + ' mg';
-            } else {
-                cell2.textContent = totals[nutrient].toFixed(1) + ' g';
-            }
+    function updateProgressBars(totals) {
+        const progressCircleIds = {
+            kcalProgress: ['calories'],
+            macroProgress: ['totalFat', 'carbs', 'protein'],
+            omegasProgress: ['omega3', 'omega6'],
+            fiberProgress: ['fiber'],
+            micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
+            vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
+        };
 
-            if (dailyValues[nutrient]) {
-                const percentage = ((totals[nutrient] / dailyValues[nutrient]) * 100).toFixed(1);
-                cell3.textContent = percentage + '%';
-            } else {
-                cell3.textContent = 'N/A';
-            }
+        for (let id in progressCircleIds) {
+            const nutrients = progressCircleIds[id];
+            let totalProgress = 0;
+            let count = 0;
+            nutrients.forEach(nutrient => {
+                if (dailyValues[nutrient] && totals[nutrient] !== undefined) {
+                    totalProgress += (totals[nutrient] / dailyValues[nutrient]) * 100;
+                    count++;
+                }
+            });
+            const averageProgress = count > 0 ? totalProgress / count : 0;
+            const progressCircle = document.getElementById(id);
+            progressCircle.style.setProperty('--progress', averageProgress);
+            progressCircle.setAttribute('data-label', `${averageProgress.toFixed(0)}%`);
         }
+    }
+
+    function resetProgressBars() {
+        const progressCircles = document.querySelectorAll('.progress-circle');
+        progressCircles.forEach(circle => {
+            circle.style.setProperty('--progress', 0);
+            circle.setAttribute('data-label', '0%');
+        });
     }
 </script>
 
