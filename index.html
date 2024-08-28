@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,189 +10,178 @@
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f4f4;
         }
 
         .dashboard {
-    font-family: 'Inter', sans-serif;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-}
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
-.macronutrient-section, .micronutrient-section, .vitamin-section {
-    margin-bottom: 30px;
-}
+        h1, h2 {
+            grid-column: 1 / -1;
+            color: #2c3e50;
+        }
 
-h2 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #2c3e50;
-}
+        .toggle-buttons, #foodButtons, #selectedFoods {
+            grid-column: 1 / -1;
+        }
 
-.macro-target {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.macro-label {
-    width: 100px;
-    font-weight: 600;
-    color: #2c3e50;
-}
+        .toggle-button {
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-.macro-bar {
-    flex-grow: 1;
-    height: 10px;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    position: relative;
-    margin-right: 15px;
-}
+        .toggle-button.active {
+            background-color: #3498db;
+            color: white;
+        }
 
-.macro-bar::after {
-    content: '';
-    display: block;
-    height: 100%;
-    border-radius: 5px;
-    background-color: #3498db;
-    width: var(--progress, 0%);
-    transition: width 0.5s ease;
-}
+        #foodButtons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.macro-value {
-    font-weight: 600;
-    color: #2c3e50;
-}
+        .food-button {
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-.micronutrient-circles, .vitamin-circles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
+        .food-button.active {
+            background-color: #2ecc71;
+            color: white;
+        }
 
-.micro-circle {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: conic-gradient(
-        #3498db calc(var(--progress) * 1%),
-        #e0e0e0 0
-    );
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #2c3e50;
-    position: relative;
-}
+        #selectedFoods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-.micro-circle::before {
-    content: attr(data-label);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    text-align: center;
-}
+        .food-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-.micro-circle::after {
-    content: attr(data-value) "%";
-    position: absolute;
-    bottom: 5px;
-    width: 100%;
-    text-align: center;
-    font-size: 12px;
-    color: #555;
-}
+        .food-item label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .food-item input[type="range"] {
+            width: 100%;
+        }
+
+        .progress-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3498db calc(var(--progress) * 1%),
+                #e0e0e0 0
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2c3e50;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .progress-circle::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .progress-circle::after {
+            content: attr(data-value) "%";
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            color: #3498db;
+        }
     </style>
 </head>
 <body>
+    <h1>Advanced Nutrition Dashboard</h1>
+
+    <div class="toggle-buttons">
+        <button class="toggle-button active" data-category="all">All 🍎</button>
+        <button class="toggle-button" data-category="fruits">Fruits 🍓</button>
+        <button class="toggle-button" data-category="vegetables">Vegetables 🥦</button>
+        <button class="toggle-button" data-category="dairy">Dairy 🥛</button>
+        <button class="toggle-button" data-category="grains">Grains 🌾</button>
+        <button class="toggle-button" data-category="protein">Protein 🥩</button>
+        <button class="toggle-button" data-category="others">Others 🍕</button>
+    </div>
+
+    <div id="foodButtons"></div>
+    <div id="selectedFoods"></div>
+
     <div class="dashboard">
-        <h1>Advanced Nutrition Dashboard</h1>
-
-        <div class="toggle-buttons">
-            <button class="toggle-button active" data-category="all">All 🍎</button>
-            <button class="toggle-button" data-category="fruits">Fruits 🍓</button>
-            <button class="toggle-button" data-category="vegetables">Vegetables 🥦</button>
-            <button class="toggle-button" data-category="dairy">Dairy 🥛</button>
-            <button class="toggle-button" data-category="grains">Grains 🌾</button>
-            <button class="toggle-button" data-category="protein">Protein 🥩</button>
-            <button class="toggle-button" data-category="others">Others 🍕</button>
+        <div class="progress-section">
+            <h2>Calories</h2>
+            <div id="kcalProgress" class="progress-circle" data-label="Calories"></div>
         </div>
-
-        <div id="foodButtons" class="food-buttons"></div>
-        <div id="selectedFoods" class="selected-foods"></div>
-        <div class="dashboard">
-            <div class="macronutrient-section">
-                <h2>Macronutrient Targets</h2>
-                <div class="macro-target">
-                    <div class="macro-label">Energy</div>
-                    <div class="macro-bar" id="energyBar"></div>
-                    <div class="macro-value" id="energyValue">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Protein</div>
-                    <div class="macro-bar" id="proteinBar"></div>
-                    <div class="macro-value" id="proteinValue">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Net Carbs</div>
-                    <div class="macro-bar" id="carbsBar"></div>
-                    <div class="macro-value" id="carbsValue">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Fat</div>
-                    <div class="macro-bar" id="fatBar"></div>
-                    <div class="macro-value" id="fatValue">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Fiber</div>
-                    <div class="macro-bar" id="fiberBar"></div>
-                    <div class="macro-value" id="fiberValue">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Omega-3</div>
-                    <div class="macro-bar" id="omega3Bar"></div>
-                    <div class="macro-value" id="omega3Value">0%</div>
-                </div>
-                <div class="macro-target">
-                    <div class="macro-label">Omega-6</div>
-                    <div class="macro-bar" id="omega6Bar"></div>
-                    <div class="macro-value" id="omega6Value">0%</div>
-                </div>
-            </div>
-
-            <div class="micronutrient-section">
-                <h2>Highlighted Micronutrients</h2>
-                <div class="micronutrient-circles">
-                    <div class="micro-circle" id="calciumCircle"></div>
-                    <div class="micro-circle" id="magnesiumCircle"></div>
-                    <div class="micro-circle" id="potassiumCircle"></div>
-                    <div class="micro-circle" id="ironCircle"></div>
-                    <div class="micro-circle" id="zincCircle"></div>
-                    <div class="micro-circle" id="seleniumCircle"></div>
-                    <div class="micro-circle" id="sodiumCircle"></div>
-                </div>
-            </div>
-
-            <div class="vitamin-section">
-                <h2>Highlighted Vitamins</h2>
-                <div class="vitamin-circles">
-                    <div class="micro-circle" id="vitaminACircle"></div>
-                    <div class="micro-circle" id="vitaminB12Circle"></div>
-                    <div class="micro-circle" id="vitaminCCircle"></div>
-                    <div class="micro-circle" id="vitaminDCircle"></div>
-                    <div class="micro-circle" id="vitaminECircle"></div>
-                    <div class="micro-circle" id="vitaminKCircle"></div>
-                </div>
-            </div>
+        <div class="progress-section">
+            <h2>Macronutrients</h2>
+            <div id="macroProgress" class="progress-circle" data-label="Macros"></div>
+        </div>
+        <div class="progress-section">
+            <h2>Omega-3 & Omega-6</h2>
+            <div id="omegasProgress" class="progress-circle" data-label="Omegas"></div>
+        </div>
+        <div class="progress-section">
+            <h2>Fiber</h2>
+            <div id="fiberProgress" class="progress-circle" data-label="Fiber"></div>
+        </div>
+        <div class="progress-section">
+            <h2>Micronutrients</h2>
+            <div id="micronutrientsProgress" class="progress-circle" data-label="Micros"></div>
+        </div>
+        <div class="progress-section">
+            <h2>Vitamins</h2>
+            <div id="vitaminsProgress" class="progress-circle" data-label="Vitamins"></div>
         </div>
     </div>
 
@@ -269,241 +257,142 @@ h2 {
           vitaminK: 120
       };
 
-      function updateProgressBars(totals) {
-          // Update Macronutrients
-          setProgress('energyBar', 'energyValue', totals.calories, dailyValues.calories);
-          setProgress('proteinBar', 'proteinValue', totals.protein, dailyValues.protein);
-          setProgress('carbsBar', 'carbsValue', totals.carbs, dailyValues.carbs);
-          setProgress('fatBar', 'fatValue', totals.fat, dailyValues.fat);
-          setProgress('fiberBar', 'fiberValue', totals.fiber, dailyValues.fiber);
-          setProgress('omega3Bar', 'omega3Value', totals.omega3, dailyValues.omega3);
-          setProgress('omega6Bar', 'omega6Value', totals.omega6, dailyValues.omega6);
+      const buttonContainer = document.getElementById('foodButtons');
+const selectedFoodsContainer = document.getElementById('selectedFoods');
+const toggleButtons = document.querySelectorAll('.toggle-button');
 
-          // Update Micronutrients
-          setCircleProgress('calciumCircle', totals.calcium, dailyValues.calcium);
-          setCircleProgress('magnesiumCircle', totals.magnesium, dailyValues.magnesium);
-          setCircleProgress('potassiumCircle', totals.potassium, dailyValues.potassium);
-          setCircleProgress('ironCircle', totals.iron, dailyValues.iron);
-          setCircleProgress('zincCircle', totals.zinc, dailyValues.zinc);
-          setCircleProgress('seleniumCircle', totals.selenium, dailyValues.selenium);
-          setCircleProgress('sodiumCircle', totals.sodium, dailyValues.sodium);
+let selectedFoods = new Set();
 
-          // Update Vitamins
-          setCircleProgress('vitaminACircle', totals.vitaminA, dailyValues.vitaminA);
-          setCircleProgress('vitaminB12Circle', totals.vitaminB12, dailyValues.vitaminB12);
-          setCircleProgress('vitaminCCircle', totals.vitaminC, dailyValues.vitaminC);
-          setCircleProgress('vitaminDCircle', totals.vitaminD, dailyValues.vitaminD);
-          setCircleProgress('vitaminECircle', totals.vitaminE, dailyValues.vitaminE);
-          setCircleProgress('vitaminKCircle', totals.vitaminK, dailyValues.vitaminK);
-      }
+// Create food buttons
+for (let food in foodData) {
+    let button = document.createElement('button');
+    button.textContent = `${foodData[food].emoji} ${food}`;
+    button.className = 'food-button';
+    button.dataset.category = foodData[food].category;
+    button.onclick = () => toggleFood(food, button);
+    buttonContainer.appendChild(button);
+}
 
-      function setProgress(barId, valueId, total, dailyValue) {
-          const percentage = Math.min((total / dailyValue) * 100, 100);
-          document.getElementById(barId).style.setProperty('--progress', `${percentage}%`);
-          document.getElementById(valueId).textContent = `${percentage.toFixed(0)}%`;
-      }
+toggleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const category = button.dataset.category;
+        toggleButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
 
-      function setCircleProgress(circleId, total, dailyValue) {
-          const percentage = Math.min((total / dailyValue) * 100, 100);
-          const circle = document.getElementById(circleId);
-          circle.style.setProperty('--progress', percentage);
-          circle.setAttribute('data-value', percentage.toFixed(0));
-      }
-
-      // Example Usage with sample data
-      const totals = {
-          calories: 1800,
-          protein: 40,
-          carbs: 250,
-          fat: 60,
-          fiber: 20,
-          omega3: 1.2,
-          omega6: 14,
-          calcium: 800,
-          magnesium: 350,
-          potassium: 4000,
-          iron: 15,
-          zinc: 9,
-          selenium: 45,
-          sodium: 2000,
-          vitaminA: 800,
-          vitaminB12: 2,
-          vitaminC: 85,
-          vitaminD: 18,
-          vitaminE: 13,
-          vitaminK: 110
-      };
-
-      updateProgressBars(totals);
-
-    function updateProgressBars(totals) {
-        const progressCircleIds = {
-            kcalProgress: ['calories'],
-            macroProgress: ['totalFat', 'carbs', 'protein'],
-            omegasProgress: ['omega3', 'omega6'],
-            fiberProgress: ['fiber'],
-            micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
-            vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
-        };
-
-        for (let id in progressCircleIds) {
-            const nutrients = progressCircleIds[id];
-            let totalProgress = 0;
-            let count = 0;
-            nutrients.forEach(nutrient => {
-                if (dailyValues[nutrient] && totals[nutrient] !== undefined) {
-                    totalProgress += (totals[nutrient] / dailyValues[nutrient]) * 100;
-                    count++;
-                }
-            });
-            const averageProgress = count > 0 ? totalProgress / count : 0;
-            const progressCircle = document.getElementById(id);
-            progressCircle.style.setProperty('--progress', averageProgress);
-            progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
-        }
-    }
-
-    function resetProgressBars() {
-        const progressCircles = document.querySelectorAll('.progress-circle');
-        progressCircles.forEach(circle => {
-            circle.style.setProperty('--progress', 0);
-            circle.setAttribute('data-value', '0');
+        const foodButtons = document.querySelectorAll('.food-button');
+        foodButtons.forEach(foodButton => {
+            const foodName = foodButton.textContent.split(' ').slice(1).join(' ');
+            if (category === 'all' || foodData[foodName].category === category) {
+                foodButton.style.display = 'inline-block';
+            } else {
+                foodButton.style.display = 'none';
+            }
         });
+        updateNutritionTable();
+    });
+});
+
+function toggleFood(food, button) {
+    if (selectedFoods.has(food)) {
+        selectedFoods.delete(food);
+        button.classList.remove('active');
+        removeSlider(food);
+    } else {
+        selectedFoods.add(food);
+        button.classList.add('active');
+        addSlider(food);
+    }
+    updateNutritionTable();
+}
+
+function addSlider(food) {
+    const div = document.createElement('div');
+    div.className = 'food-item';
+    div.innerHTML = `
+        <label>${foodData[food].emoji} ${food}</label>
+        <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${food}-slider">
+        <span id="${food}-value">${foodData[food].grams}g</span>
+    `;
+    selectedFoodsContainer.appendChild(div);
+
+    const slider = document.getElementById(`${food}-slider`);
+    const output = document.getElementById(`${food}-value`);
+    slider.oninput = function () {
+        output.textContent = this.value + 'g';
+        updateNutritionTable();
+    }
+}
+
+function removeSlider(food) {
+    const slider = document.getElementById(`${food}-slider`);
+    if (slider) {
+        slider.parentElement.remove();
+    }
+}
+
+function updateNutritionTable() {
+    if (selectedFoods.size === 0) {
+        resetProgressBars();
+        return;
     }
 
+    let totals = {
+        calories: 0, totalFat: 0, saturatedFat: 0,
+        carbs: 0, protein: 0, fiber: 0, omega3: 0, omega6: 0,
+        vitaminA: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
+        calcium: 0, magnesium: 0, potassium: 0, iron: 0, zinc: 0, selenium: 0, sodium: 0
+    };
 
-    const buttonContainer = document.getElementById('foodButtons');
-   const selectedFoodsContainer = document.getElementById('selectedFoods');
-   const toggleButtons = document.querySelectorAll('.toggle-button');
+    selectedFoods.forEach(food => {
+        const sliderValue = document.getElementById(`${food}-slider`).value;
+        const ratio = sliderValue / foodData[food].grams;
+        for (let nutrient in totals) {
+            if (foodData[food][nutrient]) {
+                totals[nutrient] += foodData[food][nutrient] * ratio;
+            }
+        }
+    });
 
-   let selectedFoods = new Set();
+    updateProgressBars(totals);
+}
 
-   // Create food buttons
-   for (let food in foodData) {
-       let button = document.createElement('button');
-       button.textContent = `${foodData[food].emoji} ${food}`;
-       button.className = 'food-button';
-       button.dataset.category = foodData[food].category;
-       button.onclick = () => toggleFood(food, button);
-       buttonContainer.appendChild(button);
-   }
+function updateProgressBars(totals) {
+    const progressCircleIds = {
+        kcalProgress: ['calories'],
+        macroProgress: ['totalFat', 'carbs', 'protein'],
+        omegasProgress: ['omega3', 'omega6'],
+        fiberProgress: ['fiber'],
+        micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
+        vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
+    };
 
-   toggleButtons.forEach(button => {
-       button.addEventListener('click', () => {
-           const category = button.dataset.category;
-           toggleButtons.forEach(btn => btn.classList.remove('active'));
-           button.classList.add('active');
+    for (let id in progressCircleIds) {
+        const nutrients = progressCircleIds[id];
+        let totalProgress = 0;
+        let count = 0;
+        nutrients.forEach(nutrient => {
+            if (dailyValues[nutrient] && totals[nutrient] !== undefined) {
+                totalProgress += Math.min((totals[nutrient] / dailyValues[nutrient]) * 100, 100);
+                count++;
+            }
+        });
+        const averageProgress = count > 0 ? totalProgress / count : 0;
+        const progressCircle = document.getElementById(id);
+        progressCircle.style.setProperty('--progress', averageProgress);
+        progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
+    }
+}
 
-           const foodButtons = document.querySelectorAll('.food-button');
-           foodButtons.forEach(foodButton => {
-               const foodName = foodButton.textContent.trim();
-               if (category === 'all' || foodData[foodName].category === category) {
-                   foodButton.style.display = 'inline-block';
-               } else {
-                   foodButton.style.display = 'none';
-               }
-           });
-           updateNutritionTable(); // Update progress bars to reflect hidden foods
-       });
-   });
+function resetProgressBars() {
+    const progressCircles = document.querySelectorAll('.progress-circle');
+    progressCircles.forEach(circle => {
+        circle.style.setProperty('--progress', 0);
+        circle.setAttribute('data-value', '0');
+    });
+}
 
-   function toggleFood(food, button) {
-       if (selectedFoods.has(food)) {
-           selectedFoods.delete(food);
-           button.classList.remove('active');
-           removeSlider(food);
-       } else {
-           selectedFoods.add(food);
-           button.classList.add('active');
-           addSlider(food);
-       }
-       updateNutritionTable();
-   }
-
-   function addSlider(food) {
-       const div = document.createElement('div');
-       div.className = 'food-item';
-       div.innerHTML = `
-           <label>${foodData[food].emoji} ${food} (g):</label>
-           <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${food}-slider">
-           <span id="${food}-value">${foodData[food].grams}g</span>
-       `;
-       selectedFoodsContainer.appendChild(div);
-
-       const slider = document.getElementById(`${food}-slider`);
-       const output = document.getElementById(`${food}-value`);
-       slider.oninput = function () {
-           output.textContent = this.value + 'g';
-           updateNutritionTable();
-       }
-   }
-
-   function removeSlider(food) {
-       const slider = document.getElementById(`${food}-slider`);
-       if (slider) {
-           slider.parentElement.remove();
-       }
-   }
-
-   function updateNutritionTable() {
-       if (selectedFoods.size === 0) {
-           resetProgressBars();
-           return;
-       }
-
-       let totals = {
-           calories: 0, totalFat: 0, saturatedFat: 0,
-           carbs: 0, protein: 0, fiber: 0, omega3: 0, omega6: 0,
-           vitaminA: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
-           calcium: 0, magnesium: 0, potassium: 0, iron: 0, zinc: 0, selenium: 0, sodium: 0
-       };
-
-       selectedFoods.forEach(food => {
-           const sliderValue = document.getElementById(`${food}-slider`).value;
-           const ratio = sliderValue / foodData[food].grams;
-           for (let nutrient in totals) {
-               totals[nutrient] += foodData[food][nutrient] * ratio;
-           }
-       });
-
-       updateProgressBars(totals);
-   }
-
-   function updateProgressBars(totals) {
-       const progressCircleIds = {
-           kcalProgress: ['calories'],
-           macroProgress: ['totalFat', 'carbs', 'protein'],
-           omegasProgress: ['omega3', 'omega6'],
-           fiberProgress: ['fiber'],
-           micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
-           vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
-       };
-
-       for (let id in progressCircleIds) {
-           const nutrients = progressCircleIds[id];
-           let totalProgress = 0;
-           let count = 0;
-           nutrients.forEach(nutrient => {
-               if (dailyValues[nutrient] && totals[nutrient] !== undefined) {
-                   totalProgress += (totals[nutrient] / dailyValues[nutrient]) * 100;
-                   count++;
-               }
-           });
-           const averageProgress = count > 0 ? totalProgress / count : 0;
-           const progressCircle = document.getElementById(id);
-           progressCircle.style.setProperty('--progress', averageProgress);
-           progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
-       }
-   }
-
-   function resetProgressBars() {
-       const progressCircles = document.querySelectorAll('.progress-circle');
-       progressCircles.forEach(circle => {
-           circle.style.setProperty('--progress', 0);
-           circle.setAttribute('data-value', '0');
-       });
-   }
-</script>
+// Initialize the dashboard
+updateNutritionTable();
 </script>
 
 
