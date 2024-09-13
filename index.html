@@ -97,74 +97,48 @@
             width: 100%;
         }
 
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
         .progress-section {
-            background-color: #ffffff;
+            background-color: white;
+            padding: 20px;
             border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .progress-circle {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 10px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3498db calc(var(--progress) * 1%),
+                #e0e0e0 0
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #2c3e50;
             position: relative;
+            margin: 0 auto;
         }
 
-        .progress-circle svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .progress-circle circle {
-            fill: none;
-            stroke-width: 8;
-            stroke-linecap: round;
-        }
-
-        .progress-circle .bg {
-            stroke: #f0f0f0;
-        }
-
-        .progress-circle .progress {
-            stroke: #3498db;
-            stroke-dasharray: 251.2;
-            stroke-dashoffset: 251.2;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            transition: stroke-dashoffset 0.3s ease;
-        }
-
-        .progress-circle .label {
+        .progress-circle::before {
+            content: attr(data-label);
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 14px;
-            font-weight: bold;
-            color: #2c3e50;
+            text-align: center;
         }
 
-        .progress-circle .value {
+        .progress-circle::after {
+            content: attr(data-value) "%";
             position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
             color: #3498db;
-        }
-
-        h2 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #2c3e50;
         }
     </style>
 </head>
@@ -181,7 +155,6 @@
         <button class="toggle-button" data-category="protein">Protein 🥩</button>
         <button class="toggle-button" data-category="others">Others 🍕</button>
     </div>
-    <div id="kcalProgress" class="progress-circle" data-label="Calories" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 
     <div id="foodButtons"></div>
     <div id="selectedFoods"></div>
@@ -245,27 +218,27 @@
         </div>
         <div class="progress-section">
             <h2>Vitamin A</h2>
-            <div id="vitaminAProgress" class="progress-circle" data-label="Vit. A"></div>
+            <div id="vitaminAProgress" class="progress-circle" data-label="Vitamin A"></div>
         </div>
         <div class="progress-section">
             <h2>Vitamin B12</h2>
-            <div id="vitaminB12Progress" class="progress-circle" data-label="Vit. B12"></div>
+            <div id="vitaminB12Progress" class="progress-circle" data-label="Vitamin B12"></div>
         </div>
         <div class="progress-section">
             <h2>Vitamin C</h2>
-            <div id="vitaminCProgress" class="progress-circle" data-label="Vit. C"></div>
+            <div id="vitaminCProgress" class="progress-circle" data-label="Vitamin C"></div>
         </div>
         <div class="progress-section">
             <h2>Vitamin D</h2>
-            <div id="vitaminDProgress" class="progress-circle" data-label="Vit. D"></div>
+            <div id="vitaminDProgress" class="progress-circle" data-label="Vitamin D"></div>
         </div>
         <div class="progress-section">
             <h2>Vitamin E</h2>
-            <div id="vitaminEProgress" class="progress-circle" data-label="Vit. E"></div>
+            <div id="vitaminEProgress" class="progress-circle" data-label="Vitamin E"></div>
         </div>
         <div class="progress-section">
             <h2>Vitamin K</h2>
-            <div id="vitaminKProgress" class="progress-circle" data-label="Vit. K"></div>
+            <div id="vitaminKProgress" class="progress-circle" data-label="Vitamin K"></div>
         </div>
     </div>
 
