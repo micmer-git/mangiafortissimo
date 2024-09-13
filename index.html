@@ -415,12 +415,26 @@ function updateNutritionTable() {
 
 function updateProgressBars(totals) {
     const progressCircleIds = {
-        kcalProgress: ['calories'],
-        macroProgress: ['totalFat', 'carbs', 'protein'],
-        omegasProgress: ['omega3', 'omega6'],
+        caloriesProgress: ['calories'],
+        proteinProgress: ['protein'],
+        carbsProgress: ['carbs'],
+        fatProgress: ['totalFat'],
         fiberProgress: ['fiber'],
-        micronutrientsProgress: ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'],
-        vitaminsProgress: ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK']
+        omega3Progress: ['omega3'],
+        omega6Progress: ['omega6'],
+        calciumProgress: ['calcium'],
+        magnesiumProgress: ['magnesium'],
+        potassiumProgress: ['potassium'],
+        ironProgress: ['iron'],
+        zincProgress: ['zinc'],
+        seleniumProgress: ['selenium'],
+        sodiumProgress: ['sodium'],
+        vitaminAProgress: ['vitaminA'],
+        vitaminB12Progress: ['vitaminB12'],
+        vitaminCProgress: ['vitaminC'],
+        vitaminDProgress: ['vitaminD'],
+        vitaminEProgress: ['vitaminE'],
+        vitaminKProgress: ['vitaminK']
     };
 
     for (let id in progressCircleIds) {
@@ -435,8 +449,10 @@ function updateProgressBars(totals) {
         });
         const averageProgress = count > 0 ? totalProgress / count : 0;
         const progressCircle = document.getElementById(id);
-        progressCircle.style.setProperty('--progress', averageProgress);
-        progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
+        if (progressCircle) {
+            progressCircle.style.setProperty('--progress', averageProgress);
+            progressCircle.setAttribute('data-value', averageProgress.toFixed(0));
+        }
     }
 }
 
