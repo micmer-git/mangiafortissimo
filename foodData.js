@@ -1,7 +1,6 @@
 
 // Food Data
         const foodData = {
-            {
     "Banana (1 medium)": { 
         "emoji": "🍌", 
         "grams": 120, 
