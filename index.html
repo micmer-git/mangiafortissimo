@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangiaFortissimo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -22,17 +21,27 @@
             margin-bottom: 10px;
         }
 
-        /* Search Bar */
-        #foodSearch {
+        /* Search and Target Inputs */
+        .search-target-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        #foodSearch, .target-input {
             padding: 10px 15px;
             border: none;
             border-radius: 20px;
             background-color: #f0f0f0;
-            margin-bottom: 20px;
             font-size: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .target-input {
+            max-width: 200px;
         }
 
         /* Toggle Buttons (Categories) */
@@ -124,6 +133,7 @@
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
+            position: relative;
         }
 
         .progress-circle {
@@ -139,6 +149,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background 0.3s ease;
         }
 
         .progress-circle::before {
@@ -160,6 +171,12 @@
             color: #555;
             font-size: 18px;
             font-weight: bold;
+        }
+
+        .sub-nutrients {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
         }
 
         /* Dashboard - Vitamins and Minerals */
@@ -200,7 +217,7 @@
         }
 
         .progress-bar::after {
-            content: attr(data-value) "%";
+            content: attr(data-value) "% (" attr(data-current) " / " attr(data-total) ")";
             position: absolute;
             right: 10px;
             top: -25px;
@@ -214,6 +231,16 @@
             border-radius: 10px 0 0 10px;
             width: 0%;
             transition: width 0.3s ease;
+        }
+
+        .top-contributors {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .top-contributors span {
+            margin-right: 10px;
         }
 
         /* Footer */
@@ -253,7 +280,13 @@
 </head>
 <body>
     <h1>MangiaFortissimo</h1>
-    <input type="text" id="foodSearch" placeholder="Search foods...">
+
+    <div class="search-target-container">
+        <input type="text" id="foodSearch" placeholder="Search foods...">
+        <input type="number" id="targetCalories" class="target-input" placeholder="Target Kcal" min="0">
+        <input type="number" id="targetProtein" class="target-input" placeholder="Target Protein (g)" min="0">
+        <input type="number" id="targetFiber" class="target-input" placeholder="Target Fiber (g)" min="0">
+    </div>
 
     <div class="toggle-buttons">
         <button class="toggle-button active" data-category="all">All 🍎</button>
@@ -269,10 +302,14 @@
     <div id="selectedFoods"></div>
 
     <div class="dashboard">
+        <!-- Macronutrient Progress Circles -->
         <div class="progress-section">
             <h2>Calories</h2>
             <div id="caloriesProgress" class="progress-circle">
                 <div class="progress-text" id="caloriesText">0%</div>
+            </div>
+            <div class="sub-nutrients">
+                <!-- Additional info can be added here if needed -->
             </div>
         </div>
         <div class="progress-section">
@@ -280,11 +317,17 @@
             <div id="proteinProgress" class="progress-circle">
                 <div class="progress-text" id="proteinText">0%</div>
             </div>
+            <div class="sub-nutrients">
+                <!-- Additional info can be added here if needed -->
+            </div>
         </div>
         <div class="progress-section">
             <h2>Carbs</h2>
             <div id="carbsProgress" class="progress-circle">
                 <div class="progress-text" id="carbsText">0%</div>
+            </div>
+            <div class="sub-nutrients" id="carbsSubNutrients">
+                Sugar: 0g | Fiber: 0g
             </div>
         </div>
         <div class="progress-section">
@@ -292,54 +335,109 @@
             <div id="fatProgress" class="progress-circle">
                 <div class="progress-text" id="fatText">0%</div>
             </div>
+            <div class="sub-nutrients" id="fatSubNutrients">
+                Saturated: 0g | Unsaturated: 0g | Omega-3: 0g | Omega-6: 0g
+            </div>
         </div>
     </div>
 
     <div class="progress-bars-section">
+        <!-- Vitamins Progress Bars -->
         <div class="progress-bar-section">
             <h2>Vitamins</h2>
-            <div class="progress-bar" id="vitaminAProgressBar" data-label="Vitamin A">
+            <div class="progress-bar" id="vitaminAProgressBar" data-label="Vitamin A" data-current="0" data-total="900">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="vitaminB12ProgressBar" data-label="Vitamin B12">
+            <div class="top-contributors" id="vitaminATop">
+                <!-- Top contributors for Vitamin A will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="vitaminB12ProgressBar" data-label="Vitamin B12" data-current="0" data-total="2.4">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="vitaminCProgressBar" data-label="Vitamin C">
+            <div class="top-contributors" id="vitaminB12Top">
+                <!-- Top contributors for Vitamin B12 will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="vitaminCProgressBar" data-label="Vitamin C" data-current="0" data-total="90">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="vitaminDProgressBar" data-label="Vitamin D">
+            <div class="top-contributors" id="vitaminCTop">
+                <!-- Top contributors for Vitamin C will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="vitaminDProgressBar" data-label="Vitamin D" data-current="0" data-total="20">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="vitaminEProgressBar" data-label="Vitamin E">
+            <div class="top-contributors" id="vitaminDTop">
+                <!-- Top contributors for Vitamin D will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="vitaminEProgressBar" data-label="Vitamin E" data-current="0" data-total="15">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="vitaminKProgressBar" data-label="Vitamin K">
+            <div class="top-contributors" id="vitaminETop">
+                <!-- Top contributors for Vitamin E will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="vitaminKProgressBar" data-label="Vitamin K" data-current="0" data-total="120">
                 <div class="progress-bar-fill"></div>
+            </div>
+            <div class="top-contributors" id="vitaminKTop">
+                <!-- Top contributors for Vitamin K will be displayed here -->
             </div>
         </div>
 
+        <!-- Minerals Progress Bars -->
         <div class="progress-bar-section">
             <h2>Minerals</h2>
-            <div class="progress-bar" id="calciumProgressBar" data-label="Calcium">
+            <div class="progress-bar" id="calciumProgressBar" data-label="Calcium" data-current="0" data-total="1000">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="magnesiumProgressBar" data-label="Magnesium">
+            <div class="top-contributors" id="calciumTop">
+                <!-- Top contributors for Calcium will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="magnesiumProgressBar" data-label="Magnesium" data-current="0" data-total="420">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="potassiumProgressBar" data-label="Potassium">
+            <div class="top-contributors" id="magnesiumTop">
+                <!-- Top contributors for Magnesium will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="potassiumProgressBar" data-label="Potassium" data-current="0" data-total="4700">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="ironProgressBar" data-label="Iron">
+            <div class="top-contributors" id="potassiumTop">
+                <!-- Top contributors for Potassium will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="ironProgressBar" data-label="Iron" data-current="0" data-total="18">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="zincProgressBar" data-label="Zinc">
+            <div class="top-contributors" id="ironTop">
+                <!-- Top contributors for Iron will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="zincProgressBar" data-label="Zinc" data-current="0" data-total="11">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="seleniumProgressBar" data-label="Selenium">
+            <div class="top-contributors" id="zincTop">
+                <!-- Top contributors for Zinc will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="seleniumProgressBar" data-label="Selenium" data-current="0" data-total="55">
                 <div class="progress-bar-fill"></div>
             </div>
-            <div class="progress-bar" id="sodiumProgressBar" data-label="Sodium">
+            <div class="top-contributors" id="seleniumTop">
+                <!-- Top contributors for Selenium will be displayed here -->
+            </div>
+
+            <div class="progress-bar" id="sodiumProgressBar" data-label="Sodium" data-current="0" data-total="2300">
                 <div class="progress-bar-fill"></div>
+            </div>
+            <div class="top-contributors" id="sodiumTop">
+                <!-- Top contributors for Sodium will be displayed here -->
             </div>
         </div>
     </div>
@@ -349,55 +447,57 @@
     </footer>
 
     <script>
+        // Food Data
         const foodData = {
-            "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
-            "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
-            "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
-            "Cappuccino (1 cup)": { emoji: "☕", grams: 240, calories: 110, totalFat: 5, saturatedFat: 3, monounsaturatedFat: 1.5, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 12, protein: 8, fiber: 1, calcium: 30, potassium: 0, category: "dairy" },
-            "Egg (1 large)": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, saturatedFat: 1.6, monounsaturatedFat: 2.0, polyunsaturatedFat: 0.7, omega3: 37, omega6: 570, carbs: 0.6, protein: 6.3, fiber: 0, vitaminD: 1, potassium: 69, category: "protein" },
-            "Bread (1 slice)": { emoji: "🍞", grams: 30, calories: 80, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 15, protein: 3, fiber: 1, iron: 6, potassium: 0, category: "grains" },
-            "Honey (1 tablespoon)": { emoji: "🍯", grams: 21, calories: 64, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 17, protein: 0.1, fiber: 0, calcium: 1, potassium: 11, category: "others" },
-            "Sweet Potato (1 medium)": { emoji: "🍠", grams: 114, calories: 103, totalFat: 0.1, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 24, protein: 2, fiber: 3.8, vitaminA: 100, potassium: 542, category: "vegetables" },
-            "Olive Oil (1 tablespoon)": { emoji: "🫒", grams: 14, calories: 119, totalFat: 14, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 1.5, omega3: 0, omega6: 1000, carbs: 0, protein: 0, fiber: 0, vitaminE: 15, potassium: 0, category: "others" },
-            "Chicken Breast (3 oz)": { emoji: "🍗", grams: 85, calories: 140, totalFat: 3, saturatedFat: 1, monounsaturatedFat: 1, polyunsaturatedFat: 0.5, omega3: 30, omega6: 1500, carbs: 0, protein: 26, fiber: 0, vitaminB6: 20, potassium: 220, category: "protein" },
-            "Salmon (3 oz)": { emoji: "🐟", grams: 85, calories: 175, totalFat: 11, saturatedFat: 2.5, monounsaturatedFat: 4, polyunsaturatedFat: 3.5, omega3: 1700, omega6: 300, carbs: 0, protein: 20, fiber: 0, vitaminB12: 80, potassium: 360, category: "protein" },
-            "Avocado (1/2 medium)": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 2.5, omega3: 160, omega6: 1960, carbs: 9, protein: 2, fiber: 7, vitaminK: 26, potassium: 485, category: "fruits" },
-            "Spinach (1 cup cooked)": { emoji: "🥬", grams: 180, calories: 41, totalFat: 0.7, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.3, omega3: 370, omega6: 150, carbs: 7, protein: 5, fiber: 4, vitaminA: 200, potassium: 839, category: "vegetables" },
-            "Almonds (1 oz)": { emoji: "🥜", grams: 28, calories: 164, totalFat: 14, saturatedFat: 1, monounsaturatedFat: 9, polyunsaturatedFat: 3.5, omega3: 0, omega6: 3680, carbs: 6, protein: 6, fiber: 3.5, vitaminE: 35, magnesium: 20, category: "protein" },
-            "Quinoa (1 cup cooked)": { emoji: "🌾", grams: 185, calories: 222, totalFat: 3.5, saturatedFat: 0.4, monounsaturatedFat: 0.6, polyunsaturatedFat: 1.9, omega3: 47, omega6: 340, carbs: 39, protein: 8, fiber: 5, iron: 15, magnesium: 30, category: "grains" },
-            "Broccoli (1 cup chopped)": { emoji: "🥦", grams: 91, calories: 31, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 33, omega6: 70, carbs: 6, protein: 3, fiber: 2, vitaminC: 135, potassium: 316, category: "vegetables" },
-            "Strawberries (1 cup sliced)": { emoji: "🍓", grams: 150, calories: 46, totalFat: 0.4, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 24, omega6: 40, carbs: 11, protein: 1, fiber: 3, vitaminC: 98, potassium: 220, category: "fruits" },
-            "Oatmeal (1 cup cooked)": { emoji: "🥣", grams: 234, calories: 147, totalFat: 2.5, saturatedFat: 0.5, monounsaturatedFat: 0.7, polyunsaturatedFat: 0.7, omega3: 55, omega6: 600, carbs: 27, protein: 5, fiber: 4, iron: 10, potassium: 0, category: "grains" },
-            "Tofu (3 oz)": { emoji: "🧊", grams: 85, calories: 70, totalFat: 4, saturatedFat: 0.5, monounsaturatedFat: 1.5, polyunsaturatedFat: 1.5, omega3: 80, omega6: 450, carbs: 2, protein: 8, fiber: 1, calcium: 10, potassium: 120, category: "protein" },
-            "Whole Milk (1 cup)": { emoji: "🥛", grams: 240, calories: 149, totalFat: 8, saturatedFat: 5, monounsaturatedFat: 2, polyunsaturatedFat: 0.5, omega3: 30, omega6: 200, carbs: 12, protein: 8, fiber: 0, vitaminD: 15, calcium: 30, category: "dairy" },
-            "Brown Rice (1 cup cooked)": { emoji: "🍚", grams: 195, calories: 216, totalFat: 1.8, saturatedFat: 0.4, monounsaturatedFat: 0.5, polyunsaturatedFat: 0.7, omega3: 0, omega6: 50, carbs: 45, protein: 5, fiber: 3, magnesium: 11, potassium: 84, category: "grains" },
-            "Lentils (1 cup cooked)": { emoji: "🍲", grams: 198, calories: 230, totalFat: 0.8, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.4, omega3: 0, omega6: 80, carbs: 40, protein: 18, fiber: 16, iron: 37, potassium: 731, category: "protein" },
-            "Orange (1 medium)": { emoji: "🍊", grams: 131, calories: 62, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 20, carbs: 15, protein: 1, fiber: 3, vitaminC: 100, potassium: 237, category: "fruits" },
-            "Carrot (1 medium)": { emoji: "🥕", grams: 61, calories: 25, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 40, carbs: 6, protein: 1, fiber: 2, vitaminA: 200, potassium: 230, category: "vegetables" },
-            "Peanut Butter (2 tablespoons)": { emoji: "🥜", grams: 32, calories: 188, totalFat: 16, saturatedFat: 3, monounsaturatedFat: 8, polyunsaturatedFat: 4, omega3: 0, omega6: 3400, carbs: 7, protein: 8, fiber: 2, magnesium: 10, potassium: 210, category: "protein" },
-            "Walnuts (1 oz)": { emoji: "🌰", grams: 28, calories: 185, totalFat: 18, saturatedFat: 1.5, monounsaturatedFat: 2.5, polyunsaturatedFat: 13, omega3: 2500, omega6: 3700, carbs: 4, protein: 4, fiber: 2, magnesium: 10, potassium: 125, category: "protein" },
-            "Dark Chocolate (1 oz)": { emoji: "🍫", grams: 28, calories: 155, totalFat: 9, saturatedFat: 5, monounsaturatedFat: 3, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 13, protein: 2, fiber: 3, iron: 12, magnesium: 25, category: "others" },
-            "Kidney Beans (1 cup cooked)": { emoji: "🫘", grams: 177, calories: 215, totalFat: 0.5, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 0, omega6: 110, carbs: 39, protein: 13, fiber: 11, iron: 20, potassium: 600, category: "protein" },
-            "Tuna (3 oz canned in water)": { emoji: "🐟", grams: 85, calories: 94, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 250, omega6: 30, carbs: 0, protein: 20, fiber: 0, vitaminB12: 40, potassium: 0, category: "protein" },
-            "Chicken Thigh (3 oz)": { emoji: "🍗", grams: 85, calories: 209, totalFat: 13, saturatedFat: 4, monounsaturatedFat: 6, polyunsaturatedFat: 2, omega3: 40, omega6: 2000, carbs: 0, protein: 26, fiber: 0, iron: 5, potassium: 210, category: "protein" },
-            "Beef (Ground, 80% lean, 3 oz)": { emoji: "🥩", grams: 85, calories: 215, totalFat: 14, saturatedFat: 6, monounsaturatedFat: 6, polyunsaturatedFat: 1, omega3: 40, omega6: 300, carbs: 0, protein: 26, fiber: 0, iron: 15, zinc: 45, category: "protein" },
-            "Pork Chop (3 oz)": { emoji: "🍖", grams: 85, calories: 179, totalFat: 8, saturatedFat: 3, monounsaturatedFat: 3.5, polyunsaturatedFat: 1, omega3: 30, omega6: 1000, carbs: 0, protein: 26, fiber: 0, thiamin: 40, potassium: 370, category: "protein" },
-            "Shrimp (3 oz)": { emoji: "🦐", grams: 85, calories: 84, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.1, omega3: 100, omega6: 100, carbs: 0, protein: 20, fiber: 0, vitaminB12: 20, selenium: 40, category: "protein" },
-            "Cod (3 oz)": { emoji: "🐟", grams: 85, calories: 82, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 200, omega6: 30, carbs: 0, protein: 19, fiber: 0, vitaminB12: 15, selenium: 30, category: "protein" },
-            "Pizza (1 slice, cheese)": { emoji: "🍕", grams: 107, calories: 285, totalFat: 10, saturatedFat: 4.5, monounsaturatedFat: 3, polyunsaturatedFat: 1.5, omega3: 0, omega6: 0, carbs: 36, protein: 12, fiber: 3, calcium: 18, sodium: 640, category: "others" },
-            "Pasta (1 cup cooked)": { emoji: "🍝", grams: 140, calories: 221, totalFat: 1.3, saturatedFat: 0.3, monounsaturatedFat: 0.4, polyunsaturatedFat: 0.3, omega3: 0, omega6: 40, carbs: 43, protein: 8, fiber: 2.5, iron: 6, potassium: 0, category: "grains" },
-            "French Fries (medium)": { emoji: "🍟", grams: 117, calories: 312, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 7, polyunsaturatedFat: 4.5, omega3: 0, omega6: 0, carbs: 41, protein: 4, fiber: 4, vitaminC: 10, potassium: 480, category: "others" },
-            "Hamburger (1 patty)": { emoji: "🍔", grams: 113, calories: 303, totalFat: 17, saturatedFat: 6, monounsaturatedFat: 7, polyunsaturatedFat: 2.5, omega3: 30, omega6: 1200, carbs: 0, protein: 25, fiber: 0, iron: 20, zinc: 50, category: "protein" },
-            "Ice Cream (1/2 cup)": { emoji: "🍦", grams: 68, calories: 137, totalFat: 7, saturatedFat: 4.5, monounsaturatedFat: 2, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 16, protein: 3, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
-            "Potato Chips (1 oz)": { emoji: "🥔", grams: 28, calories: 152, totalFat: 10, saturatedFat: 1.5, monounsaturatedFat: 5, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 15, protein: 2, fiber: 1, vitaminC: 10, sodium: 170, category: "others" },
-            "Popcorn (air-popped, 3 cups)": { emoji: "🍿", grams: 24, calories: 93, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 300, carbs: 19, protein: 3, fiber: 4, iron: 6, magnesium: 10, category: "grains" },
-            "Banana Bread (1 slice)": { emoji: "🍌", grams: 70, calories: 250, totalFat: 10, saturatedFat: 3, monounsaturatedFat: 4, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 35, protein: 3, fiber: 1, calcium: 5, potassium: 150, category: "grains" },
-            "Granola Bar (1 bar)": { emoji: "🍫", grams: 35, calories: 150, totalFat: 6, saturatedFat: 1, monounsaturatedFat: 2.5, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 20, protein: 3, fiber: 2, iron: 4, potassium: 0, category: "grains" },
-            "Bagel (plain, 1)": { emoji: "🥯", grams: 94, calories: 270, totalFat: 1, saturatedFat: 0.3, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.2, omega3: 0, omega6: 0, carbs: 55, protein: 11, fiber: 3, calcium: 10, potassium: 0, category: "grains" },
-            "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
+            "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, sugar: 14, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
+            "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, sugar: 19, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
+            "Greek Yogurt (1 cup)": { emoji: "🥛", grams: 170, calories: 100, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 6, sugar: 6, protein: 17, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
+            "Cappuccino (1 cup)": { emoji: "☕", grams: 240, calories: 110, totalFat: 5, saturatedFat: 3, monounsaturatedFat: 1.5, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 12, sugar: 12, protein: 8, fiber: 1, calcium: 30, potassium: 0, category: "dairy" },
+            "Egg (1 large)": { emoji: "🥚", grams: 50, calories: 78, totalFat: 5.3, saturatedFat: 1.6, monounsaturatedFat: 2.0, polyunsaturatedFat: 0.7, omega3: 37, omega6: 570, carbs: 0.6, sugar: 0, protein: 6.3, fiber: 0, vitaminD: 1, potassium: 69, category: "protein" },
+            "Bread (1 slice)": { emoji: "🍞", grams: 30, calories: 80, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 15, sugar: 1, protein: 3, fiber: 1, iron: 6, potassium: 0, category: "grains" },
+            "Honey (1 tablespoon)": { emoji: "🍯", grams: 21, calories: 64, totalFat: 0, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0, omega3: 0, omega6: 0, carbs: 17, sugar: 17, protein: 0.1, fiber: 0, calcium: 1, potassium: 11, category: "others" },
+            "Sweet Potato (1 medium)": { emoji: "🍠", grams: 114, calories: 103, totalFat: 0.1, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 24, sugar: 7, protein: 2, fiber: 3.8, vitaminA: 100, potassium: 542, category: "vegetables" },
+            "Olive Oil (1 tablespoon)": { emoji: "🫒", grams: 14, calories: 119, totalFat: 14, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 1.5, omega3: 0, omega6: 1000, carbs: 0, sugar: 0, protein: 0, fiber: 0, vitaminE: 15, potassium: 0, category: "others" },
+            "Chicken Breast (3 oz)": { emoji: "🍗", grams: 85, calories: 140, totalFat: 3, saturatedFat: 1, monounsaturatedFat: 1, polyunsaturatedFat: 0.5, omega3: 30, omega6: 1500, carbs: 0, sugar: 0, protein: 26, fiber: 0, vitaminB6: 20, potassium: 220, category: "protein" },
+            "Salmon (3 oz)": { emoji: "🐟", grams: 85, calories: 175, totalFat: 11, saturatedFat: 2.5, monounsaturatedFat: 4, polyunsaturatedFat: 3.5, omega3: 1700, omega6: 300, carbs: 0, sugar: 0, protein: 20, fiber: 0, vitaminB12: 80, potassium: 360, category: "protein" },
+            "Avocado (1/2 medium)": { emoji: "🥑", grams: 100, calories: 160, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 10, polyunsaturatedFat: 2.5, omega3: 160, omega6: 1960, carbs: 9, sugar: 1, protein: 2, fiber: 7, vitaminK: 26, potassium: 485, category: "fruits" },
+            "Spinach (1 cup cooked)": { emoji: "🥬", grams: 180, calories: 41, totalFat: 0.7, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.3, omega3: 370, omega6: 150, carbs: 7, sugar: 0.5, protein: 5, fiber: 4, vitaminA: 200, potassium: 839, category: "vegetables" },
+            "Almonds (1 oz)": { emoji: "🥜", grams: 28, calories: 164, totalFat: 14, saturatedFat: 1, monounsaturatedFat: 9, polyunsaturatedFat: 3.5, omega3: 0, omega6: 3680, carbs: 6, sugar: 1.2, protein: 6, fiber: 3.5, vitaminE: 35, magnesium: 20, category: "protein" },
+            "Quinoa (1 cup cooked)": { emoji: "🌾", grams: 185, calories: 222, totalFat: 3.5, saturatedFat: 0.4, monounsaturatedFat: 0.6, polyunsaturatedFat: 1.9, omega3: 47, omega6: 340, carbs: 39, sugar: 1.6, protein: 8, fiber: 5, iron: 15, magnesium: 30, category: "grains" },
+            "Broccoli (1 cup chopped)": { emoji: "🥦", grams: 91, calories: 31, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 33, omega6: 70, carbs: 6, sugar: 1.5, protein: 3, fiber: 2, vitaminC: 135, potassium: 316, category: "vegetables" },
+            "Strawberries (1 cup sliced)": { emoji: "🍓", grams: 150, calories: 46, totalFat: 0.4, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.2, omega3: 24, omega6: 40, carbs: 11, sugar: 7, protein: 1, fiber: 3, vitaminC: 98, potassium: 220, category: "fruits" },
+            "Oatmeal (1 cup cooked)": { emoji: "🥣", grams: 234, calories: 147, totalFat: 2.5, saturatedFat: 0.5, monounsaturatedFat: 0.7, polyunsaturatedFat: 0.7, omega3: 55, omega6: 600, carbs: 27, sugar: 1, protein: 5, fiber: 4, iron: 10, potassium: 0, category: "grains" },
+            "Tofu (3 oz)": { emoji: "🧊", grams: 85, calories: 70, totalFat: 4, saturatedFat: 0.5, monounsaturatedFat: 1.5, polyunsaturatedFat: 1.5, omega3: 80, omega6: 450, carbs: 2, sugar: 0.3, protein: 8, fiber: 1, calcium: 10, potassium: 120, category: "protein" },
+            "Whole Milk (1 cup)": { emoji: "🥛", grams: 240, calories: 149, totalFat: 8, saturatedFat: 5, monounsaturatedFat: 2, polyunsaturatedFat: 0.5, omega3: 30, omega6: 200, carbs: 12, sugar: 12, protein: 8, fiber: 0, vitaminD: 15, calcium: 30, category: "dairy" },
+            "Brown Rice (1 cup cooked)": { emoji: "🍚", grams: 195, calories: 216, totalFat: 1.8, saturatedFat: 0.4, monounsaturatedFat: 0.5, polyunsaturatedFat: 0.7, omega3: 0, omega6: 50, carbs: 45, sugar: 0.7, protein: 5, fiber: 3, magnesium: 11, potassium: 84, category: "grains" },
+            "Lentils (1 cup cooked)": { emoji: "🍲", grams: 198, calories: 230, totalFat: 0.8, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.4, omega3: 0, omega6: 80, carbs: 40, sugar: 1, protein: 18, fiber: 16, iron: 37, potassium: 731, category: "protein" },
+            "Orange (1 medium)": { emoji: "🍊", grams: 131, calories: 62, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 20, carbs: 15, sugar: 12, protein: 1, fiber: 3, vitaminC: 100, potassium: 237, category: "fruits" },
+            "Carrot (1 medium)": { emoji: "🥕", grams: 61, calories: 25, totalFat: 0.2, saturatedFat: 0, monounsaturatedFat: 0, polyunsaturatedFat: 0.1, omega3: 0, omega6: 40, carbs: 6, sugar: 3, protein: 1, fiber: 2, vitaminA: 200, potassium: 230, category: "vegetables" },
+            "Peanut Butter (2 tablespoons)": { emoji: "🥜", grams: 32, calories: 188, totalFat: 16, saturatedFat: 3, monounsaturatedFat: 8, polyunsaturatedFat: 4, omega3: 0, omega6: 3400, carbs: 7, sugar: 3, protein: 8, fiber: 2, magnesium: 10, potassium: 210, category: "protein" },
+            "Walnuts (1 oz)": { emoji: "🌰", grams: 28, calories: 185, totalFat: 18, saturatedFat: 1.5, monounsaturatedFat: 2.5, polyunsaturatedFat: 13, omega3: 2500, omega6: 3700, carbs: 4, sugar: 1, protein: 4, fiber: 2, magnesium: 10, potassium: 125, category: "protein" },
+            "Dark Chocolate (1 oz)": { emoji: "🍫", grams: 28, calories: 155, totalFat: 9, saturatedFat: 5, monounsaturatedFat: 3, polyunsaturatedFat: 0.5, omega3: 0, omega6: 0, carbs: 13, sugar: 12, protein: 2, fiber: 3, iron: 12, magnesium: 25, category: "others" },
+            "Kidney Beans (1 cup cooked)": { emoji: "🫘", grams: 177, calories: 215, totalFat: 0.5, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 0, omega6: 110, carbs: 39, sugar: 0.5, protein: 13, fiber: 11, iron: 20, potassium: 600, category: "protein" },
+            "Tuna (3 oz canned in water)": { emoji: "🐟", grams: 85, calories: 94, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 250, omega6: 30, carbs: 0, sugar: 0, protein: 20, fiber: 0, vitaminB12: 40, potassium: 0, category: "protein" },
+            "Chicken Thigh (3 oz)": { emoji: "🍗", grams: 85, calories: 209, totalFat: 13, saturatedFat: 4, monounsaturatedFat: 6, polyunsaturatedFat: 2, omega3: 40, omega6: 2000, carbs: 0, sugar: 0, protein: 26, fiber: 0, iron: 5, potassium: 210, category: "protein" },
+            "Beef (Ground, 80% lean, 3 oz)": { emoji: "🥩", grams: 85, calories: 215, totalFat: 14, saturatedFat: 6, monounsaturatedFat: 6, polyunsaturatedFat: 1, omega3: 40, omega6: 300, carbs: 0, sugar: 0, protein: 26, fiber: 0, iron: 15, zinc: 45, category: "protein" },
+            "Pork Chop (3 oz)": { emoji: "🍖", grams: 85, calories: 179, totalFat: 8, saturatedFat: 3, monounsaturatedFat: 3.5, polyunsaturatedFat: 1, omega3: 30, omega6: 1000, carbs: 0, sugar: 0, protein: 26, fiber: 0, thiamin: 40, potassium: 370, category: "protein" },
+            "Shrimp (3 oz)": { emoji: "🦐", grams: 85, calories: 84, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.2, polyunsaturatedFat: 0.1, omega3: 100, omega6: 100, carbs: 0, sugar: 0, protein: 20, fiber: 0, vitaminB12: 20, selenium: 40, category: "protein" },
+            "Cod (3 oz)": { emoji: "🐟", grams: 85, calories: 82, totalFat: 0.5, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.2, omega3: 200, omega6: 30, carbs: 0, sugar: 0, protein: 19, fiber: 0, vitaminB12: 15, selenium: 30, category: "protein" },
+            "Pizza (1 slice, cheese)": { emoji: "🍕", grams: 107, calories: 285, totalFat: 10, saturatedFat: 4.5, monounsaturatedFat: 3, polyunsaturatedFat: 1.5, omega3: 0, omega6: 0, carbs: 36, sugar: 3, protein: 12, fiber: 3, calcium: 18, sodium: 640, category: "others" },
+            "Pasta (1 cup cooked)": { emoji: "🍝", grams: 140, calories: 221, totalFat: 1.3, saturatedFat: 0.3, monounsaturatedFat: 0.4, polyunsaturatedFat: 0.3, omega3: 0, omega6: 40, carbs: 43, sugar: 1, protein: 8, fiber: 2.5, iron: 6, potassium: 0, category: "grains" },
+            "French Fries (medium)": { emoji: "🍟", grams: 117, calories: 312, totalFat: 15, saturatedFat: 2, monounsaturatedFat: 7, polyunsaturatedFat: 4.5, omega3: 0, omega6: 0, carbs: 41, sugar: 0, protein: 4, fiber: 4, vitaminC: 10, potassium: 480, category: "others" },
+            "Hamburger (1 patty)": { emoji: "🍔", grams: 113, calories: 303, totalFat: 17, saturatedFat: 6, monounsaturatedFat: 7, polyunsaturatedFat: 2.5, omega3: 30, omega6: 1200, carbs: 0, sugar: 0, protein: 25, fiber: 0, iron: 20, zinc: 50, category: "protein" },
+            "Ice Cream (1/2 cup)": { emoji: "🍦", grams: 68, calories: 137, totalFat: 7, saturatedFat: 4.5, monounsaturatedFat: 2, polyunsaturatedFat: 0.3, omega3: 0, omega6: 0, carbs: 16, sugar: 16, protein: 3, fiber: 0, calcium: 10, potassium: 0, category: "dairy" },
+            "Potato Chips (1 oz)": { emoji: "🥔", grams: 28, calories: 152, totalFat: 10, saturatedFat: 1.5, monounsaturatedFat: 5, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 15, sugar: 10, protein: 2, fiber: 1, vitaminC: 10, sodium: 170, category: "others" },
+            "Popcorn (air-popped, 3 cups)": { emoji: "🍿", grams: 24, calories: 93, totalFat: 1, saturatedFat: 0.2, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.3, omega3: 0, omega6: 300, carbs: 19, sugar: 0.5, protein: 3, fiber: 4, iron: 6, magnesium: 10, category: "grains" },
+            "Banana Bread (1 slice)": { emoji: "🍌", grams: 70, calories: 250, totalFat: 10, saturatedFat: 3, monounsaturatedFat: 4, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 35, sugar: 14, protein: 3, fiber: 1, calcium: 5, potassium: 150, category: "grains" },
+            "Granola Bar (1 bar)": { emoji: "🍫", grams: 35, calories: 150, totalFat: 6, saturatedFat: 1, monounsaturatedFat: 2.5, polyunsaturatedFat: 2, omega3: 0, omega6: 0, carbs: 20, sugar: 10, protein: 3, fiber: 2, iron: 4, potassium: 0, category: "grains" },
+            "Bagel (plain, 1)": { emoji: "🥯", grams: 94, calories: 270, totalFat: 1, saturatedFat: 0.3, monounsaturatedFat: 0.3, polyunsaturatedFat: 0.2, omega3: 0, omega6: 0, carbs: 55, sugar: 3, protein: 11, fiber: 3, calcium: 10, potassium: 0, category: "grains" },
+            "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, sugar: 30, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
         };
 
-        const dailyValues = {
+        // Daily Values
+        let dailyValues = {
               calories: 2000,
               protein: 50,
               carbs: 300,
@@ -504,60 +604,160 @@
                 return;
             }
 
+            // Retrieve target values
+            const targetCalories = parseFloat(document.getElementById('targetCalories').value) || dailyValues.calories;
+            const targetProtein = parseFloat(document.getElementById('targetProtein').value) || dailyValues.protein;
+            const targetFiber = parseFloat(document.getElementById('targetFiber').value) || dailyValues.fiber;
+
             let totals = {
                 calories: 0, totalFat: 0, saturatedFat: 0,
-                carbs: 0, protein: 0, fiber: 0, omega3: 0, omega6: 0,
+                unsaturatedFat: 0, omega3: 0, omega6: 0,
+                carbs: 0, sugar: 0, protein: 0, fiber: 0,
                 vitaminA: 0, vitaminB12: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0, vitaminK: 0,
                 calcium: 0, magnesium: 0, potassium: 0, iron: 0, zinc: 0, selenium: 0, sodium: 0
             };
 
+            // Track contributors for vitamins and minerals
+            let nutrientContributors = {
+                vitaminA: {},
+                vitaminB12: {},
+                vitaminC: {},
+                vitaminD: {},
+                vitaminE: {},
+                vitaminK: {},
+                calcium: {},
+                magnesium: {},
+                potassium: {},
+                iron: {},
+                zinc: {},
+                selenium: {},
+                sodium: {}
+            };
+
             selectedFoods.forEach(food => {
-                const sliderValue = document.getElementById(`${sanitizeID(food)}-slider`).value;
+                const sliderValue = parseFloat(document.getElementById(`${sanitizeID(food)}-slider`).value);
                 const ratio = sliderValue / foodData[food].grams;
                 for (let nutrient in totals) {
-                    if (foodData[food][nutrient]) {
+                    if (foodData[food][nutrient] !== undefined) {
                         totals[nutrient] += foodData[food][nutrient] * ratio;
+                        // Track contributors for vitamins and minerals
+                        if (nutrientContributors[nutrient] !== undefined) {
+                            if (!nutrientContributors[nutrient][food]) {
+                                nutrientContributors[nutrient][food] = 0;
+                            }
+                            nutrientContributors[nutrient][food] += foodData[food][nutrient] * ratio;
+                        }
                     }
                 }
             });
 
-            updateProgressBars(totals);
+            // Update Macronutrient Circles
+            updateMacroCircles(totals, targetCalories, targetProtein, targetFiber);
+
+            // Update Vitamins and Minerals Progress Bars
+            updateVitaminsAndMinerals(totals, nutrientContributors);
         }
 
-        function updateProgressBars(totals) {
-            // Update progress circles for Macronutrients
-            const macroIds = ['calories', 'protein', 'carbs', 'fat'];
-            macroIds.forEach(id => {
-                const progress = Math.min((totals[id] / dailyValues[id]) * 100, 100);
-                const progressCircle = document.getElementById(`${id}Progress`);
-                const progressText = document.getElementById(`${id}Text`);
-                if (progressCircle && progressText) {
-                    progressCircle.style.setProperty('--progress', progress);
-                    progressText.textContent = progress.toFixed(0) + '%';
-                }
-            });
+        function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) {
+            // Calories
+            const caloriesProgress = Math.min((totals.calories / targetCalories) * 100, 100);
+            const caloriesCircle = document.getElementById('caloriesProgress');
+            const caloriesText = document.getElementById('caloriesText');
+            if (caloriesCircle && caloriesText) {
+                caloriesCircle.style.setProperty('--progress', caloriesProgress);
+                caloriesText.textContent = `${caloriesProgress.toFixed(0)}%`;
+            }
 
-            // Update progress bars for Vitamins
-            const vitaminIds = ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK'];
-            vitaminIds.forEach(vitamin => {
+            // Protein
+            const proteinProgress = Math.min((totals.protein / targetProtein) * 100, 100);
+            const proteinCircle = document.getElementById('proteinProgress');
+            const proteinText = document.getElementById('proteinText');
+            if (proteinCircle && proteinText) {
+                proteinCircle.style.setProperty('--progress', proteinProgress);
+                proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
+            }
+
+            // Carbs
+            const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
+            const carbsCircle = document.getElementById('carbsProgress');
+            const carbsText = document.getElementById('carbsText');
+            const carbsSub = document.getElementById('carbsSubNutrients');
+            if (carbsCircle && carbsText && carbsSub) {
+                carbsCircle.style.setProperty('--progress', carbsProgress);
+                carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
+                carbsSub.textContent = `Sugar: ${totals.sugar.toFixed(1)}g | Fiber: ${totals.fiber.toFixed(1)}g`;
+            }
+
+            // Fat
+            const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
+            const fatCircle = document.getElementById('fatProgress');
+            const fatText = document.getElementById('fatText');
+            const fatSub = document.getElementById('fatSubNutrients');
+            if (fatCircle && fatText && fatSub) {
+                fatCircle.style.setProperty('--progress', fatProgress);
+                fatText.textContent = `${fatProgress.toFixed(0)}%`;
+                fatSub.textContent = `Sat: ${totals.saturatedFat.toFixed(1)}g | Unsat: ${totals.unsaturatedFat.toFixed(1)}g | Omega-3: ${totals.omega3.toFixed(1)}g | Omega-6: ${totals.omega6.toFixed(1)}g`;
+            }
+        }
+
+        function updateVitaminsAndMinerals(totals, nutrientContributors) {
+            // Vitamins
+            const vitamins = ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK'];
+            vitamins.forEach(vitamin => {
                 const progressBar = document.getElementById(`${vitamin}ProgressBar`);
-                if (progressBar) {
-                    const progress = Math.min((totals[vitamin] / dailyValues[vitamin]) * 100, 100);
+                const topContributorsDiv = document.getElementById(`${vitamin}Top`);
+                if (progressBar && topContributorsDiv) {
+                    const current = totals[vitamin];
+                    const total = dailyValues[vitamin];
+                    const progress = Math.min((current / total) * 100, 100);
                     const fill = progressBar.querySelector('.progress-bar-fill');
-                    fill.style.width = progress + '%';
+                    fill.style.width = `${progress}%`;
                     progressBar.setAttribute('data-value', progress.toFixed(0));
+                    progressBar.setAttribute('data-current', current.toFixed(1));
+                    progressBar.setAttribute('data-total', total);
+
+                    // Get top 3 contributors
+                    const contributors = nutrientContributors[vitamin];
+                    const sortedContributors = Object.entries(contributors)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 3);
+                    
+                    // Build contributors display
+                    let contributorsHTML = '';
+                    sortedContributors.forEach(([food, value]) => {
+                        contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
+                    });
+                    topContributorsDiv.innerHTML = contributorsHTML;
                 }
             });
 
-            // Update progress bars for Minerals
-            const mineralIds = ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'];
-            mineralIds.forEach(mineral => {
+            // Minerals
+            const minerals = ['calcium', 'magnesium', 'potassium', 'iron', 'zinc', 'selenium', 'sodium'];
+            minerals.forEach(mineral => {
                 const progressBar = document.getElementById(`${mineral}ProgressBar`);
-                if (progressBar) {
-                    const progress = Math.min((totals[mineral] / dailyValues[mineral]) * 100, 100);
+                const topContributorsDiv = document.getElementById(`${mineral}Top`);
+                if (progressBar && topContributorsDiv) {
+                    const current = totals[mineral];
+                    const total = dailyValues[mineral];
+                    const progress = Math.min((current / total) * 100, 100);
                     const fill = progressBar.querySelector('.progress-bar-fill');
-                    fill.style.width = progress + '%';
+                    fill.style.width = `${progress}%`;
                     progressBar.setAttribute('data-value', progress.toFixed(0));
+                    progressBar.setAttribute('data-current', current.toFixed(1));
+                    progressBar.setAttribute('data-total', total);
+
+                    // Get top 3 contributors
+                    const contributors = nutrientContributors[mineral];
+                    const sortedContributors = Object.entries(contributors)
+                        .sort((a, b) => b[1] - a[1])
+                        .slice(0, 3);
+                    
+                    // Build contributors display
+                    let contributorsHTML = '';
+                    sortedContributors.forEach(([food, value]) => {
+                        contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
+                    });
+                    topContributorsDiv.innerHTML = contributorsHTML;
                 }
             });
         }
@@ -571,13 +771,23 @@
                 if (text) text.textContent = '0%';
             });
 
+            // Reset sub-nutrients info
+            document.getElementById('carbsSubNutrients').textContent = `Sugar: 0g | Fiber: 0g`;
+            document.getElementById('fatSubNutrients').textContent = `Sat: 0g | Unsat: 0g | Omega-3: 0g | Omega-6: 0g`;
+
             // Reset progress bars
             const progressBars = document.querySelectorAll('.progress-bar');
             progressBars.forEach(bar => {
                 const fill = bar.querySelector('.progress-bar-fill');
                 fill.style.width = '0%';
                 bar.setAttribute('data-value', '0');
+                bar.setAttribute('data-current', '0');
+                bar.setAttribute('data-total', bar.getAttribute('data-total'));
             });
+
+            // Clear top contributors
+            const topContributors = document.querySelectorAll('.top-contributors');
+            topContributors.forEach(div => div.innerHTML = '');
         }
 
         // Initialize the dashboard
@@ -599,6 +809,15 @@
                 }
             });
         });
+
+        // Target Inputs functionality
+        const targetCaloriesInput = document.getElementById('targetCalories');
+        const targetProteinInput = document.getElementById('targetProtein');
+        const targetFiberInput = document.getElementById('targetFiber');
+
+        targetCaloriesInput.addEventListener('input', updateNutritionTable);
+        targetProteinInput.addEventListener('input', updateNutritionTable);
+        targetFiberInput.addEventListener('input', updateNutritionTable);
     </script>
 </body>
 </html>
