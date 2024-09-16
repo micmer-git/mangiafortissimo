@@ -19,6 +19,7 @@
         h1, h2 {
             color: #2c3e50;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         /* Search and Target Inputs */
@@ -28,6 +29,7 @@
             gap: 10px;
             margin-bottom: 20px;
             align-items: center;
+            justify-content: center;
         }
 
         #foodSearch, .target-input {
@@ -51,6 +53,7 @@
             gap: 10px;
             margin-bottom: 20px;
             padding-bottom: 10px;
+            justify-content: center;
         }
 
         .toggle-button {
@@ -76,6 +79,7 @@
             gap: 10px;
             margin-bottom: 20px;
             padding-bottom: 10px;
+            justify-content: center;
         }
 
         .food-button {
@@ -110,31 +114,32 @@
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
         }
 
         .food-item label {
-            display: block;
-            margin-bottom: 10px;
             font-weight: 600;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .portion-control {
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 10px;
         }
 
         .portion-control input[type="range"] {
             width: 150px;
-            margin-bottom: 5px;
         }
 
         .portion-control span {
             font-size: 14px;
             color: #555;
+            min-width: 40px;
+            text-align: right;
         }
 
         /* Dashboard - Macronutrients */
@@ -199,6 +204,20 @@
             white-space: pre-line;
         }
 
+        .top-contributors {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .top-contributors span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 14px;
+        }
+
         /* Dashboard - Vitamins and Minerals */
         .progress-bars-section {
             display: flex;
@@ -240,7 +259,7 @@
             margin: 0 10px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .progress-bar-row .progress-bar-container::before {
@@ -250,6 +269,7 @@
             text-align: center;
             font-size: 12px;
             color: #333;
+            pointer-events: none;
         }
 
         .progress-bar-row .progress-bar-fill {
@@ -261,18 +281,18 @@
         }
 
         .progress-bar-row .contributors {
-            width: 150px;
-            font-size: 12px;
+            width: 100px;
+            font-size: 16px;
             color: #555;
             display: flex;
-            flex-direction: column;
-            gap: 2px;
+            gap: 5px;
+            justify-content: flex-start;
         }
 
         .contributors span {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 3px;
         }
 
         /* Footer */
@@ -318,23 +338,28 @@
             }
 
             .progress-bar-row .contributors {
-                width: 100%;
-                flex-direction: row;
+                width: auto;
                 flex-wrap: wrap;
-                gap: 5px;
+                justify-content: flex-start;
             }
 
             .contributors span {
-                flex: 1 1 45%;
+                flex: 1 1 30%;
             }
 
             .search-target-container {
-                flex-direction: column;
-                align-items: stretch;
+                flex-direction: row;
+                justify-content: center;
             }
 
-            .target-input {
-                max-width: none;
+            .food-item {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .portion-control {
+                flex-direction: row;
+                gap: 5px;
             }
         }
     </style>
@@ -367,38 +392,52 @@
         <!-- Macronutrient Progress Circles -->
         <div class="progress-section">
             <h2>Calories</h2>
+            <div class="top-contributors" id="caloriesTop">
+                <!-- Top 3 contributors for Calories will be displayed here -->
+            </div>
             <div id="caloriesProgress" class="progress-circle">
                 <div class="progress-text" id="caloriesText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- Top 3 contributors will be displayed here -->
+                <!-- Additional info can be added here if needed -->
             </div>
         </div>
         <div class="progress-section">
             <h2>Protein</h2>
+            <div class="top-contributors" id="proteinTop">
+                <!-- Top 3 contributors for Protein will be displayed here -->
+            </div>
             <div id="proteinProgress" class="progress-circle">
                 <div class="progress-text" id="proteinText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- Top 3 contributors will be displayed here -->
+                <!-- Additional info can be added here if needed -->
             </div>
         </div>
         <div class="progress-section">
             <h2>Carbs</h2>
+            <div class="top-contributors" id="carbsTop">
+                <!-- Top 3 contributors for Carbs will be displayed here -->
+            </div>
             <div id="carbsProgress" class="progress-circle">
                 <div class="progress-text" id="carbsText">0%</div>
             </div>
             <div class="sub-nutrients" id="carbsSubNutrients">
+                Total Carbs: 0g<br>
                 Sugar: 0g<br>
                 Fiber: 0g
             </div>
         </div>
         <div class="progress-section">
             <h2>Fat</h2>
+            <div class="top-contributors" id="fatTop">
+                <!-- Top 3 contributors for Fat will be displayed here -->
+            </div>
             <div id="fatProgress" class="progress-circle">
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
+                Total Fat: 0g<br>
                 Saturated: 0g<br>
                 Unsaturated: 0g<br>
                 Omega-3: 0g<br>
@@ -554,7 +593,7 @@
     </footer>
 
     <script>
-        // Food Data
+// Food Data
         const foodData = {
             "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, sugar: 14, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
             "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, sugar: 19, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
@@ -611,6 +650,8 @@
             "Avocado Toast": ["Bread (1 slice)", "Avocado (1/2 medium)", "Egg (1 large)"],
             "Protein Smoothie": ["Milk (1 cup)", "Banana (1 medium)", "Peanut Butter (2 tablespoons)"]
         };
+        // ======= Daily Values =======
+
         // ======= Daily Values =======
         let dailyValues = {
               calories: 2000,
@@ -874,7 +915,7 @@
             if (carbsCircle && carbsText && carbsSub) {
                 carbsCircle.style.setProperty('--progress', carbsProgress);
                 carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-                carbsSub.textContent = `Sugar: ${totals.sugar.toFixed(1)}g\nFiber: ${totals.fiber.toFixed(1)}g`;
+                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
             }
 
             // Fat
@@ -885,7 +926,7 @@
             if (fatCircle && fatText && fatSub) {
                 fatCircle.style.setProperty('--progress', fatProgress);
                 fatText.textContent = `${fatProgress.toFixed(0)}%`;
-                fatSub.textContent = `Saturated: ${totals.saturatedFat.toFixed(1)}g\nUnsaturated: ${totals.unsaturatedFat.toFixed(1)}g\nOmega-3: ${totals.omega3.toFixed(1)}g\nOmega-6: ${totals.omega6.toFixed(1)}g`;
+                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(1)}g<br>Omega-6: ${totals.omega6.toFixed(1)}g`;
             }
         }
 
@@ -901,14 +942,18 @@
                 }
                 // Sort and get top 3
                 const sorted = Object.entries(contributors).sort((a, b) => b[1] - a[1]).slice(0, 3);
-                // Display below the respective progress circle
-                const subNutrientsDiv = document.querySelector(`.progress-section:nth-child(${macronutrients.indexOf(nutrient) + 1}) .sub-nutrients`);
-                if (subNutrientsDiv) {
+                // Display above the respective progress circle
+                const topContributorsDiv = document.getElementById(`${nutrient}Top`);
+                if (topContributorsDiv) {
                     let html = '';
                     sorted.forEach(([food, value]) => {
-                        html += `${foodData[food].emoji} ${food}: ${value.toFixed(1)}<br>`;
+                        if (nutrient === 'omega3' || nutrient === 'omega6') {
+                            html += `${foodData[food].emoji} ${value.toFixed(2)}g `;
+                        } else {
+                            html += `${foodData[food].emoji} ${value.toFixed(1)} `;
+                        }
                     });
-                    subNutrientsDiv.innerHTML += `<br>Top Contributors:<br>${html}`;
+                    topContributorsDiv.innerHTML = html.trim();
                 }
             });
         }
@@ -938,7 +983,7 @@
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
-                        contributorsHTML += `<span>${foodData[food].emoji} ${food}: ${value.toFixed(1)}</span>`;
+                        contributorsHTML += `<span>${foodData[food].emoji}</span>`;
                     });
                     topContributorsDiv.innerHTML = contributorsHTML;
                 }
@@ -968,7 +1013,7 @@
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
-                        contributorsHTML += `<span>${foodData[food].emoji} ${food}: ${value.toFixed(1)}</span>`;
+                        contributorsHTML += `<span>${foodData[food].emoji}</span>`;
                     });
                     topContributorsDiv.innerHTML = contributorsHTML;
                 }
@@ -985,8 +1030,8 @@
             });
 
             // Reset sub-nutrients info
-            document.getElementById('carbsSubNutrients').textContent = `Sugar: 0g\nFiber: 0g`;
-            document.getElementById('fatSubNutrients').textContent = `Saturated: 0g\nUnsaturated: 0g\nOmega-3: 0g\nOmega-6: 0g`;
+            document.getElementById('carbsSubNutrients').innerHTML = `Total Carbs: 0g<br>Sugar: 0g<br>Fiber: 0g`;
+            document.getElementById('fatSubNutrients').innerHTML = `Total Fat: 0g<br>Saturated: 0g<br>Unsaturated: 0g<br>Omega-3: 0g<br>Omega-6: 0g`;
 
             // Reset progress bars
             const progressBars = document.querySelectorAll('.progress-bar-container');
