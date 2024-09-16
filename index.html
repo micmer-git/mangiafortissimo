@@ -94,10 +94,12 @@
             color: white;
         }
 
-        /* Selected Foods (Vertical Sliders) */
+        /* Selected Foods (Vertical Scrollable Portion Controls) */
         #selectedFoods {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            max-height: 300px; /* Adjust as needed */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -119,47 +121,20 @@
             text-align: center;
         }
 
-        .vertical-slider-container {
+        .portion-control {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .food-item input[type="range"] {
-            -webkit-appearance: none;
+        .portion-control input[type="range"] {
             width: 150px;
-            height: 8px;
-            background: #d3d3d3;
-            outline: none;
-            border-radius: 5px;
             margin-bottom: 5px;
-            transform: rotate(-90deg);
         }
 
-        .food-item input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: #3498db;
-            cursor: pointer;
-            border-radius: 50%;
-            border: none;
-        }
-
-        .food-item input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            background: #3498db;
-            cursor: pointer;
-            border-radius: 50%;
-            border: none;
-        }
-
-        .food-item span {
+        .portion-control span {
             font-size: 14px;
             color: #555;
-            margin-top: 5px;
         }
 
         /* Dashboard - Macronutrients */
@@ -289,11 +264,15 @@
             width: 150px;
             font-size: 12px;
             color: #555;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .contributors span {
-            display: block;
-            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         /* Footer */
@@ -340,6 +319,13 @@
 
             .progress-bar-row .contributors {
                 width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .contributors span {
+                flex: 1 1 45%;
             }
 
             .search-target-container {
@@ -385,7 +371,7 @@
                 <div class="progress-text" id="caloriesText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- No additional sub-nutrients for Calories -->
+                <!-- Top 3 contributors will be displayed here -->
             </div>
         </div>
         <div class="progress-section">
@@ -394,7 +380,7 @@
                 <div class="progress-text" id="proteinText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- No additional sub-nutrients for Protein -->
+                <!-- Top 3 contributors will be displayed here -->
             </div>
         </div>
         <div class="progress-section">
@@ -403,7 +389,7 @@
                 <div class="progress-text" id="carbsText">0%</div>
             </div>
             <div class="sub-nutrients" id="carbsSubNutrients">
-                Sugar: 0g
+                Sugar: 0g<br>
                 Fiber: 0g
             </div>
         </div>
@@ -413,9 +399,9 @@
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
-                Saturated: 0g
-                Unsaturated: 0g
-                Omega-3: 0g
+                Saturated: 0g<br>
+                Unsaturated: 0g<br>
+                Omega-3: 0g<br>
                 Omega-6: 0g
             </div>
         </div>
@@ -432,7 +418,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminATop">
-                    <!-- Top contributors for Vitamin A will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin A will be displayed here -->
                 </div>
             </div>
             <!-- Vitamin B12 -->
@@ -442,7 +428,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminB12Top">
-                    <!-- Top contributors for Vitamin B12 will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin B12 will be displayed here -->
                 </div>
             </div>
             <!-- Vitamin C -->
@@ -452,7 +438,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminCTop">
-                    <!-- Top contributors for Vitamin C will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin C will be displayed here -->
                 </div>
             </div>
             <!-- Vitamin D -->
@@ -462,7 +448,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminDTop">
-                    <!-- Top contributors for Vitamin D will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin D will be displayed here -->
                 </div>
             </div>
             <!-- Vitamin E -->
@@ -472,7 +458,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminETop">
-                    <!-- Top contributors for Vitamin E will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin E will be displayed here -->
                 </div>
             </div>
             <!-- Vitamin K -->
@@ -482,7 +468,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="vitaminKTop">
-                    <!-- Top contributors for Vitamin K will be displayed here -->
+                    <!-- Top 3 contributors for Vitamin K will be displayed here -->
                 </div>
             </div>
         </div>
@@ -497,7 +483,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="calciumTop">
-                    <!-- Top contributors for Calcium will be displayed here -->
+                    <!-- Top 3 contributors for Calcium will be displayed here -->
                 </div>
             </div>
             <!-- Magnesium -->
@@ -507,7 +493,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="magnesiumTop">
-                    <!-- Top contributors for Magnesium will be displayed here -->
+                    <!-- Top 3 contributors for Magnesium will be displayed here -->
                 </div>
             </div>
             <!-- Potassium -->
@@ -517,7 +503,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="potassiumTop">
-                    <!-- Top contributors for Potassium will be displayed here -->
+                    <!-- Top 3 contributors for Potassium will be displayed here -->
                 </div>
             </div>
             <!-- Iron -->
@@ -527,7 +513,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="ironTop">
-                    <!-- Top contributors for Iron will be displayed here -->
+                    <!-- Top 3 contributors for Iron will be displayed here -->
                 </div>
             </div>
             <!-- Zinc -->
@@ -537,7 +523,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="zincTop">
-                    <!-- Top contributors for Zinc will be displayed here -->
+                    <!-- Top 3 contributors for Zinc will be displayed here -->
                 </div>
             </div>
             <!-- Selenium -->
@@ -547,7 +533,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="seleniumTop">
-                    <!-- Top contributors for Selenium will be displayed here -->
+                    <!-- Top 3 contributors for Selenium will be displayed here -->
                 </div>
             </div>
             <!-- Sodium -->
@@ -557,7 +543,7 @@
                     <div class="progress-bar-fill"></div>
                 </div>
                 <div class="contributors" id="sodiumTop">
-                    <!-- Top contributors for Sodium will be displayed here -->
+                    <!-- Top 3 contributors for Sodium will be displayed here -->
                 </div>
             </div>
         </div>
@@ -568,7 +554,7 @@
     </footer>
 
     <script>
-// Food Data
+        // Food Data
         const foodData = {
             "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, sugar: 14, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
             "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, sugar: 19, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
@@ -625,8 +611,6 @@
             "Avocado Toast": ["Bread (1 slice)", "Avocado (1/2 medium)", "Egg (1 large)"],
             "Protein Smoothie": ["Milk (1 cup)", "Banana (1 medium)", "Peanut Butter (2 tablespoons)"]
         };
-        // ============================
-
         // ======= Daily Values =======
         let dailyValues = {
               calories: 2000,
@@ -755,7 +739,7 @@
             div.className = 'food-item';
             div.innerHTML = `
                 <label>${foodData[food].emoji} ${food}</label>
-                <div class="vertical-slider-container">
+                <div class="portion-control">
                     <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
                     <span id="${sanitizeID(food)}-value">${foodData[food].grams}g</span>
                 </div>
@@ -826,13 +810,22 @@
                 const ratio = sliderValue / foodData[food].grams;
                 for (let nutrient in totals) {
                     if (foodData[food][nutrient] !== undefined) {
-                        totals[nutrient] += foodData[food][nutrient] * ratio;
+                        // Convert Omegas from mg to g
+                        if (nutrient === 'omega3' || nutrient === 'omega6') {
+                            totals[nutrient] += (foodData[food][nutrient] * ratio) / 1000;
+                        } else {
+                            totals[nutrient] += foodData[food][nutrient] * ratio;
+                        }
                         // Track contributors for vitamins and minerals
                         if (nutrientContributors[nutrient] !== undefined) {
                             if (!nutrientContributors[nutrient][food]) {
                                 nutrientContributors[nutrient][food] = 0;
                             }
-                            nutrientContributors[nutrient][food] += foodData[food][nutrient] * ratio;
+                            if (nutrient === 'omega3' || nutrient === 'omega6') {
+                                nutrientContributors[nutrient][food] += (foodData[food][nutrient] * ratio) / 1000;
+                            } else {
+                                nutrientContributors[nutrient][food] += foodData[food][nutrient] * ratio;
+                            }
                         }
                     }
                 }
@@ -846,6 +839,9 @@
 
             // Update Macronutrient Circles
             updateMacroCircles(totals, targetCalories, targetProtein, targetFiber);
+
+            // Update Top 3 Contributors for Macronutrients
+            updateTopContributors(totals);
 
             // Update Vitamins and Minerals Progress Bars
             updateVitaminsAndMinerals(totals, nutrientContributors);
@@ -893,6 +889,30 @@
             }
         }
 
+        function updateTopContributors(totals) {
+            // Define top contributors for macronutrients
+            const macronutrients = ['calories', 'protein', 'carbs', 'fat'];
+            macronutrients.forEach(nutrient => {
+                let contributors = {};
+                for (let food in foodData) {
+                    if (foodData[food][nutrient] !== undefined && selectedFoods.has(food)) {
+                        contributors[food] = foodData[food][nutrient];
+                    }
+                }
+                // Sort and get top 3
+                const sorted = Object.entries(contributors).sort((a, b) => b[1] - a[1]).slice(0, 3);
+                // Display below the respective progress circle
+                const subNutrientsDiv = document.querySelector(`.progress-section:nth-child(${macronutrients.indexOf(nutrient) + 1}) .sub-nutrients`);
+                if (subNutrientsDiv) {
+                    let html = '';
+                    sorted.forEach(([food, value]) => {
+                        html += `${foodData[food].emoji} ${food}: ${value.toFixed(1)}<br>`;
+                    });
+                    subNutrientsDiv.innerHTML += `<br>Top Contributors:<br>${html}`;
+                }
+            });
+        }
+
         function updateVitaminsAndMinerals(totals, nutrientContributors) {
             // Vitamins
             const vitamins = ['vitaminA', 'vitaminB12', 'vitaminC', 'vitaminD', 'vitaminE', 'vitaminK'];
@@ -918,7 +938,7 @@
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
-                        contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
+                        contributorsHTML += `<span>${foodData[food].emoji} ${food}: ${value.toFixed(1)}</span>`;
                     });
                     topContributorsDiv.innerHTML = contributorsHTML;
                 }
@@ -948,7 +968,7 @@
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
-                        contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
+                        contributorsHTML += `<span>${foodData[food].emoji} ${food}: ${value.toFixed(1)}</span>`;
                     });
                     topContributorsDiv.innerHTML = contributorsHTML;
                 }
@@ -1014,4 +1034,3 @@
     </script>
 </body>
 </html>
-
