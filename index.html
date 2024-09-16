@@ -36,8 +36,8 @@
             border-radius: 20px;
             background-color: #f0f0f0;
             font-size: 16px;
-            flex: 1;
-            min-width: 200px;
+            flex: 1 1 200px;
+            box-sizing: border-box;
         }
 
         .target-input {
@@ -94,7 +94,7 @@
             color: white;
         }
 
-        /* Selected Foods (Sliders) */
+        /* Selected Foods (Vertical Sliders) */
         #selectedFoods {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -107,22 +107,65 @@
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .food-item label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             font-weight: 600;
+            text-align: center;
+        }
+
+        .vertical-slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .food-item input[type="range"] {
-            width: 100%;
+            -webkit-appearance: none;
+            width: 150px;
+            height: 8px;
+            background: #d3d3d3;
+            outline: none;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transform: rotate(-90deg);
+        }
+
+        .food-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #3498db;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .food-item input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #3498db;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .food-item span {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
         }
 
         /* Dashboard - Macronutrients */
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
@@ -177,6 +220,8 @@
             margin-top: 10px;
             font-size: 14px;
             color: #555;
+            text-align: center;
+            white-space: pre-line;
         }
 
         /* Dashboard - Vitamins and Minerals */
@@ -196,36 +241,43 @@
 
         .progress-bar-section h2 {
             margin-bottom: 15px;
+            text-align: center;
         }
 
-        .progress-bar {
+        .progress-bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-row .nutrient-name {
+            width: 100px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .progress-bar-row .progress-bar-container {
+            flex: 1;
             position: relative;
             height: 20px;
             background-color: #e0e0e0;
             border-radius: 10px;
-            margin-bottom: 10px;
-            overflow: hidden;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .progress-bar::before {
-            content: attr(data-label);
+        .progress-bar-row .progress-bar-container::before {
+            content: attr(data-percentage) "% (" attr(data-current) " / " attr(data-total) ")";
             position: absolute;
-            left: 10px;
-            top: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
             color: #333;
-            font-size: 14px;
         }
 
-        .progress-bar::after {
-            content: attr(data-value) "% (" attr(data-current) " / " attr(data-total) ")";
-            position: absolute;
-            right: 10px;
-            top: -25px;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .progress-bar-fill {
+        .progress-bar-row .progress-bar-fill {
             background-color: #3498db;
             height: 100%;
             border-radius: 10px 0 0 10px;
@@ -233,14 +285,15 @@
             transition: width 0.3s ease;
         }
 
-        .top-contributors {
-            margin-top: 5px;
+        .progress-bar-row .contributors {
+            width: 150px;
             font-size: 12px;
             color: #555;
         }
 
-        .top-contributors span {
-            margin-right: 10px;
+        .contributors span {
+            display: block;
+            margin-bottom: 2px;
         }
 
         /* Footer */
@@ -263,7 +316,7 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .dashboard {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
 
             .progress-circle {
@@ -274,6 +327,28 @@
             .progress-circle::before {
                 width: 80px;
                 height: 80px;
+            }
+
+            .progress-bar-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .progress-bar-row .progress-bar-container {
+                margin: 10px 0;
+            }
+
+            .progress-bar-row .contributors {
+                width: 100%;
+            }
+
+            .search-target-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .target-input {
+                max-width: none;
             }
         }
     </style>
@@ -296,6 +371,7 @@
         <button class="toggle-button" data-category="grains">Grains 🌾</button>
         <button class="toggle-button" data-category="protein">Protein 🥩</button>
         <button class="toggle-button" data-category="others">Others 🍕</button>
+        <button class="toggle-button" data-category="recipe">Recipe 🍽️</button>
     </div>
 
     <div id="foodButtons"></div>
@@ -309,7 +385,7 @@
                 <div class="progress-text" id="caloriesText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- Additional info can be added here if needed -->
+                <!-- No additional sub-nutrients for Calories -->
             </div>
         </div>
         <div class="progress-section">
@@ -318,7 +394,7 @@
                 <div class="progress-text" id="proteinText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- Additional info can be added here if needed -->
+                <!-- No additional sub-nutrients for Protein -->
             </div>
         </div>
         <div class="progress-section">
@@ -327,7 +403,8 @@
                 <div class="progress-text" id="carbsText">0%</div>
             </div>
             <div class="sub-nutrients" id="carbsSubNutrients">
-                Sugar: 0g | Fiber: 0g
+                Sugar: 0g
+                Fiber: 0g
             </div>
         </div>
         <div class="progress-section">
@@ -336,7 +413,10 @@
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
-                Saturated: 0g | Unsaturated: 0g | Omega-3: 0g | Omega-6: 0g
+                Saturated: 0g
+                Unsaturated: 0g
+                Omega-3: 0g
+                Omega-6: 0g
             </div>
         </div>
     </div>
@@ -345,99 +425,140 @@
         <!-- Vitamins Progress Bars -->
         <div class="progress-bar-section">
             <h2>Vitamins</h2>
-            <div class="progress-bar" id="vitaminAProgressBar" data-label="Vitamin A" data-current="0" data-total="900">
-                <div class="progress-bar-fill"></div>
+            <!-- Vitamin A -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin A</div>
+                <div class="progress-bar-container" id="vitaminAProgressBar" data-percentage="0" data-current="0" data-total="900">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminATop">
+                    <!-- Top contributors for Vitamin A will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="vitaminATop">
-                <!-- Top contributors for Vitamin A will be displayed here -->
+            <!-- Vitamin B12 -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin B12</div>
+                <div class="progress-bar-container" id="vitaminB12ProgressBar" data-percentage="0" data-current="0" data-total="2.4">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminB12Top">
+                    <!-- Top contributors for Vitamin B12 will be displayed here -->
+                </div>
             </div>
-
-            <div class="progress-bar" id="vitaminB12ProgressBar" data-label="Vitamin B12" data-current="0" data-total="2.4">
-                <div class="progress-bar-fill"></div>
+            <!-- Vitamin C -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin C</div>
+                <div class="progress-bar-container" id="vitaminCProgressBar" data-percentage="0" data-current="0" data-total="90">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminCTop">
+                    <!-- Top contributors for Vitamin C will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="vitaminB12Top">
-                <!-- Top contributors for Vitamin B12 will be displayed here -->
+            <!-- Vitamin D -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin D</div>
+                <div class="progress-bar-container" id="vitaminDProgressBar" data-percentage="0" data-current="0" data-total="20">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminDTop">
+                    <!-- Top contributors for Vitamin D will be displayed here -->
+                </div>
             </div>
-
-            <div class="progress-bar" id="vitaminCProgressBar" data-label="Vitamin C" data-current="0" data-total="90">
-                <div class="progress-bar-fill"></div>
+            <!-- Vitamin E -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin E</div>
+                <div class="progress-bar-container" id="vitaminEProgressBar" data-percentage="0" data-current="0" data-total="15">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminETop">
+                    <!-- Top contributors for Vitamin E will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="vitaminCTop">
-                <!-- Top contributors for Vitamin C will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="vitaminDProgressBar" data-label="Vitamin D" data-current="0" data-total="20">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="vitaminDTop">
-                <!-- Top contributors for Vitamin D will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="vitaminEProgressBar" data-label="Vitamin E" data-current="0" data-total="15">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="vitaminETop">
-                <!-- Top contributors for Vitamin E will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="vitaminKProgressBar" data-label="Vitamin K" data-current="0" data-total="120">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="vitaminKTop">
-                <!-- Top contributors for Vitamin K will be displayed here -->
+            <!-- Vitamin K -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Vitamin K</div>
+                <div class="progress-bar-container" id="vitaminKProgressBar" data-percentage="0" data-current="0" data-total="120">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="vitaminKTop">
+                    <!-- Top contributors for Vitamin K will be displayed here -->
+                </div>
             </div>
         </div>
 
         <!-- Minerals Progress Bars -->
         <div class="progress-bar-section">
             <h2>Minerals</h2>
-            <div class="progress-bar" id="calciumProgressBar" data-label="Calcium" data-current="0" data-total="1000">
-                <div class="progress-bar-fill"></div>
+            <!-- Calcium -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Calcium</div>
+                <div class="progress-bar-container" id="calciumProgressBar" data-percentage="0" data-current="0" data-total="1000">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="calciumTop">
+                    <!-- Top contributors for Calcium will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="calciumTop">
-                <!-- Top contributors for Calcium will be displayed here -->
+            <!-- Magnesium -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Magnesium</div>
+                <div class="progress-bar-container" id="magnesiumProgressBar" data-percentage="0" data-current="0" data-total="420">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="magnesiumTop">
+                    <!-- Top contributors for Magnesium will be displayed here -->
+                </div>
             </div>
-
-            <div class="progress-bar" id="magnesiumProgressBar" data-label="Magnesium" data-current="0" data-total="420">
-                <div class="progress-bar-fill"></div>
+            <!-- Potassium -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Potassium</div>
+                <div class="progress-bar-container" id="potassiumProgressBar" data-percentage="0" data-current="0" data-total="4700">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="potassiumTop">
+                    <!-- Top contributors for Potassium will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="magnesiumTop">
-                <!-- Top contributors for Magnesium will be displayed here -->
+            <!-- Iron -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Iron</div>
+                <div class="progress-bar-container" id="ironProgressBar" data-percentage="0" data-current="0" data-total="18">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="ironTop">
+                    <!-- Top contributors for Iron will be displayed here -->
+                </div>
             </div>
-
-            <div class="progress-bar" id="potassiumProgressBar" data-label="Potassium" data-current="0" data-total="4700">
-                <div class="progress-bar-fill"></div>
+            <!-- Zinc -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Zinc</div>
+                <div class="progress-bar-container" id="zincProgressBar" data-percentage="0" data-current="0" data-total="11">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="zincTop">
+                    <!-- Top contributors for Zinc will be displayed here -->
+                </div>
             </div>
-            <div class="top-contributors" id="potassiumTop">
-                <!-- Top contributors for Potassium will be displayed here -->
+            <!-- Selenium -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Selenium</div>
+                <div class="progress-bar-container" id="seleniumProgressBar" data-percentage="0" data-current="0" data-total="55">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="seleniumTop">
+                    <!-- Top contributors for Selenium will be displayed here -->
+                </div>
             </div>
-
-            <div class="progress-bar" id="ironProgressBar" data-label="Iron" data-current="0" data-total="18">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="ironTop">
-                <!-- Top contributors for Iron will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="zincProgressBar" data-label="Zinc" data-current="0" data-total="11">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="zincTop">
-                <!-- Top contributors for Zinc will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="seleniumProgressBar" data-label="Selenium" data-current="0" data-total="55">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="seleniumTop">
-                <!-- Top contributors for Selenium will be displayed here -->
-            </div>
-
-            <div class="progress-bar" id="sodiumProgressBar" data-label="Sodium" data-current="0" data-total="2300">
-                <div class="progress-bar-fill"></div>
-            </div>
-            <div class="top-contributors" id="sodiumTop">
-                <!-- Top contributors for Sodium will be displayed here -->
+            <!-- Sodium -->
+            <div class="progress-bar-row">
+                <div class="nutrient-name">Sodium</div>
+                <div class="progress-bar-container" id="sodiumProgressBar" data-percentage="0" data-current="0" data-total="2300">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <div class="contributors" id="sodiumTop">
+                    <!-- Top contributors for Sodium will be displayed here -->
+                </div>
             </div>
         </div>
     </div>
@@ -447,7 +568,7 @@
     </footer>
 
     <script>
-        // Food Data
+// Food Data
         const foodData = {
             "Banana (1 medium)": { emoji: "🍌", grams: 120, calories: 105, totalFat: 0.4, saturatedFat: 0.1, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 0, omega6: 30, carbs: 27, sugar: 14, protein: 1.3, fiber: 3.1, vitaminC: 10, potassium: 422, category: "fruits" },
             "Apple (1 medium)": { emoji: "🍎", grams: 182, calories: 95, totalFat: 0.3, saturatedFat: 0, monounsaturatedFat: 0.1, polyunsaturatedFat: 0.1, omega3: 3, omega6: 40, carbs: 25, sugar: 19, protein: 0.5, fiber: 4.4, vitaminC: 8, potassium: 195, category: "fruits" },
@@ -496,7 +617,17 @@
             "Muffin (blueberry, 1)": { emoji: "🧁", grams: 124, calories: 420, totalFat: 16, saturatedFat: 5, monounsaturatedFat: 6, polyunsaturatedFat: 3, omega3: 0, omega6: 0, carbs: 61, sugar: 30, protein: 5, fiber: 2, calcium: 10, potassium: 190, category: "grains" }
         };
 
-        // Daily Values
+        // ======= Recipes Data =======
+        const recipes = {
+            "Fruit Salad": ["Banana (1 medium)", "Apple (1 medium)", "Strawberries (1 cup sliced)"],
+            "Greek Yogurt Parfait": ["Greek Yogurt (1 cup)", "Honey (1 tablespoon)", "Granola Bar (1 bar)"],
+            "Veggie Omelette": ["Egg (1 large)", "Spinach (1 cup cooked)", "Carrot (1 medium)"],
+            "Avocado Toast": ["Bread (1 slice)", "Avocado (1/2 medium)", "Egg (1 large)"],
+            "Protein Smoothie": ["Milk (1 cup)", "Banana (1 medium)", "Peanut Butter (2 tablespoons)"]
+        };
+        // ============================
+
+        // ======= Daily Values =======
         let dailyValues = {
               calories: 2000,
               protein: 50,
@@ -519,12 +650,18 @@
               vitaminE: 15,
               vitaminK: 120
           };
+        // ============================
 
         const buttonContainer = document.getElementById('foodButtons');
         const selectedFoodsContainer = document.getElementById('selectedFoods');
         const toggleButtons = document.querySelectorAll('.toggle-button');
 
         let selectedFoods = new Set();
+
+        // Function to sanitize IDs
+        function sanitizeID(str) {
+            return str.replace(/[^a-zA-Z0-9]/g, '_');
+        }
 
         // Create food buttons with data-food attribute for accurate mapping
         for (let food in foodData) {
@@ -534,6 +671,18 @@
             button.dataset.category = foodData[food].category;
             button.dataset.food = food; // Add data-food attribute
             button.onclick = () => toggleFood(food, button);
+            buttonContainer.appendChild(button);
+        }
+
+        // Create recipe buttons
+        const recipeButton = document.querySelector('.toggle-button[data-category="recipe"]');
+        for (let recipe in recipes) {
+            let button = document.createElement('button');
+            button.textContent = `${recipe} 🍽️`;
+            button.className = 'food-button recipe-button';
+            button.dataset.category = 'recipe';
+            button.dataset.food = recipe; // Add data-food attribute
+            button.onclick = () => toggleRecipe(recipe, button);
             buttonContainer.appendChild(button);
         }
 
@@ -569,13 +718,47 @@
             updateNutritionTable();
         }
 
+        function toggleRecipe(recipe, button) {
+            if (selectedFoods.has(recipe)) {
+                // Deselect recipe and its components
+                selectedFoods.delete(recipe);
+                button.classList.remove('active');
+                recipes[recipe].forEach(food => {
+                    selectedFoods.delete(food);
+                    const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+                    if (foodButton) {
+                        foodButton.classList.remove('active');
+                        removeSlider(food);
+                    }
+                });
+            } else {
+                // Select recipe and its components
+                selectedFoods.add(recipe);
+                button.classList.add('active');
+                recipes[recipe].forEach(food => {
+                    selectedFoods.add(food);
+                    const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+                    if (foodButton) {
+                        foodButton.classList.add('active');
+                        addSlider(food);
+                    }
+                });
+            }
+            updateNutritionTable();
+        }
+
         function addSlider(food) {
+            // Prevent adding multiple sliders for the same food
+            if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
+
             const div = document.createElement('div');
             div.className = 'food-item';
             div.innerHTML = `
                 <label>${foodData[food].emoji} ${food}</label>
-                <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
-                <span id="${sanitizeID(food)}-value">${foodData[food].grams}g</span>
+                <div class="vertical-slider-container">
+                    <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
+                    <span id="${sanitizeID(food)}-value">${foodData[food].grams}g</span>
+                </div>
             `;
             selectedFoodsContainer.appendChild(div);
 
@@ -590,12 +773,8 @@
         function removeSlider(food) {
             const slider = document.getElementById(`${sanitizeID(food)}-slider`);
             if (slider) {
-                slider.parentElement.remove();
+                slider.parentElement.parentElement.remove();
             }
-        }
-
-        function sanitizeID(str) {
-            return str.replace(/[^a-zA-Z0-9]/g, '_');
         }
 
         function updateNutritionTable() {
@@ -635,6 +814,14 @@
             };
 
             selectedFoods.forEach(food => {
+                if (recipes[food]) {
+                    // If it's a recipe, skip since components are already added
+                    return;
+                }
+                if (!foodData[food]) {
+                    // If food data is missing, skip
+                    return;
+                }
                 const sliderValue = parseFloat(document.getElementById(`${sanitizeID(food)}-slider`).value);
                 const ratio = sliderValue / foodData[food].grams;
                 for (let nutrient in totals) {
@@ -648,6 +835,12 @@
                             nutrientContributors[nutrient][food] += foodData[food][nutrient] * ratio;
                         }
                     }
+                }
+
+                // Calculate unsaturated fat (totalFat - saturatedFat)
+                if (nutrientContributors['unsaturatedFat'] !== undefined && foodData[food]['totalFat'] !== undefined && foodData[food]['saturatedFat'] !== undefined) {
+                    const unsatFat = (foodData[food]['totalFat'] - (foodData[food]['saturatedFat'] || 0)) * ratio;
+                    totals['unsaturatedFat'] += unsatFat;
                 }
             });
 
@@ -685,7 +878,7 @@
             if (carbsCircle && carbsText && carbsSub) {
                 carbsCircle.style.setProperty('--progress', carbsProgress);
                 carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-                carbsSub.textContent = `Sugar: ${totals.sugar.toFixed(1)}g | Fiber: ${totals.fiber.toFixed(1)}g`;
+                carbsSub.textContent = `Sugar: ${totals.sugar.toFixed(1)}g\nFiber: ${totals.fiber.toFixed(1)}g`;
             }
 
             // Fat
@@ -696,7 +889,7 @@
             if (fatCircle && fatText && fatSub) {
                 fatCircle.style.setProperty('--progress', fatProgress);
                 fatText.textContent = `${fatProgress.toFixed(0)}%`;
-                fatSub.textContent = `Sat: ${totals.saturatedFat.toFixed(1)}g | Unsat: ${totals.unsaturatedFat.toFixed(1)}g | Omega-3: ${totals.omega3.toFixed(1)}g | Omega-6: ${totals.omega6.toFixed(1)}g`;
+                fatSub.textContent = `Saturated: ${totals.saturatedFat.toFixed(1)}g\nUnsaturated: ${totals.unsaturatedFat.toFixed(1)}g\nOmega-3: ${totals.omega3.toFixed(1)}g\nOmega-6: ${totals.omega6.toFixed(1)}g`;
             }
         }
 
@@ -712,7 +905,7 @@
                     const progress = Math.min((current / total) * 100, 100);
                     const fill = progressBar.querySelector('.progress-bar-fill');
                     fill.style.width = `${progress}%`;
-                    progressBar.setAttribute('data-value', progress.toFixed(0));
+                    progressBar.setAttribute('data-percentage', progress.toFixed(0));
                     progressBar.setAttribute('data-current', current.toFixed(1));
                     progressBar.setAttribute('data-total', total);
 
@@ -742,7 +935,7 @@
                     const progress = Math.min((current / total) * 100, 100);
                     const fill = progressBar.querySelector('.progress-bar-fill');
                     fill.style.width = `${progress}%`;
-                    progressBar.setAttribute('data-value', progress.toFixed(0));
+                    progressBar.setAttribute('data-percentage', progress.toFixed(0));
                     progressBar.setAttribute('data-current', current.toFixed(1));
                     progressBar.setAttribute('data-total', total);
 
@@ -772,21 +965,21 @@
             });
 
             // Reset sub-nutrients info
-            document.getElementById('carbsSubNutrients').textContent = `Sugar: 0g | Fiber: 0g`;
-            document.getElementById('fatSubNutrients').textContent = `Sat: 0g | Unsat: 0g | Omega-3: 0g | Omega-6: 0g`;
+            document.getElementById('carbsSubNutrients').textContent = `Sugar: 0g\nFiber: 0g`;
+            document.getElementById('fatSubNutrients').textContent = `Saturated: 0g\nUnsaturated: 0g\nOmega-3: 0g\nOmega-6: 0g`;
 
             // Reset progress bars
-            const progressBars = document.querySelectorAll('.progress-bar');
+            const progressBars = document.querySelectorAll('.progress-bar-container');
             progressBars.forEach(bar => {
                 const fill = bar.querySelector('.progress-bar-fill');
                 fill.style.width = '0%';
-                bar.setAttribute('data-value', '0');
+                bar.setAttribute('data-percentage', '0');
                 bar.setAttribute('data-current', '0');
-                bar.setAttribute('data-total', bar.getAttribute('data-total'));
+                // data-total remains as is
             });
 
             // Clear top contributors
-            const topContributors = document.querySelectorAll('.top-contributors');
+            const topContributors = document.querySelectorAll('.contributors');
             topContributors.forEach(div => div.innerHTML = '');
         }
 
@@ -821,3 +1014,4 @@
     </script>
 </body>
 </html>
+
