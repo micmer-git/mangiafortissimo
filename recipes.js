@@ -25,4 +25,8 @@ const recipes = {
     "Thai Peanut Salad": ["Spinach (1 cup cooked)", "Peanut Butter (2 tablespoons)", "Soy Milk (1 cup)", "Carrot (1 medium)", "Cucumber (1 medium)"],
     "Indian Lentil Curry": ["Lentils (1 cup cooked)", "Onions (1/2 cup cooked)", "Tomato (1 medium)", "Garlic (2 cloves)", "Olive Oil (1 tablespoon)"],
     "Chickpea Tikka Masala": ["Chickpeas (1 cup cooked)", "Tomato (1 medium)", "Onions (1/2 cup cooked)", "Coconut Milk (1/2 cup)", "Olive Oil (1 tablespoon)"],
+    "Pizza Quattro Formaggi": ["Pizza Dough", "Mozzarella (1/2 cup)", "Cheddar Cheese (1/4 cup)", "Stracciatella (1/4 cup)", "Fiocchi di Latte (Protein Mozzarella, 1/4 cup)", "Olive Oil (1 tablespoon)"],
+    "Pasta Ragù": ["Pasta (1 cup cooked)", "80% Lean Meat (3 oz)", "Tomato (1 medium)", "Onions (1/2 cup cooked)", "Olive Oil (1 tablespoon)"],
+    "Pasta Carbonara": ["Pasta (1 cup cooked)", "Egg (1 large)", "Parma Ham (3 oz)", "Olive Oil (1 tablespoon)", "Cheddar Cheese (1/4 cup)"]
+
 };
