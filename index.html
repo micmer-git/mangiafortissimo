@@ -921,18 +921,18 @@
             if (carbsCircle && carbsText && carbsSub) {
                 carbsCircle.style.setProperty('--progress', carbsProgress);
                 carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g / ${dailyValues.carbs}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
+                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
             }
 
             // Fat
-            const fatProgress = Math.min((totals.totalFat / dailyValues.totalFat) * 100, 100);
+            const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
             const fatCircle = document.getElementById('fatProgress');
             const fatText = document.getElementById('fatText');
             const fatSub = document.getElementById('fatSubNutrients');
             if (fatCircle && fatText && fatSub) {
                 fatCircle.style.setProperty('--progress', fatProgress);
                 fatText.textContent = `${fatProgress.toFixed(0)}%`;
-                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g / ${dailyValues.totalFat}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${(totals.totalFat - totals.saturatedFat).toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(2)}g<br>Omega-6: ${totals.omega6.toFixed(2)}g`;
+                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(1)}g<br>Omega-6: ${totals.omega6.toFixed(1)}g`;
             }
         }
 
