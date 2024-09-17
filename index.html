@@ -14,12 +14,21 @@
             margin: 0 auto;
             padding: 20px;
             background-color: #f4f4f4;
+            font-size: 18px; /* Increased base font size */
         }
 
         h1, h2 {
             color: #2c3e50;
             margin-bottom: 10px;
             text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em; /* Increased font size for h1 */
+        }
+
+        h2 {
+            font-size: 2em; /* Increased font size for h2 */
         }
 
         /* Search and Target Inputs */
@@ -33,17 +42,17 @@
         }
 
         #foodSearch, .target-input {
-            padding: 10px 15px;
+            padding: 12px 18px; /* Increased padding for better touch targets */
             border: none;
             border-radius: 20px;
             background-color: #f0f0f0;
-            font-size: 16px;
+            font-size: 18px; /* Increased font size */
             flex: 1 1 200px;
             box-sizing: border-box;
         }
 
         .target-input {
-            max-width: 200px;
+            max-width: 220px; /* Increased max-width for better visibility */
         }
 
         /* Toggle Buttons (Categories) */
@@ -57,7 +66,7 @@
         }
 
         .toggle-button {
-            padding: 10px 15px;
+            padding: 12px 18px; /* Increased padding */
             background-color: #f0f0f0;
             border: none;
             border-radius: 20px;
@@ -65,6 +74,7 @@
             transition: background-color 0.3s;
             white-space: nowrap;
             flex-shrink: 0;
+            font-size: 16px; /* Increased font size */
         }
 
         .toggle-button.active {
@@ -83,7 +93,7 @@
         }
 
         .food-button {
-            padding: 10px 15px;
+            padding: 12px 18px; /* Increased padding */
             background-color: #f0f0f0;
             border: none;
             border-radius: 20px;
@@ -91,6 +101,7 @@
             transition: background-color 0.3s;
             white-space: nowrap;
             flex-shrink: 0;
+            font-size: 16px; /* Increased font size */
         }
 
         .food-button.active {
@@ -110,12 +121,13 @@
 
         .food-item {
             background-color: white;
-            padding: 10px 15px;
+            padding: 15px 20px; /* Increased padding */
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            font-size: 16px; /* Increased font size */
         }
 
         .food-item label {
@@ -123,6 +135,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            font-size: 16px; /* Increased font size */
         }
 
         .portion-control {
@@ -136,7 +149,7 @@
         }
 
         .portion-control span {
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
             color: #555;
             min-width: 40px;
             text-align: right;
@@ -152,7 +165,7 @@
 
         .progress-section {
             background-color: white;
-            padding: 20px;
+            padding: 25px; /* Increased padding */
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
@@ -160,11 +173,11 @@
         }
 
         .progress-circle {
-            width: 120px;
-            height: 120px;
+            width: 140px; /* Increased size */
+            height: 140px; /* Increased size */
             border-radius: 50%;
             position: relative;
-            margin: 0 auto 10px;
+            margin: 0 auto 15px; /* Increased margin */
             background: conic-gradient(
                 #3498db calc(var(--progress) * 1%),
                 #e0e0e0 0%
@@ -178,10 +191,10 @@
         .progress-circle::before {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 100px;
-            height: 100px;
+            top: 15px; /* Adjusted for increased size */
+            left: 15px; /* Adjusted for increased size */
+            width: 110px; /* Adjusted for increased size */
+            height: 110px; /* Adjusted for increased size */
             border-radius: 50%;
             background-color: #fff;
         }
@@ -192,13 +205,13 @@
             left: 50%;
             transform: translate(-50%, -50%);
             color: #555;
-            font-size: 18px;
+            font-size: 22px; /* Increased font size */
             font-weight: bold;
         }
 
         .sub-nutrients {
             margin-top: 10px;
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
             color: #555;
             text-align: center;
             white-space: pre-line;
@@ -210,43 +223,46 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+            font-size: 16px; /* Increased font size */
         }
 
         .top-contributors span {
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 14px;
+            gap: 5px;
+            font-size: 16px; /* Increased font size */
         }
 
         /* Dashboard - Vitamins and Minerals */
         .progress-bars-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px; /* Increased gap */
             margin-bottom: 20px;
         }
 
         .progress-bar-section {
             background-color: white;
-            padding: 20px;
+            padding: 25px; /* Increased padding */
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .progress-bar-section h2 {
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* Increased margin */
             text-align: center;
+            font-size: 2em; /* Increased font size */
         }
 
         .progress-bar-row {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px; /* Increased margin */
+            font-size: 16px; /* Increased font size */
         }
 
         .progress-bar-row .nutrient-name {
-            width: 100px;
+            width: 120px; /* Increased width */
             text-align: left;
             font-weight: 600;
         }
@@ -254,10 +270,10 @@
         .progress-bar-row .progress-bar-container {
             flex: 1;
             position: relative;
-            height: 20px;
+            height: 25px; /* Increased height */
             background-color: #e0e0e0;
-            border-radius: 10px;
-            margin: 0 10px;
+            border-radius: 12.5px; /* Half of height for full rounding */
+            margin: 0 15px; /* Increased margin */
             display: flex;
             align-items: center;
             justify-content: flex-start; /* Ensure filling from left */
@@ -268,7 +284,7 @@
             position: absolute;
             width: 100%;
             text-align: center;
-            font-size: 12px;
+            font-size: 14px; /* Increased font size */
             color: #333;
             pointer-events: none;
         }
@@ -276,31 +292,33 @@
         .progress-bar-row .progress-bar-fill {
             background-color: #3498db;
             height: 100%;
-            border-radius: 10px 0 0 10px;
+            border-radius: 12.5px 0 0 12.5px; /* Match container rounding */
             width: 0%;
             transition: width 0.3s ease;
         }
 
         .progress-bar-row .contributors {
-            width: 100px;
-            font-size: 16px;
+            width: 120px; /* Increased width */
+            font-size: 16px; /* Increased font size */
             color: #555;
             display: flex;
             gap: 5px;
             justify-content: flex-start;
+            flex-wrap: wrap; /* Allow wrapping for better fit */
         }
 
         .contributors span {
             display: flex;
             align-items: center;
             gap: 3px;
+            font-size: 16px; /* Increased font size */
         }
 
         /* Footer */
         footer {
             text-align: center;
             margin-top: 40px;
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
             color: #777;
         }
 
@@ -316,17 +334,59 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .dashboard {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 20px;
+                padding-bottom: 20px;
+            }
+
+            .progress-section {
+                min-width: 280px; /* Ensure circles don't shrink too much */
             }
 
             .progress-circle {
+                width: 120px; /* Slightly reduced size for mobile */
+                height: 120px;
+            }
+
+            .progress-circle::before {
+                top: 10px;
+                left: 10px;
                 width: 100px;
                 height: 100px;
             }
 
-            .progress-circle::before {
-                width: 80px;
-                height: 80px;
+            .progress-circle .progress-text {
+                font-size: 18px;
+            }
+
+            .sub-nutrients {
+                font-size: 14px;
+            }
+
+            .top-contributors {
+                font-size: 14px;
+            }
+
+            .search-target-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .food-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .portion-control {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .progress-bars-section {
+                gap: 20px;
             }
 
             .progress-bar-row {
@@ -334,47 +394,44 @@
                 align-items: flex-start;
             }
 
+            .progress-bar-row .nutrient-name {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
             .progress-bar-row .progress-bar-container {
-                margin: 10px 0;
+                margin: 0 0 10px 0;
             }
 
             .progress-bar-row .contributors {
-                width: auto;
-                flex-wrap: wrap;
-                justify-content: flex-start;
+                width: 100%;
             }
 
             .contributors span {
-                flex: 1 1 30%;
+                width: 45%; /* Allow two contributors per row */
             }
+        }
 
-            .search-target-container {
-                flex-direction: row;
-                justify-content: center;
-            }
-
-            .food-item {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-
-            .portion-control {
-                flex-direction: row;
-                gap: 5px;
-            }
+        .contributors {
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
     <h1>MangiaFortissimo</h1>
 
-     <div class="search-target-container">
+    <div class="search-target-container">
         <input type="text" id="foodSearch" placeholder="Search foods...">
         <input type="number" id="targetCalories" class="target-input" placeholder="Target Kcal" min="0">
         <input type="number" id="targetProtein" class="target-input" placeholder="Target Protein (g)" min="0">
         <input type="number" id="targetFiber" class="target-input" placeholder="Target Fiber (g)" min="0">
     </div>
-        
+
     <div class="toggle-buttons">
         <button class="toggle-button active" data-category="all">All 🍎</button>
         <button class="toggle-button" data-category="fruits">Fruits 🍓</button>
@@ -412,7 +469,7 @@
                 <div class="progress-text" id="proteinText">0%</div>
             </div>
             <div class="sub-nutrients">
-                <!-- Additional info can be added here if needed -->
+                <div id="proteinRatio">0 / 0 g</div>
             </div>
         </div>
         <div class="progress-section">
@@ -424,7 +481,7 @@
                 <div class="progress-text" id="carbsText">0%</div>
             </div>
             <div class="sub-nutrients" id="carbsSubNutrients">
-                Total Carbs: 0g<br>
+                Total Carbs: 0g / 300g<br>
                 Sugar: 0g<br>
                 Fiber: 0g
             </div>
@@ -438,7 +495,7 @@
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
-                Total Fat: 0g<br>
+                Total Fat: 0g / 65g<br>
                 Saturated: 0g<br>
                 Unsaturated: 0g<br>
                 Omega-3: 0g<br>
@@ -864,18 +921,18 @@
             if (carbsCircle && carbsText && carbsSub) {
                 carbsCircle.style.setProperty('--progress', carbsProgress);
                 carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
+                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g / ${dailyValues.carbs}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
             }
 
             // Fat
-            const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
+            const fatProgress = Math.min((totals.totalFat / dailyValues.totalFat) * 100, 100);
             const fatCircle = document.getElementById('fatProgress');
             const fatText = document.getElementById('fatText');
             const fatSub = document.getElementById('fatSubNutrients');
             if (fatCircle && fatText && fatSub) {
                 fatCircle.style.setProperty('--progress', fatProgress);
                 fatText.textContent = `${fatProgress.toFixed(0)}%`;
-                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(1)}g<br>Omega-6: ${totals.omega6.toFixed(1)}g`;
+                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g / ${dailyValues.totalFat}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${(totals.totalFat - totals.saturatedFat).toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(2)}g<br>Omega-6: ${totals.omega6.toFixed(2)}g`;
             }
         }
 
@@ -928,7 +985,7 @@
                     const sortedContributors = Object.entries(contributors)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 3);
-                    
+
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
@@ -958,7 +1015,7 @@
                     const sortedContributors = Object.entries(contributors)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 3);
-                    
+
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
@@ -1007,7 +1064,7 @@
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             const foodButtons = document.querySelectorAll('.food-button');
-            
+
             foodButtons.forEach(button => {
                 const foodName = button.dataset.food.toLowerCase();
                 if (foodName.includes(searchTerm)) {
