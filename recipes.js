@@ -14,5 +14,7 @@ const recipes = {
     "Spaghetti Aglio e Olio": ["Pasta (1 cup cooked)", "Olive Oil (1 tablespoon)", "Garlic (2 cloves)"],
     "Bresaola Salad": ["Bresaola (3 oz)", "Arugula (1 cup)", "Parmesan (1 tbsp shavings)"],
     "Pasta al Pomodoro": ["Pasta (1 cup cooked)", "Tomato (1 medium)", "Olive Oil (1 tablespoon)"],
-    "Parma Ham and Melon": ["Parma Ham (3 oz)", "Melon (1 cup sliced)"]
+    "Parma Ham and Melon": ["Parma Ham (3 oz)", "Melon (1 cup sliced)"],
+    "Pizza Margherita": ["Pizza Dough", "Tomato (1 medium)", "Mozzarella (1/2 cup)", "Basil (1 tbsp)", "Olive Oil (1 tablespoon)"]
+
 };
