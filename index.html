@@ -8,7 +8,6 @@
         /* Basic Styles */
         body {
             font-family: 'Inter', sans-serif;
-            font-size: 20px; /* Increased from 18px */
             line-height: 1.6;
             color: #333;
             max-width: 1200px;
@@ -16,6 +15,7 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
+
         h1, h2 {
             color: #2c3e50;
             margin-bottom: 10px;
@@ -237,15 +237,18 @@
         .progress-bar-section h2 {
             margin-bottom: 15px;
             text-align: center;
-            font-size: 22px; /* Increased font size */
+        }
+
+        .progress-bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
         .progress-bar-row .nutrient-name {
-            font-size: 18px; /* Increased font size */
-        }
-
-        .progress-bar-row .contributors span {
-            font-size: 16px; /* Increased font size */
+            width: 100px;
+            text-align: left;
+            font-weight: 600;
         }
 
         .progress-bar-row .progress-bar-container {
@@ -312,22 +315,18 @@
 
         /* Responsive Adjustments */
         @media (max-width: 768px) {
-          .dashboard {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      justify-content: center;
-      gap: 20px;
-  }
+            .dashboard {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
 
             .progress-circle {
                 width: 100px;
                 height: 100px;
             }
 
-            .progress-circle {
-                width: 100px;
-                height: 100px;
+            .progress-circle::before {
+                width: 80px;
+                height: 80px;
             }
 
             .progress-bar-row {
@@ -345,21 +344,10 @@
                 justify-content: flex-start;
             }
 
-            .progress-circle .progress-text {
-                font-size: 16px; /* Larger text inside circles */
-            }
-
-            .progress-bar-section h2 {
-                font-size: 20px; /* Increased font size */
-            }
-
-            .progress-bar-row .nutrient-name {
-                font-size: 16px; /* Increased font size */
-            }
-
             .contributors span {
-                font-size: 14px; /* Increased font size */
+                flex: 1 1 30%;
             }
+
             .search-target-container {
                 flex-direction: row;
                 justify-content: center;
@@ -372,7 +360,7 @@
 
             .portion-control {
                 flex-direction: row;
-                gap: 10px; /* Increased gap for better readability */
+                gap: 5px;
             }
         }
     </style>
@@ -386,7 +374,7 @@
         <input type="number" id="targetProtein" class="target-input" placeholder="Target Protein (g)" min="0">
         <input type="number" id="targetFiber" class="target-input" placeholder="Target Fiber (g)" min="0">
     </div>
-
+        
     <div class="toggle-buttons">
         <button class="toggle-button active" data-category="all">All 🍎</button>
         <button class="toggle-button" data-category="fruits">Fruits 🍓</button>
@@ -436,7 +424,6 @@
                 <div class="progress-text" id="carbsText">0%</div>
             </div>
             <div class="sub-nutrients" id="carbsSubNutrients">
-                <span id="carbsRatio">0 / 0</span><br>
                 Total Carbs: 0g<br>
                 Sugar: 0g<br>
                 Fiber: 0g
@@ -451,7 +438,6 @@
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
-                <span id="fatRatio">0 / 0</span><br>
                 Total Fat: 0g<br>
                 Saturated: 0g<br>
                 Unsaturated: 0g<br>
@@ -881,13 +867,6 @@
                 carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
             }
 
-            // For Carbs ratio
-            document.getElementById('carbsRatio').textContent = `${totals.carbs.toFixed(1)} / ${dailyValues.carbs}`;
-
-            // For Fat ratio
-            document.getElementById('fatRatio').textContent = `${totals.totalFat.toFixed(1)} / ${dailyValues.fat}`;
-
-
             // Fat
             const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
             const fatCircle = document.getElementById('fatProgress');
@@ -949,12 +928,11 @@
                     const sortedContributors = Object.entries(contributors)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 3);
-
+                    
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
-                      contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}g</span>`;
-
+                        contributorsHTML += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
                     });
                     topContributorsDiv.innerHTML = contributorsHTML;
                 }
@@ -980,7 +958,7 @@
                     const sortedContributors = Object.entries(contributors)
                         .sort((a, b) => b[1] - a[1])
                         .slice(0, 3);
-
+                    
                     // Build contributors display
                     let contributorsHTML = '';
                     sortedContributors.forEach(([food, value]) => {
@@ -1029,7 +1007,7 @@
         searchInput.addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             const foodButtons = document.querySelectorAll('.food-button');
-
+            
             foodButtons.forEach(button => {
                 const foodName = button.dataset.food.toLowerCase();
                 if (foodName.includes(searchTerm)) {
