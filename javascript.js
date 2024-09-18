@@ -95,7 +95,7 @@ function toggleRecipe(recipe, button, isCustom = false) {
         console.error(`Recipe not found: ${recipe}`);
         return;
     }
-
+    button.classList.remove('active');
     if (selectedFoods.has(recipe)) {
         // Deselect recipe and its components
         selectedFoods.delete(recipe);
@@ -125,15 +125,15 @@ function toggleRecipe(recipe, button, isCustom = false) {
             if (foodButton) {
                 foodButton.classList.add('active');
             }
-            addSlider(food, quantity);
+            addSlider(food, isCustom);
             const slider = document.getElementById(`${sanitizeID(food)}-slider`);
             if (slider) {
                 slider.parentElement.parentElement.classList.add('recipe-ingredient');
             }
         });
+    // This else block is unnecessary and should be removed
+        updateNutritionTable();
     }
-    updateNutritionTable();
-}
 
     function toggleRecipe(recipe, button) {
             if (selectedFoods.has(recipe)) {
@@ -164,18 +164,22 @@ function toggleRecipe(recipe, button, isCustom = false) {
     updateNutritionTable();
         }
 
-    function addSlider(food) {
-            // Prevent adding multiple sliders for the same food
-            if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
+function addSlider(food, isCustomRecipe = false) {
+    // Prevent adding multiple sliders for the same food
+    if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
 
     const div = document.createElement('div');
     div.className = 'food-item';
     div.innerHTML = `
-    <label>${foodData[food].emoji} ${food}</label>
-    <div class="portion-control">
-        <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
+        <div class="food-item-controls">
+            <button class="remove-food" data-food="${food}">❌</button>
+            ${isCustomRecipe ? `<button class="add-to-custom" data-food="${food}">➕</button>` : ''}
+        </div>
+        <label>${foodData[food].emoji} ${food}</label>
+        <div class="portion-control">
+            <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
             <span id="${sanitizeID(food)}-value">${foodData[food].grams}g</span>
-    </div>
+        </div>
     `;
     selectedFoodsContainer.appendChild(div);
 
@@ -183,9 +187,25 @@ function toggleRecipe(recipe, button, isCustom = false) {
     const output = document.getElementById(`${sanitizeID(food)}-value`);
     slider.oninput = function () {
         output.textContent = this.value + 'g';
-    updateNutritionTable();
-            }
-        }
+        updateNutritionTable();
+    }
+
+    // Add event listeners for remove and add buttons
+    const removeBtn = div.querySelector('.remove-food');
+    removeBtn.addEventListener('click', () => {
+        selectedFoods.delete(food);
+        div.remove();
+        updateNutritionTable();
+    });
+
+    const addToCustomBtn = div.querySelector('.add-to-custom');
+    if (addToCustomBtn) {
+        addToCustomBtn.addEventListener('click', () => {
+            // Logic to add the food to the custom recipe
+            // This will be implemented when creating the custom recipe
+        });
+    }
+}
 
     function removeSlider(food) {
             const slider = document.getElementById(`${sanitizeID(food)}-slider`);

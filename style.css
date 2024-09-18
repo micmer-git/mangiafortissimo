@@ -113,6 +113,25 @@ h2 {
     align-items: center;
     justify-content: space-between;
 }
+.food-item-controls {
+    display: flex;
+    gap: 5px;
+    margin-right: 10px;
+}
+.add-to-custom:hover {
+    color: green;
+}
+
+.food-item-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.remove-food:hover {
+    color: red;
+}
 
 .food-item label {
     font-weight: 600;
