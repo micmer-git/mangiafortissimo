@@ -275,8 +275,7 @@
                 }
     carbsSub.innerHTML = `
     <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
-    Total Carbs: ${totals.carbs.toFixed(1)}g<br>
-        Sugar: ${totals.sugar.toFixed(1)}g<br>
+        Sugar: ${totals.sugar.toFixed(1)}g |
             Fiber: ${totals.fiber.toFixed(1)}g
             `;
             }
@@ -296,8 +295,8 @@
                 }
             fatSub.innerHTML = `
             <div id="fatRatio">${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g</div>
-            Total Fat: ${totals.totalFat.toFixed(1)}g<br>
-                Saturated: ${totals.saturatedFat.toFixed(1)}g<br>
+            Total Fat: ${totals.totalFat.toFixed(1)}g |
+                Saturated: ${totals.saturatedFat.toFixed(1)}g |
                     Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>
                         Omega-3: ${totals.omega3.toFixed(1)}g<br>
                             Omega-6: ${totals.omega6.toFixed(1)}g
