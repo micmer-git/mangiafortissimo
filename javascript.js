@@ -77,6 +77,18 @@
             updateNutritionTable();
         });
         });
+function toggleFood(food, button) {
+    if (selectedFoods.has(food)) {
+        selectedFoods.delete(food);
+        button.classList.remove('active');
+        removeSlider(food);
+    } else {
+        selectedFoods.add(food);
+        button.classList.add('active');
+        addSlider(food);
+    }
+    updateNutritionTable();
+}
 function toggleRecipe(recipe, button, isCustom = false) {
     const recipeList = isCustom ? recipes.customRecipes[recipe] : recipes[recipe];
     if (selectedFoods.has(recipe)) {
