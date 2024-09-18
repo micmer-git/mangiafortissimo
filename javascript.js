@@ -274,10 +274,10 @@
         carbsRatio.textContent = `Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
                 }
     carbsSub.innerHTML = `
-    <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
-        Sugar: ${totals.sugar.toFixed(1)}g |
-            Fiber: ${totals.fiber.toFixed(1)}g
-            `;
+    <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g        Sugar: ${totals.sugar.toFixed(1)}g |
+                Fiber: ${totals.fiber.toFixed(1)}g
+                `;</div>
+
             }
 
             // Fat
