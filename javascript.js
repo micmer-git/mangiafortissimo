@@ -77,19 +77,41 @@
             updateNutritionTable();
         });
         });
-
-    function toggleFood(food, button) {
-            if (selectedFoods.has(food)) {
-        selectedFoods.delete(food);
-    button.classList.remove('active');
-    removeSlider(food);
-            } else {
-        selectedFoods.add(food);
-    button.classList.add('active');
-    addSlider(food);
+function toggleRecipe(recipe, button) {
+    if (selectedFoods.has(recipe)) {
+        // Deselect recipe and its components
+        selectedFoods.delete(recipe);
+        button.classList.remove('active');
+        recipes[recipe].forEach(food => {
+            selectedFoods.delete(food);
+            const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+            if (foodButton) {
+                foodButton.classList.remove('active');
             }
+            const slider = document.getElementById(`${sanitizeID(food)}-slider`);
+            if (slider) {
+                slider.parentElement.parentElement.classList.remove('recipe-ingredient');
+            }
+        });
+    } else {
+        // Select recipe and its components
+        selectedFoods.add(recipe);
+        button.classList.add('active');
+        recipes[recipe].forEach(food => {
+            selectedFoods.add(food);
+            const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+            if (foodButton) {
+                foodButton.classList.add('active');
+            }
+            addSlider(food);
+            const slider = document.getElementById(`${sanitizeID(food)}-slider`);
+            if (slider) {
+                slider.parentElement.parentElement.classList.add('recipe-ingredient');
+            }
+        });
+    }
     updateNutritionTable();
-        }
+}
 
     function toggleRecipe(recipe, button) {
             if (selectedFoods.has(recipe)) {
@@ -458,8 +480,9 @@ createRecipeBtn.addEventListener('click', () => {
     if (!recipeName) return;
 
     const customRecipe = Array.from(selectedFoodItems).map(item => {
-        const foodName = item.querySelector('label').textContent.trim();
-        return foodName.substring(foodName.indexOf(' ') + 1); // Remove emoji
+        const foodName = item.querySelector('label').textContent.trim().substring(2); // Remove emoji
+        const sliderValue = item.querySelector('input[type="range"]').value;
+        return { food: foodName, quantity: parseInt(sliderValue) };
     });
 
     // Add the new recipe to the recipes object
