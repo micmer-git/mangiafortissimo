@@ -889,50 +889,25 @@
         }
 
         function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) {
-        // Existing code for Calories and Protein...
-
-        // Carbs
-        const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
-        const carbsCircle = document.getElementById('carbsProgress');
-        const carbsText = document.getElementById('carbsText');
-        const carbsSub = document.getElementById('carbsSubNutrients');
-        if (carbsCircle && carbsText && carbsSub) {
-            carbsCircle.style.setProperty('--progress', carbsProgress);
-            carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-            const carbsRatio = document.getElementById('carbsRatio');
-            if (carbsRatio) {
-                carbsRatio.textContent = `${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
+            // Calories
+            const caloriesProgress = Math.min((totals.calories / targetCalories) * 100, 100);
+            const caloriesCircle = document.getElementById('caloriesProgress');
+            const caloriesText = document.getElementById('caloriesText');
+            const caloriesRatio = document.getElementById('caloriesRatio');
+            if (caloriesCircle && caloriesText && caloriesRatio) {
+                caloriesCircle.style.setProperty('--progress', caloriesProgress);
+                caloriesText.textContent = `${caloriesProgress.toFixed(0)}%`;
+                caloriesRatio.textContent = `${totals.calories.toFixed(0)} / ${targetCalories} kcal`;
             }
-            carbsSub.innerHTML = `
-                <div id="carbsRatio">${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
-                Total Carbs: ${totals.carbs.toFixed(1)}g<br>
-                Sugar: ${totals.sugar.toFixed(1)}g<br>
-                Fiber: ${totals.fiber.toFixed(1)}g
-            `;
-        }
 
-        // Fat
-        const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
-        const fatCircle = document.getElementById('fatProgress');
-        const fatText = document.getElementById('fatText');
-        const fatSub = document.getElementById('fatSubNutrients');
-        if (fatCircle && fatText && fatSub) {
-            fatCircle.style.setProperty('--progress', fatProgress);
-            fatText.textContent = `${fatProgress.toFixed(0)}%`;
-            const fatRatio = document.getElementById('fatRatio');
-            if (fatRatio) {
-                fatRatio.textContent = `${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g`;
+            // Protein
+            const proteinProgress = Math.min((totals.protein / targetProtein) * 100, 100);
+            const proteinCircle = document.getElementById('proteinProgress');
+            const proteinText = document.getElementById('proteinText');
+            if (proteinCircle && proteinText) {
+                proteinCircle.style.setProperty('--progress', proteinProgress);
+                proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
             }
-            fatSub.innerHTML = `
-                <div id="fatRatio">${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g</div>
-                Total Fat: ${totals.totalFat.toFixed(1)}g<br>
-                Saturated: ${totals.saturatedFat.toFixed(1)}g<br>
-                Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>
-                Omega-3: ${totals.omega3.toFixed(1)}g<br>
-                Omega-6: ${totals.omega6.toFixed(1)}g
-            `;
-        }
-    }
 
             // Carbs
             const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
@@ -942,9 +917,19 @@
             if (carbsCircle && carbsText && carbsSub) {
                 carbsCircle.style.setProperty('--progress', carbsProgress);
                 carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
-                carbsSub.innerHTML = `Total Carbs: ${totals.carbs.toFixed(1)}g<br>Sugar: ${totals.sugar.toFixed(1)}g<br>Fiber: ${totals.fiber.toFixed(1)}g`;
+                const carbsRatio = document.getElementById('carbsRatio');
+                if (carbsRatio) {
+                    carbsRatio.textContent = `${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
+                }
+                carbsSub.innerHTML = `
+                    <div id="carbsRatio">${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
+                    Total Carbs: ${totals.carbs.toFixed(1)}g<br>
+                    Sugar: ${totals.sugar.toFixed(1)}g<br>
+                    Fiber: ${totals.fiber.toFixed(1)}g
+                `;
             }
 
+            // Fat
             // Fat
             const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
             const fatCircle = document.getElementById('fatProgress');
@@ -953,7 +938,18 @@
             if (fatCircle && fatText && fatSub) {
                 fatCircle.style.setProperty('--progress', fatProgress);
                 fatText.textContent = `${fatProgress.toFixed(0)}%`;
-                fatSub.innerHTML = `Total Fat: ${totals.totalFat.toFixed(1)}g<br>Saturated: ${totals.saturatedFat.toFixed(1)}g<br>Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>Omega-3: ${totals.omega3.toFixed(1)}g<br>Omega-6: ${totals.omega6.toFixed(1)}g`;
+                const fatRatio = document.getElementById('fatRatio');
+                if (fatRatio) {
+                    fatRatio.textContent = `${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g`;
+                }
+                fatSub.innerHTML = `
+                    <div id="fatRatio">${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g</div>
+                    Total Fat: ${totals.totalFat.toFixed(1)}g<br>
+                    Saturated: ${totals.saturatedFat.toFixed(1)}g<br>
+                    Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>
+                    Omega-3: ${totals.omega3.toFixed(1)}g<br>
+                    Omega-6: ${totals.omega6.toFixed(1)}g
+                `;
             }
         }
 
