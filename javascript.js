@@ -91,6 +91,11 @@ function toggleFood(food, button) {
 }
 function toggleRecipe(recipe, button, isCustom = false) {
     const recipeList = isCustom ? recipes.customRecipes[recipe] : recipes[recipe];
+    if (!recipeList) {
+        console.error(`Recipe not found: ${recipe}`);
+        return;
+    }
+
     if (selectedFoods.has(recipe)) {
         // Deselect recipe and its components
         selectedFoods.delete(recipe);
