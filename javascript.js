@@ -304,8 +304,10 @@
             }
         }
 
-                            function updateTopContributors(totals, nutrientContributors) {
+        function updateTopContributors(totals, nutrientContributors) {
             const macronutrients = ['calories', 'protein', 'carbs', 'fat'];
+            console.log('Updating top contributors for fat:', nutrientContributors.fat);
+
             macronutrients.forEach(nutrient => {
                 const contributors = nutrientContributors[nutrient];
                             const sorted = Object.entries(contributors)
@@ -441,3 +443,59 @@
                                     targetCaloriesInput.addEventListener('input', updateNutritionTable);
                                     targetProteinInput.addEventListener('input', updateNutritionTable);
                                     targetFiberInput.addEventListener('input', updateNutritionTable);
+
+// Custom Recipe Creation
+const createRecipeBtn = document.getElementById('createRecipeBtn');
+
+createRecipeBtn.addEventListener('click', () => {
+    const selectedFoodItems = document.querySelectorAll('.food-item');
+    if (selectedFoodItems.length === 0) {
+        alert('Please select some foods before creating a recipe.');
+        return;
+    }
+
+    const recipeName = prompt('Enter a name for your custom recipe:');
+    if (!recipeName) return;
+
+    const customRecipe = Array.from(selectedFoodItems).map(item => {
+        const foodName = item.querySelector('label').textContent.trim();
+        return foodName.substring(foodName.indexOf(' ') + 1); // Remove emoji
+    });
+
+    // Add the new recipe to the recipes object
+    recipes[recipeName] = customRecipe;
+
+    // Create a new recipe button
+    const recipeButton = document.createElement('button');
+    recipeButton.textContent = `${recipeName} 🍽️`;
+    recipeButton.className = 'food-button recipe-button';
+    recipeButton.dataset.category = 'recipe';
+    recipeButton.dataset.food = recipeName;
+    recipeButton.onclick = () => toggleRecipe(recipeName, recipeButton);
+    buttonContainer.appendChild(recipeButton);
+
+    // Save the updated recipes to localStorage
+    localStorage.setItem('customRecipes', JSON.stringify(recipes));
+
+    alert('Custom recipe created successfully!');
+});
+
+// Load custom recipes from localStorage on page load
+window.addEventListener('load', () => {
+    const savedRecipes = localStorage.getItem('customRecipes');
+    if (savedRecipes) {
+        const parsedRecipes = JSON.parse(savedRecipes);
+        Object.assign(recipes, parsedRecipes);
+
+        // Create buttons for saved recipes
+        for (let recipe in parsedRecipes) {
+            const recipeButton = document.createElement('button');
+            recipeButton.textContent = `${recipe} 🍽️`;
+            recipeButton.className = 'food-button recipe-button';
+            recipeButton.dataset.category = 'recipe';
+            recipeButton.dataset.food = recipe;
+            recipeButton.onclick = () => toggleRecipe(recipe, recipeButton);
+            buttonContainer.appendChild(recipeButton);
+        }
+    }
+});

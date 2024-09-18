@@ -358,4 +358,19 @@ footer a:hover {
         gap: 5px;
     }
 }
+.create-recipe-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
+.create-recipe-btn:hover {
+    background-color: #2980b9;
+}
