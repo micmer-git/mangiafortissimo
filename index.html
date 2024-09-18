@@ -7,15 +7,15 @@
     <style>
         /* Basic Styles */
         body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-            font-size: 18px; /* Increased base font size */
-        }
+                font-family: 'Inter', sans-serif;
+                line-height: 1.6;
+                color: #333;
+                font-size: 18px; /* Increased font size */
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f4f4f4;
+            }
 
         h1, h2 {
             color: #2c3e50;
@@ -334,28 +334,21 @@
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .dashboard {
-                display: flex;
-                flex-direction: row;
-                overflow-x: auto;
-                gap: 20px;
-                padding-bottom: 20px;
+                grid-template-columns: repeat(4, 1fr); /* Ensure four circles in one line */
             }
-
+            .progress-circle {
+                width: 80px; /* Reduced size for mobile */
+                height: 80px;
+            }
+            .progress-circle::before {
+                width: 60px;
+                height: 60px;
+            }
+        }
             .progress-section {
                 min-width: 280px; /* Ensure circles don't shrink too much */
             }
 
-            .progress-circle {
-                width: 120px; /* Slightly reduced size for mobile */
-                height: 120px;
-            }
-
-            .progress-circle::before {
-                top: 10px;
-                left: 10px;
-                width: 100px;
-                height: 100px;
-            }
 
             .progress-circle .progress-text {
                 font-size: 18px;
@@ -495,14 +488,14 @@
                 <div class="progress-text" id="fatText">0%</div>
             </div>
             <div class="sub-nutrients" id="fatSubNutrients">
-                Total Fat: 0g / 65g<br>
+                <div id="fatRatio">0 / 0 g</div> <!-- Added ratio display -->
+                Total Fat: 0g<br>
                 Saturated: 0g<br>
                 Unsaturated: 0g<br>
                 Omega-3: 0g<br>
                 Omega-6: 0g
             </div>
         </div>
-    </div>
 
     <div class="progress-bars-section">
         <!-- Vitamins Progress Bars -->
@@ -653,7 +646,6 @@
     <script src="foodData.js"></script>
     <script src="recipes.js"></script>
     <script>
-        <!-- Import external data files -->
 
 
         // ======= Daily Values =======
@@ -827,6 +819,10 @@
 
             // Track contributors for vitamins and minerals
             let nutrientContributors = {
+                calories: {},
+                protein: {},
+                carbs: {},
+                fat: {},
                 vitaminA: {},
                 vitaminB12: {},
                 vitaminC: {},
@@ -886,32 +882,57 @@
             updateMacroCircles(totals, targetCalories, targetProtein, targetFiber);
 
             // Update Top 3 Contributors for Macronutrients
-            updateTopContributors(totals);
+            updateTopContributors(totals, nutrientContributors);
 
             // Update Vitamins and Minerals Progress Bars
             updateVitaminsAndMinerals(totals, nutrientContributors);
         }
 
         function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) {
-            // Calories
-            const caloriesProgress = Math.min((totals.calories / targetCalories) * 100, 100);
-            const caloriesCircle = document.getElementById('caloriesProgress');
-            const caloriesText = document.getElementById('caloriesText');
-            const caloriesRatio = document.getElementById('caloriesRatio');
-            if (caloriesCircle && caloriesText && caloriesRatio) {
-                caloriesCircle.style.setProperty('--progress', caloriesProgress);
-                caloriesText.textContent = `${caloriesProgress.toFixed(0)}%`;
-                caloriesRatio.textContent = `${totals.calories.toFixed(0)} / ${targetCalories} kcal`;
-            }
+        // Existing code for Calories and Protein...
 
-            // Protein
-            const proteinProgress = Math.min((totals.protein / targetProtein) * 100, 100);
-            const proteinCircle = document.getElementById('proteinProgress');
-            const proteinText = document.getElementById('proteinText');
-            if (proteinCircle && proteinText) {
-                proteinCircle.style.setProperty('--progress', proteinProgress);
-                proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
+        // Carbs
+        const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
+        const carbsCircle = document.getElementById('carbsProgress');
+        const carbsText = document.getElementById('carbsText');
+        const carbsSub = document.getElementById('carbsSubNutrients');
+        if (carbsCircle && carbsText && carbsSub) {
+            carbsCircle.style.setProperty('--progress', carbsProgress);
+            carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
+            const carbsRatio = document.getElementById('carbsRatio');
+            if (carbsRatio) {
+                carbsRatio.textContent = `${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
             }
+            carbsSub.innerHTML = `
+                <div id="carbsRatio">${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
+                Total Carbs: ${totals.carbs.toFixed(1)}g<br>
+                Sugar: ${totals.sugar.toFixed(1)}g<br>
+                Fiber: ${totals.fiber.toFixed(1)}g
+            `;
+        }
+
+        // Fat
+        const fatProgress = Math.min((totals.totalFat / dailyValues.fat) * 100, 100);
+        const fatCircle = document.getElementById('fatProgress');
+        const fatText = document.getElementById('fatText');
+        const fatSub = document.getElementById('fatSubNutrients');
+        if (fatCircle && fatText && fatSub) {
+            fatCircle.style.setProperty('--progress', fatProgress);
+            fatText.textContent = `${fatProgress.toFixed(0)}%`;
+            const fatRatio = document.getElementById('fatRatio');
+            if (fatRatio) {
+                fatRatio.textContent = `${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g`;
+            }
+            fatSub.innerHTML = `
+                <div id="fatRatio">${totals.totalFat.toFixed(1)} / ${dailyValues.fat} g</div>
+                Total Fat: ${totals.totalFat.toFixed(1)}g<br>
+                Saturated: ${totals.saturatedFat.toFixed(1)}g<br>
+                Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>
+                Omega-3: ${totals.omega3.toFixed(1)}g<br>
+                Omega-6: ${totals.omega6.toFixed(1)}g
+            `;
+        }
+    }
 
             // Carbs
             const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
@@ -936,30 +957,20 @@
             }
         }
 
-        function updateTopContributors(totals) {
-            // Define top contributors for macronutrients
+        function updateTopContributors(totals, nutrientContributors) {
             const macronutrients = ['calories', 'protein', 'carbs', 'fat'];
             macronutrients.forEach(nutrient => {
-                let contributors = {};
-                for (let food in foodData) {
-                    if (foodData[food][nutrient] !== undefined && selectedFoods.has(food)) {
-                        contributors[food] = foodData[food][nutrient];
-                    }
-                }
-                // Sort and get top 3
-                const sorted = Object.entries(contributors).sort((a, b) => b[1] - a[1]).slice(0, 3);
-                // Display above the respective progress circle
+                const contributors = nutrientContributors[nutrient];
+                const sorted = Object.entries(contributors)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3);
                 const topContributorsDiv = document.getElementById(`${nutrient}Top`);
                 if (topContributorsDiv) {
                     let html = '';
                     sorted.forEach(([food, value]) => {
-                        if (nutrient === 'omega3' || nutrient === 'omega6') {
-                            html += `${foodData[food].emoji} ${value.toFixed(2)}g `;
-                        } else {
-                            html += `${foodData[food].emoji} ${value.toFixed(1)} `;
-                        }
+                        html += `<span>${foodData[food].emoji} ${value.toFixed(1)}</span>`;
                     });
-                    topContributorsDiv.innerHTML = html.trim();
+                    topContributorsDiv.innerHTML = html;
                 }
             });
         }
