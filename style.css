@@ -235,26 +235,24 @@ h2 {
 
 .progress-bar-row {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 15px;
-    font-size: 14px;
+    margin-bottom: 12px;
+    font-size: 15px;
 }
 
 .progress-bar-row .nutrient-name {
-    width: 100%;
+    width: 90px;
     text-align: left;
     font-weight: 600;
-    margin-bottom: 5px;
 }
 
 .progress-bar-row .progress-bar-container {
-    width: 60%;
+    flex: 1;
+    position: relative;
     height: 20px;
     background-color: #e0e0e0;
     border-radius: 10px;
-    margin-right: 10px;
-    position: relative;
+    margin: 0 10px;
     overflow: visible;
 }
 
@@ -277,11 +275,10 @@ h2 {
 }
 
 .progress-bar-row .contributors {
-    width: calc(40% - 10px);
+    width: 100px;
     font-size: 14px;
     color: #555;
     display: flex;
-    flex-wrap: wrap;
     gap: 5px;
     justify-content: flex-end;
 }
@@ -290,19 +287,6 @@ h2 {
     display: flex;
     align-items: center;
     gap: 3px;
-}
-
-@media (max-width: 768px) {
-    .progress-bar-row .progress-bar-container {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 5px;
-    }
-
-    .progress-bar-row .contributors {
-        width: 100%;
-        justify-content: flex-start;
-    }
 }
 
 /* Footer */
