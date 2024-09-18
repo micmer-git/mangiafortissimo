@@ -77,12 +77,14 @@
             updateNutritionTable();
         });
         });
-function toggleRecipe(recipe, button) {
+function toggleRecipe(recipe, button, isCustom = false) {
+    const recipeList = isCustom ? recipes.customRecipes[recipe] : recipes[recipe];
     if (selectedFoods.has(recipe)) {
         // Deselect recipe and its components
         selectedFoods.delete(recipe);
         button.classList.remove('active');
-        recipes[recipe].forEach(food => {
+        recipeList.forEach(item => {
+            const food = isCustom ? item.food : item;
             selectedFoods.delete(food);
             const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
             if (foodButton) {
@@ -92,18 +94,21 @@ function toggleRecipe(recipe, button) {
             if (slider) {
                 slider.parentElement.parentElement.classList.remove('recipe-ingredient');
             }
+            removeSlider(food);
         });
     } else {
         // Select recipe and its components
         selectedFoods.add(recipe);
         button.classList.add('active');
-        recipes[recipe].forEach(food => {
+        recipeList.forEach(item => {
+            const food = isCustom ? item.food : item;
+            const quantity = isCustom ? item.quantity : 100;
             selectedFoods.add(food);
             const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
             if (foodButton) {
                 foodButton.classList.add('active');
             }
-            addSlider(food);
+            addSlider(food, quantity);
             const slider = document.getElementById(`${sanitizeID(food)}-slider`);
             if (slider) {
                 slider.parentElement.parentElement.classList.add('recipe-ingredient');
@@ -485,20 +490,23 @@ createRecipeBtn.addEventListener('click', () => {
         return { food: foodName, quantity: parseInt(sliderValue) };
     });
 
-    // Add the new recipe to the recipes object
-    recipes[recipeName] = customRecipe;
+    // Add the new recipe to a separate custom recipes object
+    if (!recipes.customRecipes) {
+        recipes.customRecipes = {};
+    }
+    recipes.customRecipes[recipeName] = customRecipe;
 
     // Create a new recipe button
     const recipeButton = document.createElement('button');
     recipeButton.textContent = `${recipeName} 🍽️`;
     recipeButton.className = 'food-button recipe-button';
-    recipeButton.dataset.category = 'recipe';
+    recipeButton.dataset.category = 'custom';
     recipeButton.dataset.food = recipeName;
-    recipeButton.onclick = () => toggleRecipe(recipeName, recipeButton);
+    recipeButton.onclick = () => toggleRecipe(recipeName, recipeButton, true);
     buttonContainer.appendChild(recipeButton);
 
     // Save the updated recipes to localStorage
-    localStorage.setItem('customRecipes', JSON.stringify(recipes));
+    localStorage.setItem('customRecipes', JSON.stringify(recipes.customRecipes));
 
     alert('Custom recipe created successfully!');
 });
@@ -507,17 +515,16 @@ createRecipeBtn.addEventListener('click', () => {
 window.addEventListener('load', () => {
     const savedRecipes = localStorage.getItem('customRecipes');
     if (savedRecipes) {
-        const parsedRecipes = JSON.parse(savedRecipes);
-        Object.assign(recipes, parsedRecipes);
+        recipes.customRecipes = JSON.parse(savedRecipes);
 
-        // Create buttons for saved recipes
-        for (let recipe in parsedRecipes) {
+        // Create buttons for saved custom recipes
+        for (let recipe in recipes.customRecipes) {
             const recipeButton = document.createElement('button');
             recipeButton.textContent = `${recipe} 🍽️`;
             recipeButton.className = 'food-button recipe-button';
-            recipeButton.dataset.category = 'recipe';
+            recipeButton.dataset.category = 'custom';
             recipeButton.dataset.food = recipe;
-            recipeButton.onclick = () => toggleRecipe(recipe, recipeButton);
+            recipeButton.onclick = () => toggleRecipe(recipe, recipeButton, true);
             buttonContainer.appendChild(recipeButton);
         }
     }
