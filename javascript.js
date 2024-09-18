@@ -95,7 +95,7 @@ function toggleRecipe(recipe, button, isCustom = false) {
         console.error(`Recipe not found: ${recipe}`);
         return;
     }
-    button.classList.remove('active');
+
     if (selectedFoods.has(recipe)) {
         // Deselect recipe and its components
         selectedFoods.delete(recipe);
@@ -106,10 +106,6 @@ function toggleRecipe(recipe, button, isCustom = false) {
             const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
             if (foodButton) {
                 foodButton.classList.remove('active');
-            }
-            const slider = document.getElementById(`${sanitizeID(food)}-slider`);
-            if (slider) {
-                slider.parentElement.parentElement.classList.remove('recipe-ingredient');
             }
             removeSlider(food);
         });
@@ -125,15 +121,12 @@ function toggleRecipe(recipe, button, isCustom = false) {
             if (foodButton) {
                 foodButton.classList.add('active');
             }
-            addSlider(food, isCustom);
-            const slider = document.getElementById(`${sanitizeID(food)}-slider`);
-            if (slider) {
-                slider.parentElement.parentElement.classList.add('recipe-ingredient');
-            }
+            addSlider(food, isCustom, quantity);
         });
-    // This else block is unnecessary and should be removed
-        updateNutritionTable();
     }
+
+    updateNutritionTable();
+}
 
     function toggleRecipe(recipe, button) {
             if (selectedFoods.has(recipe)) {
