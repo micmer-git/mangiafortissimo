@@ -271,10 +271,10 @@
     carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
     const carbsRatio = document.getElementById('carbsRatio');
     if (carbsRatio) {
-        carbsRatio.textContent = `${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
+        carbsRatio.textContent = `Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g`;
                 }
     carbsSub.innerHTML = `
-    <div id="carbsRatio">${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
+    <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
     Total Carbs: ${totals.carbs.toFixed(1)}g<br>
         Sugar: ${totals.sugar.toFixed(1)}g<br>
             Fiber: ${totals.fiber.toFixed(1)}g
@@ -442,4 +442,3 @@
                                     targetCaloriesInput.addEventListener('input', updateNutritionTable);
                                     targetProteinInput.addEventListener('input', updateNutritionTable);
                                     targetFiberInput.addEventListener('input', updateNutritionTable);
-                         
