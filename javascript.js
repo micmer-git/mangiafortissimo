@@ -105,12 +105,13 @@ function toggleRecipe(recipe, button, isCustom = false) {
         button.classList.remove('active');
         recipeList.forEach(item => {
             const food = isCustom ? item.food : item;
-            selectedFoods.delete(food);
-            const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+            const foodName = food.replace(/^🍽️ /, ''); // Remove emoji if present
+            selectedFoods.delete(foodName);
+            const foodButton = document.querySelector(`.food-button[data-food="${foodName}"]`);
             if (foodButton) {
                 foodButton.classList.remove('active');
             }
-            removeSlider(food);
+            removeSlider(foodName);
         });
     } else {
         // Select recipe and its components
@@ -118,14 +119,15 @@ function toggleRecipe(recipe, button, isCustom = false) {
         button.classList.add('active');
         recipeList.forEach(item => {
             const food = isCustom ? item.food : item;
+            const foodName = food.replace(/^🍽️ /, ''); // Remove emoji if present
             const quantity = isCustom ? item.quantity : 100;
-            selectedFoods.add(food);
-            const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+            selectedFoods.add(foodName);
+            const foodButton = document.querySelector(`.food-button[data-food="${foodName}"]`);
             if (foodButton) {
                 foodButton.classList.add('active');
             }
             // Pass the specific quantity for accurate nutrient calculation
-            addSlider(food, isCustom, quantity);
+            addSlider(foodName, isCustom, quantity);
         });
     }
 
@@ -133,32 +135,33 @@ function toggleRecipe(recipe, button, isCustom = false) {
 }
 
 function addSlider(food, isCustomRecipe = false, initialValue = null) {
-    if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
+    const foodName = food.replace(/^🍽️ /, ''); // Remove emoji if present
+    if (document.getElementById(`${sanitizeID(foodName)}-slider`)) return;
 
     const div = document.createElement('div');
     div.className = 'food-item';
 
     // Check if the food exists in foodData, if not, use a default emoji
-    const foodEmoji = foodData[food] ? foodData[food].emoji : '🍽️';
+    const foodEmoji = foodData[foodName] ? foodData[foodName].emoji : '🍽️';
 
     // Use the grams value from foodData if available, otherwise use the provided initialValue or default to 100
-    const defaultValue = foodData[food] ? foodData[food].grams : (initialValue || 100);
+    const defaultValue = foodData[foodName] ? foodData[foodName].grams : (initialValue || 100);
 
     div.innerHTML = `
         <div class="food-item-controls">
-            <button class="remove-food" data-food="${food}">❌</button>
-            <button class="flag-food" data-food="${food}">🚩</button>
+            <button class="remove-food" data-food="${foodName}">❌</button>
+            <button class="flag-food" data-food="${foodName}">🚩</button>
         </div>
-        <label>${foodEmoji} ${food}</label>
+        <label>${foodEmoji} ${foodName}</label>
         <div class="portion-control">
-            <input type="range" min="0" max="500" value="${defaultValue}" id="${sanitizeID(food)}-slider">
-            <span id="${sanitizeID(food)}-value">${defaultValue}g</span>
+            <input type="range" min="0" max="500" value="${defaultValue}" id="${sanitizeID(foodName)}-slider">
+            <span id="${sanitizeID(foodName)}-value">${defaultValue}g</span>
         </div>
     `;
     selectedFoodsContainer.appendChild(div);
 
-    const slider = document.getElementById(`${sanitizeID(food)}-slider`);
-    const output = document.getElementById(`${sanitizeID(food)}-value`);
+    const slider = document.getElementById(`${sanitizeID(foodName)}-slider`);
+    const output = document.getElementById(`${sanitizeID(foodName)}-value`);
     slider.oninput = function () {
         output.textContent = this.value + 'g';
         updateNutritionTable();
@@ -166,7 +169,7 @@ function addSlider(food, isCustomRecipe = false, initialValue = null) {
 
     const removeBtn = div.querySelector('.remove-food');
     removeBtn.addEventListener('click', () => {
-        selectedFoods.delete(food);
+        selectedFoods.delete(foodName);
         div.remove();
         updateNutritionTable();
     });
