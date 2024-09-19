@@ -59,26 +59,26 @@
         buttonContainer.appendChild(button);
     }
 
-toggleButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const category = button.dataset.category;
-        toggleButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+        toggleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.dataset.category;
+            toggleButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
 
-        const foodButtons = document.querySelectorAll('.food-button');
-        foodButtons.forEach(foodButton => {
-            const foodCategory = foodButton.dataset.category;
-            if (category === 'all' || 
-                (category === 'custom' && foodCategory === 'custom') || 
-                (category !== 'custom' && foodCategory === category)) {
-                foodButton.style.display = 'inline-block';
-            } else {
-                foodButton.style.display = 'none';
-            }
+            const foodButtons = document.querySelectorAll('.food-button');
+            foodButtons.forEach(foodButton => {
+                const foodCategory = foodButton.dataset.category;
+                if (category === 'all' || 
+                    (category === 'custom' && foodCategory === 'custom') || 
+                    (category !== 'custom' && foodCategory === category)) {
+                    foodButton.style.display = 'inline-block';
+                } else {
+                    foodButton.style.display = 'none';
+                }
+            });
+            updateNutritionTable();
         });
-        updateNutritionTable();
-    });
-});
+        });
 function toggleFood(food, button) {
     if (selectedFoods.has(food)) {
         selectedFoods.delete(food);
@@ -202,50 +202,63 @@ function addSlider(food, isCustomRecipe = false, initialValue = 100) {
 
     // Track contributors for vitamins and minerals
     let nutrientContributors = {
-        calories: {}, protein: {}, carbs: {}, fat: {},
-        vitaminA: {}, vitaminB12: {}, vitaminC: {}, vitaminD: {}, vitaminE: {}, vitaminK: {},
-        calcium: {}, magnesium: {}, potassium: {}, iron: {}, zinc: {}, selenium: {}, sodium: {}
+        calories: { },
+    protein: { },
+    carbs: { },
+    fat: { },
+    vitaminA: { },
+    vitaminB12: { },
+    vitaminC: { },
+    vitaminD: { },
+    vitaminE: { },
+    vitaminK: { },
+    calcium: { },
+    magnesium: { },
+    potassium: { },
+    iron: { },
+    zinc: { },
+    selenium: { },
+    sodium: { }
             };
 
             selectedFoods.forEach(food => {
-                let foodItems = [food];
-                if (recipes[food] || (recipes.customRecipes && recipes.customRecipes[food])) {
-                    // If it's a recipe, process its components
-                    foodItems = recipes[food] || recipes.customRecipes[food];
+                if (recipes[food]) {
+                    // If it's a recipe, skip since components are already added
+                    return;
                 }
-
-                foodItems.forEach(item => {
-                    const foodName = typeof item === 'object' ? item.food : item;
-                    const quantity = typeof item === 'object' ? item.quantity : 100;
-
-                    if (!foodData[foodName]) {
-                        console.warn(`Missing food data for: ${foodName}`);
-                        return;
-                    }
-
-                    const ratio = quantity / foodData[foodName].grams;
-                    for (let nutrient in totals) {
-                        if (foodData[foodName][nutrient] !== undefined) {
-                            const value = (nutrient === 'omega3' || nutrient === 'omega6') 
-                                ? (foodData[foodName][nutrient] * ratio) / 1000 
-                                : foodData[foodName][nutrient] * ratio;
-                            totals[nutrient] += value;
-
-                            if (nutrientContributors[nutrient] !== undefined) {
-                                if (!nutrientContributors[nutrient][food]) {
-                                    nutrientContributors[nutrient][food] = 0;
-                                }
-                                nutrientContributors[nutrient][food] += value;
+    if (!foodData[food]) {
+                    // If food data is missing, skip
+                    return;
+                }
+    const sliderValue = parseFloat(document.getElementById(`${sanitizeID(food)}-slider`).value);
+    const ratio = sliderValue / foodData[food].grams;
+    for (let nutrient in totals) {
+                    if (foodData[food][nutrient] !== undefined) {
+                        // Convert Omegas from mg to g
+                        if (nutrient === 'omega3' || nutrient === 'omega6') {
+        totals[nutrient] += (foodData[food][nutrient] * ratio) / 1000;
+                        } else {
+        totals[nutrient] += foodData[food][nutrient] * ratio;
+                        }
+    // Track contributors for vitamins and minerals
+    if (nutrientContributors[nutrient] !== undefined) {
+                            if (!nutrientContributors[nutrient][food]) {
+        nutrientContributors[nutrient][food] = 0;
+                            }
+    if (nutrient === 'omega3' || nutrient === 'omega6') {
+        nutrientContributors[nutrient][food] += (foodData[food][nutrient] * ratio) / 1000;
+                            } else {
+        nutrientContributors[nutrient][food] += foodData[food][nutrient] * ratio;
                             }
                         }
                     }
+                }
 
-                    // Calculate unsaturated fat
-                    if (foodData[foodName]['totalFat'] !== undefined && foodData[foodName]['saturatedFat'] !== undefined) {
-                        const unsatFat = (foodData[foodName]['totalFat'] - (foodData[foodName]['saturatedFat'] || 0)) * ratio;
-                        totals['unsaturatedFat'] += unsatFat;
-                    }
-                });
+    // Calculate unsaturated fat (totalFat - saturatedFat)
+    if (nutrientContributors['unsaturatedFat'] !== undefined && foodData[food]['totalFat'] !== undefined && foodData[food]['saturatedFat'] !== undefined) {
+                    const unsatFat = (foodData[food]['totalFat'] - (foodData[food]['saturatedFat'] || 0)) * ratio;
+    totals['unsaturatedFat'] += unsatFat;
+                }
             });
 
     // Update Macronutrient Circles
