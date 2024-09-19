@@ -63,8 +63,10 @@ h2 {
 }
 
 .toggle-button.active {
-    background-color: #3498db;
+    background-color: #4CAF50;
     color: white;
+    border: none;
+    border-radius: 5px;
 }
 
 /* Food Buttons */
@@ -87,10 +89,40 @@ h2 {
     white-space: nowrap;
     flex-shrink: 0;
 }
+.food-button:hover,
+.toggle-button:hover,
+.create-recipe-btn:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
 
 .food-button.active {
     background-color: #2ecc71;
     color: white;
+}
+
+/* Selected food item styles */
+.food-item.active {
+    border: 2px solid #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Flagged food items */
+.flagged-for-recipe {
+    background-color: #ffeb3b;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .progress-section {
+        margin-bottom: 20px;
+    }
 }
 
 /* Selected Foods (Vertical Scrollable Portion Controls) */
@@ -190,17 +222,15 @@ h2 {
 }
 
 .progress-circle {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
     position: relative;
-    margin: 0 auto 10px;
-    background: conic-gradient(#3498db calc(var(--progress) * 1%),
-            #e0e0e0 0%);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: conic-gradient(#4CAF50 var(--progress, 0%), #ddd 0%);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.3s ease;
+    transition: background 0.5s ease;
 }
 
 .progress-circle::before {
@@ -503,9 +533,11 @@ footer a:hover {
         height: 50px;
     }
 
-    .progress-text {
-        font-size: 12px;
-    }
+  .progress-text {
+      position: absolute;
+      font-size: 1.5em;
+      font-weight: bold;
+  }
 
     .nutrition-details {
         font-size: 10px;
