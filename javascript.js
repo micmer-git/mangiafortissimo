@@ -132,7 +132,7 @@ function toggleRecipe(recipe, button, isCustom = false) {
     updateNutritionTable();
 }
 
-function addSlider(food, isCustomRecipe = false, initialValue = 100) {
+function addSlider(food, isCustomRecipe = false, initialValue = null) {
     if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
 
     const div = document.createElement('div');
@@ -141,6 +141,9 @@ function addSlider(food, isCustomRecipe = false, initialValue = 100) {
     // Check if the food exists in foodData, if not, use a default emoji
     const foodEmoji = foodData[food] ? foodData[food].emoji : '🍽️';
 
+    // Use the grams value from foodData if available, otherwise use the provided initialValue or default to 100
+    const defaultValue = foodData[food] ? foodData[food].grams : (initialValue || 100);
+
     div.innerHTML = `
         <div class="food-item-controls">
             <button class="remove-food" data-food="${food}">❌</button>
@@ -148,8 +151,8 @@ function addSlider(food, isCustomRecipe = false, initialValue = 100) {
         </div>
         <label>${foodEmoji} ${food}</label>
         <div class="portion-control">
-            <input type="range" min="0" max="500" value="${initialValue}" id="${sanitizeID(food)}-slider">
-            <span id="${sanitizeID(food)}-value">${initialValue}g</span>
+            <input type="range" min="0" max="500" value="${defaultValue}" id="${sanitizeID(food)}-slider">
+            <span id="${sanitizeID(food)}-value">${defaultValue}g</span>
         </div>
     `;
     selectedFoodsContainer.appendChild(div);
