@@ -328,9 +328,7 @@ function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) 
         carbsCircle.style.setProperty('--progress', carbsProgress);
         carbsText.textContent = `${carbsProgress.toFixed(0)}%`;
         carbsSub.innerHTML = `
-            <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>
-            Sugar: ${totals.sugar.toFixed(1)}g |
-            Fiber: ${totals.fiber.toFixed(1)}g
+            <div id="carbsRatio"> Total Carbs: ${totals.carbs.toFixed(1)} / ${dailyValues.carbs} g</div>Sugar: ${totals.sugar.toFixed(1)}g | Fiber: ${totals.fiber.toFixed(1)}g
         `;
     }
 
@@ -343,12 +341,8 @@ function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) 
         fatCircle.style.setProperty('--progress', fatProgress);
         fatText.textContent = `${fatProgress.toFixed(0)}%`;
         fatSub.innerHTML = `
-            <div id="fatRatio">${totals.fat.toFixed(1)} / ${dailyValues.fat} g</div>
-            Total Fat: ${totals.fat.toFixed(1)}g |
-            Saturated: ${totals.saturatedFat.toFixed(1)}g |
-            Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br>
-            Omega-3: ${totals.omega3.toFixed(1)}g<br>
-            Omega-6: ${totals.omega6.toFixed(1)}g
+            <div id="fatRatio">${totals.fat.toFixed(1)} / ${dailyValues.fat} g</div> Total Fat: ${totals.fat.toFixed(1)}g |Saturated: ${totals.saturatedFat.toFixed(1)}g |
+            Unsaturated: ${totals.unsaturatedFat.toFixed(1)}g<br> Omega-3: ${totals.omega3.toFixed(1)}g | Omega-6: ${totals.omega6.toFixed(1)}g
         `;
     }
 }
