@@ -124,6 +124,7 @@ function toggleRecipe(recipe, button, isCustom = false) {
             if (foodButton) {
                 foodButton.classList.add('active');
             }
+            // Pass isCustom to addSlider
             addSlider(food, isCustom, quantity);
         });
     }
@@ -136,12 +137,16 @@ function addSlider(food, isCustomRecipe = false, initialValue = 100) {
 
     const div = document.createElement('div');
     div.className = 'food-item';
+
+    // Check if the food exists in foodData, if not, use a default emoji
+    const foodEmoji = foodData[food] ? foodData[food].emoji : '🍽️';
+
     div.innerHTML = `
         <div class="food-item-controls">
             <button class="remove-food" data-food="${food}">❌</button>
             <button class="flag-food" data-food="${food}">🚩</button>
         </div>
-        <label>${foodData[food].emoji} ${food}</label>
+        <label>${foodEmoji} ${food}</label>
         <div class="portion-control">
             <input type="range" min="0" max="500" value="${initialValue}" id="${sanitizeID(food)}-slider">
             <span id="${sanitizeID(food)}-value">${initialValue}g</span>
