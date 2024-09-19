@@ -90,7 +90,7 @@ function toggleFood(food, button) {
     updateNutritionTable();
 }
 function toggleRecipe(recipe, button, isCustom = false) {
-    const recipeList = isCustom ? recipes.customRecipes[recipe] : recipes[recipe];
+    const recipeList = isCustom ? (recipes.customRecipes && recipes.customRecipes[recipe]) : recipes[recipe];
     if (!recipeList) {
         console.error(`Recipe not found: ${recipe}`);
         return;
@@ -520,7 +520,7 @@ createRecipeBtn.addEventListener('click', () => {
         return { food: foodName, quantity: parseInt(sliderValue) };
     });
 
-    // Add the new recipe to a separate custom recipes object
+    // Initialize recipes.customRecipes if it doesn't exist
     if (!recipes.customRecipes) {
         recipes.customRecipes = {};
     }
@@ -557,5 +557,8 @@ window.addEventListener('load', () => {
             recipeButton.onclick = () => toggleRecipe(recipe, recipeButton, true);
             buttonContainer.appendChild(recipeButton);
         }
+    } else {
+        // Initialize recipes.customRecipes if it doesn't exist
+        recipes.customRecipes = {};
     }
 });
