@@ -294,7 +294,9 @@ function addSlider(food, isCustomRecipe = false, initialValue = null) {
         proteinCircle.style.setProperty('--progress', proteinProgress);
     proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
             }
-
+        const proteinRatio = (totals.protein / dailyValues.protein) * 100;
+    document.querySelector('.nutrition-card:nth-child(2) .progress-text').textContent = `${proteinRatio.toFixed(0)}%`;
+    document.querySelector('.nutrition-card:nth-child(2) .nutrition-details div').textContent = `${totals.protein.toFixed(1)} / ${dailyValues.protein} g`;
     // Carbs
     const carbsProgress = Math.min((totals.carbs / dailyValues.carbs) * 100, 100);
     const carbsCircle = document.getElementById('carbsProgress');
