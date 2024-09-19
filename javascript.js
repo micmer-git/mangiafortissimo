@@ -51,13 +51,13 @@
     const recipeButton = document.querySelector('.toggle-button[data-category="recipe"]');
     for (let recipe in recipes) {
         let button = document.createElement('button');
-    button.textContent = `${recipe} 🍽️`;
-    button.className = 'food-button recipe-button';
-    button.dataset.category = 'recipe';
-    button.dataset.food = recipe; // Add data-food attribute
-            button.onclick = () => toggleRecipe(recipe, button);
-    buttonContainer.appendChild(button);
-        }
+        button.textContent = `${recipe} 🍽️`;
+        button.className = 'food-button recipe-button';
+        button.dataset.category = 'recipe';
+        button.dataset.food = recipe;
+        button.onclick = () => toggleRecipe(recipe, button, false);
+        buttonContainer.appendChild(button);
+    }
 
         toggleButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -91,6 +91,7 @@ function toggleFood(food, button) {
     }
     updateNutritionTable();
 }
+
 function toggleRecipe(recipe, button, isCustom = false) {
     const recipeList = isCustom ? (recipes.customRecipes && recipes.customRecipes[recipe]) : recipes[recipe];
     if (!recipeList) {
@@ -129,35 +130,6 @@ function toggleRecipe(recipe, button, isCustom = false) {
 
     updateNutritionTable();
 }
-
-    function toggleRecipe(recipe, button) {
-            if (selectedFoods.has(recipe)) {
-        // Deselect recipe and its components
-        selectedFoods.delete(recipe);
-    button.classList.remove('active');
-                recipes[recipe].forEach(food => {
-        selectedFoods.delete(food);
-    const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
-    if (foodButton) {
-        foodButton.classList.remove('active');
-    removeSlider(food);
-                    }
-                });
-            } else {
-        // Select recipe and its components
-        selectedFoods.add(recipe);
-    button.classList.add('active');
-                recipes[recipe].forEach(food => {
-        selectedFoods.add(food);
-    const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
-    if (foodButton) {
-        foodButton.classList.add('active');
-    addSlider(food);
-                    }
-                });
-            }
-    updateNutritionTable();
-        }
 
 function addSlider(food, isCustomRecipe = false, initialValue = 100) {
     if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
