@@ -68,7 +68,9 @@
             const foodButtons = document.querySelectorAll('.food-button');
             foodButtons.forEach(foodButton => {
                 const foodCategory = foodButton.dataset.category;
-                if (category === 'all' || foodCategory === category) {
+                if (category === 'all' || 
+                    (category === 'custom' && foodCategory === 'custom') || 
+                    (category !== 'custom' && foodCategory === category)) {
                     foodButton.style.display = 'inline-block';
                 } else {
                     foodButton.style.display = 'none';
@@ -157,8 +159,7 @@ function toggleRecipe(recipe, button, isCustom = false) {
     updateNutritionTable();
         }
 
-function addSlider(food, isCustomRecipe = false) {
-    // Prevent adding multiple sliders for the same food
+function addSlider(food, isCustomRecipe = false, initialValue = 100) {
     if (document.getElementById(`${sanitizeID(food)}-slider`)) return;
 
     const div = document.createElement('div');
@@ -166,12 +167,12 @@ function addSlider(food, isCustomRecipe = false) {
     div.innerHTML = `
         <div class="food-item-controls">
             <button class="remove-food" data-food="${food}">❌</button>
-            ${isCustomRecipe ? `<button class="add-to-custom" data-food="${food}">➕</button>` : ''}
+            <button class="flag-food" data-food="${food}">🚩</button>
         </div>
         <label>${foodData[food].emoji} ${food}</label>
         <div class="portion-control">
-            <input type="range" min="0" max="500" value="${foodData[food].grams}" id="${sanitizeID(food)}-slider">
-            <span id="${sanitizeID(food)}-value">${foodData[food].grams}g</span>
+            <input type="range" min="0" max="500" value="${initialValue}" id="${sanitizeID(food)}-slider">
+            <span id="${sanitizeID(food)}-value">${initialValue}g</span>
         </div>
     `;
     selectedFoodsContainer.appendChild(div);
@@ -183,7 +184,6 @@ function addSlider(food, isCustomRecipe = false) {
         updateNutritionTable();
     }
 
-    // Add event listeners for remove and add buttons
     const removeBtn = div.querySelector('.remove-food');
     removeBtn.addEventListener('click', () => {
         selectedFoods.delete(food);
@@ -191,13 +191,10 @@ function addSlider(food, isCustomRecipe = false) {
         updateNutritionTable();
     });
 
-    const addToCustomBtn = div.querySelector('.add-to-custom');
-    if (addToCustomBtn) {
-        addToCustomBtn.addEventListener('click', () => {
-            // Logic to add the food to the custom recipe
-            // This will be implemented when creating the custom recipe
-        });
-    }
+    const flagBtn = div.querySelector('.flag-food');
+    flagBtn.addEventListener('click', () => {
+        div.classList.toggle('flagged-for-recipe');
+    });
 }
 
     function removeSlider(food) {
@@ -505,28 +502,26 @@ function addSlider(food, isCustomRecipe = false) {
 const createRecipeBtn = document.getElementById('createRecipeBtn');
 
 createRecipeBtn.addEventListener('click', () => {
-    const selectedFoodItems = document.querySelectorAll('.food-item');
-    if (selectedFoodItems.length === 0) {
-        alert('Please select some foods before creating a recipe.');
+    const flaggedFoodItems = document.querySelectorAll('.food-item.flagged-for-recipe');
+    if (flaggedFoodItems.length === 0) {
+        alert('Please flag some foods before creating a recipe.');
         return;
     }
 
     const recipeName = prompt('Enter a name for your custom recipe:');
     if (!recipeName) return;
 
-    const customRecipe = Array.from(selectedFoodItems).map(item => {
+    const customRecipe = Array.from(flaggedFoodItems).map(item => {
         const foodName = item.querySelector('label').textContent.trim().substring(2); // Remove emoji
         const sliderValue = item.querySelector('input[type="range"]').value;
         return { food: foodName, quantity: parseInt(sliderValue) };
     });
 
-    // Initialize recipes.customRecipes if it doesn't exist
     if (!recipes.customRecipes) {
         recipes.customRecipes = {};
     }
     recipes.customRecipes[recipeName] = customRecipe;
 
-    // Create a new recipe button
     const recipeButton = document.createElement('button');
     recipeButton.textContent = `${recipeName} 🍽️`;
     recipeButton.className = 'food-button recipe-button';
@@ -535,10 +530,12 @@ createRecipeBtn.addEventListener('click', () => {
     recipeButton.onclick = () => toggleRecipe(recipeName, recipeButton, true);
     buttonContainer.appendChild(recipeButton);
 
-    // Save the updated recipes to localStorage
     localStorage.setItem('customRecipes', JSON.stringify(recipes.customRecipes));
 
     alert('Custom recipe created successfully!');
+
+    // Remove the 'flagged-for-recipe' class from all food items
+    flaggedFoodItems.forEach(item => item.classList.remove('flagged-for-recipe'));
 });
 
 // Load custom recipes from localStorage on page load
