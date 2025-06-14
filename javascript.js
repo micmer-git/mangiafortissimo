@@ -28,6 +28,8 @@
     const buttonContainer = document.getElementById('foodButtons');
     const selectedFoodsContainer = document.getElementById('selectedFoods');
     const toggleButtons = document.querySelectorAll('.toggle-button');
+    const categorySelect = document.getElementById('categorySelect');
+    const clearAllBtn = document.getElementById('clearAllBtn');
 
     let selectedFoods = new Set();
 
@@ -59,26 +61,45 @@
         buttonContainer.appendChild(button);
     }
 
-        toggleButtons.forEach(button => {
+    function filterFoodButtons(category) {
+        const foodButtons = document.querySelectorAll('.food-button');
+        foodButtons.forEach(foodButton => {
+            const foodCategory = foodButton.dataset.category;
+            if (
+                category === 'all' ||
+                (category === 'custom' && foodCategory === 'custom') ||
+                (category !== 'custom' && foodCategory === category)
+            ) {
+                foodButton.style.display = 'inline-block';
+            } else {
+                foodButton.style.display = 'none';
+            }
+        });
+    }
+
+    toggleButtons.forEach(button => {
         button.addEventListener('click', () => {
             const category = button.dataset.category;
             toggleButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-
-            const foodButtons = document.querySelectorAll('.food-button');
-            foodButtons.forEach(foodButton => {
-                const foodCategory = foodButton.dataset.category;
-                if (category === 'all' || 
-                    (category === 'custom' && foodCategory === 'custom') || 
-                    (category !== 'custom' && foodCategory === category)) {
-                    foodButton.style.display = 'inline-block';
-                } else {
-                    foodButton.style.display = 'none';
-                }
-            });
+            if (categorySelect) {
+                categorySelect.value = category;
+            }
+            filterFoodButtons(category);
             updateNutritionTable();
         });
+    });
+
+    if (categorySelect) {
+        categorySelect.addEventListener('change', () => {
+            const category = categorySelect.value;
+            toggleButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === category);
+            });
+            filterFoodButtons(category);
+            updateNutritionTable();
         });
+    }
 function toggleFood(food, button) {
     if (selectedFoods.has(food)) {
         selectedFoods.delete(food);
@@ -171,6 +192,10 @@ function addSlider(food, isCustomRecipe = false, initialValue = null) {
     removeBtn.addEventListener('click', () => {
         selectedFoods.delete(foodName);
         div.remove();
+        const foodButton = document.querySelector(`.food-button[data-food="${foodName}"]`);
+        if (foodButton) {
+            foodButton.classList.remove('active');
+        }
         updateNutritionTable();
     });
 
@@ -180,12 +205,17 @@ function addSlider(food, isCustomRecipe = false, initialValue = null) {
     });
 }
 
-    function removeSlider(food) {
-            const slider = document.getElementById(`${sanitizeID(food)}-slider`);
+function removeSlider(food) {
+    const slider = document.getElementById(`${sanitizeID(food)}-slider`);
     if (slider) {
         slider.parentElement.parentElement.remove();
-            }
-        }
+    }
+    const foodButton = document.querySelector(`.food-button[data-food="${food}"]`);
+    if (foodButton) {
+        foodButton.classList.remove('active');
+    }
+    selectedFoods.delete(food);
+}
 
 function updateNutritionTable() {
     if (selectedFoods.size === 0) {
@@ -280,10 +310,17 @@ function updateNutritionTable() {
         }
 
         // Calculate unsaturated fat (fat - saturatedFat)
-        if (nutrientContributors['unsaturatedFat'] !== undefined && foodData[food]['fat'] !== undefined && foodData[food]['saturatedFat'] !== undefined) {
-            const unsatFat = (foodData[food]['fat'] - (foodData[food]['saturatedFat'] || 0)) * ratio;
+        if (
+            nutrientContributors['unsaturatedFat'] !== undefined &&
+            foodData[food]['fat'] !== undefined &&
+            foodData[food]['saturatedFat'] !== undefined
+        ) {
+            const unsatFat =
+                (foodData[food]['fat'] - (foodData[food]['saturatedFat'] || 0)) *
+                ratio;
             totals['unsaturatedFat'] += unsatFat;
-            totals['fat'] += unsatFat; // Ensure 'fat' includes unsaturated fat
+            // Total fat already includes saturated and unsaturated fat from the
+            // main loop, so don't add unsaturated fat again.
         }
     });
 
@@ -314,9 +351,11 @@ function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) 
     const proteinProgress = Math.min((totals.protein / targetProtein) * 100, 100);
     const proteinCircle = document.getElementById('proteinProgress');
     const proteinText = document.getElementById('proteinText');
-    if (proteinCircle && proteinText) {
+    const proteinRatio = document.getElementById('proteinRatio');
+    if (proteinCircle && proteinText && proteinRatio) {
         proteinCircle.style.setProperty('--progress', proteinProgress);
         proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
+        proteinRatio.textContent = `${totals.protein.toFixed(1)} / ${targetProtein} g`;
     }
 
     // Carbs
@@ -490,6 +529,15 @@ function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) 
 
 // Custom Recipe Creation
 const createRecipeBtn = document.getElementById('createRecipeBtn');
+
+if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+        selectedFoods.forEach(food => removeSlider(food));
+        selectedFoods.clear();
+        selectedFoodsContainer.innerHTML = '';
+        updateNutritionTable();
+    });
+}
 
 createRecipeBtn.addEventListener('click', () => {
     const flaggedFoodItems = document.querySelectorAll('.food-item.flagged-for-recipe');
