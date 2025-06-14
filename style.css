@@ -6,7 +6,16 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f4f4f4;
+    background: linear-gradient(180deg, #f4f4f4, #e0e0e0);
+}
+
+.app-wrapper {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 h1,

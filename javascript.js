@@ -310,10 +310,17 @@ function updateNutritionTable() {
         }
 
         // Calculate unsaturated fat (fat - saturatedFat)
-        if (nutrientContributors['unsaturatedFat'] !== undefined && foodData[food]['fat'] !== undefined && foodData[food]['saturatedFat'] !== undefined) {
-            const unsatFat = (foodData[food]['fat'] - (foodData[food]['saturatedFat'] || 0)) * ratio;
+        if (
+            nutrientContributors['unsaturatedFat'] !== undefined &&
+            foodData[food]['fat'] !== undefined &&
+            foodData[food]['saturatedFat'] !== undefined
+        ) {
+            const unsatFat =
+                (foodData[food]['fat'] - (foodData[food]['saturatedFat'] || 0)) *
+                ratio;
             totals['unsaturatedFat'] += unsatFat;
-            totals['fat'] += unsatFat; // Ensure 'fat' includes unsaturated fat
+            // Total fat already includes saturated and unsaturated fat from the
+            // main loop, so don't add unsaturated fat again.
         }
     });
 
@@ -344,9 +351,11 @@ function updateMacroCircles(totals, targetCalories, targetProtein, targetFiber) 
     const proteinProgress = Math.min((totals.protein / targetProtein) * 100, 100);
     const proteinCircle = document.getElementById('proteinProgress');
     const proteinText = document.getElementById('proteinText');
-    if (proteinCircle && proteinText) {
+    const proteinRatio = document.getElementById('proteinRatio');
+    if (proteinCircle && proteinText && proteinRatio) {
         proteinCircle.style.setProperty('--progress', proteinProgress);
         proteinText.textContent = `${proteinProgress.toFixed(0)}%`;
+        proteinRatio.textContent = `${totals.protein.toFixed(1)} / ${targetProtein} g`;
     }
 
     // Carbs
