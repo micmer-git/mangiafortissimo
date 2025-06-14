@@ -67,6 +67,17 @@ h2 {
     color: white;
 }
 
+.category-select {
+    display: none;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
 /* Food Buttons */
 #foodButtons {
     display: flex;
@@ -405,6 +416,24 @@ footer a:hover {
     display: block;
 }
 
+.clear-all-btn {
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin: 10px auto 20px;
+    display: block;
+}
+
+.clear-all-btn:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
 .create-recipe-btn:hover {
     background-color: #3498db;
     color: white;
@@ -438,8 +467,11 @@ footer a:hover {
     }
 
     .toggle-buttons {
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        display: none;
+    }
+
+    .category-select {
+        display: block;
     }
 
     .toggle-button {

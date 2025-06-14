@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MangiaFortissimo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -16,6 +17,19 @@
         <input type="number" id="targetProtein" class="target-input" placeholder="Target Protein (g)" min="0">
         <input type="number" id="targetFiber" class="target-input" placeholder="Target Fiber (g)" min="0">
     </div>
+
+    <select id="categorySelect" class="category-select">
+        <option value="all" selected>All 🍎</option>
+        <option value="fruits">Fruits 🍓</option>
+        <option value="vegetables">Vegetables 🥦</option>
+        <option value="dairy">Dairy 🥛</option>
+        <option value="grains">Grains 🌾</option>
+        <option value="protein">Protein 🥩</option>
+        <option value="supplements">Supplements 💊</option>
+        <option value="others">Others 🍕</option>
+        <option value="recipe">Recipe 🍽️</option>
+        <option value="custom">Custom Recipes ✨</option>
+    </select>
 
     <div class="toggle-buttons">
         <button class="toggle-button active" data-category="all">All 🍎</button>
@@ -33,6 +47,7 @@
     <div id="foodButtons"></div>
     <div id="selectedFoods"></div>
     <button id="createRecipeBtn" class="create-recipe-btn">Create Custom Recipe</button>
+    <button id="clearAllBtn" class="clear-all-btn">Clear All</button>
 
     <div class="dashboard">
         <!-- Macronutrient Progress Circles -->
